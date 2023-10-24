@@ -80,7 +80,10 @@ class Run:
     @staticmethod
     def draw(p1):
        # p1.sasuke_run.clip_draw(p1.frame * 64, p1.action * 31, 100, 100, p1.x, p1.y)
-       p1.sasuke_run.clip_composite_draw(p1.frame * 66, p1.action * 31, 63, 31, 0, '', p1.x, p1.y, 230, 110)
+        if p1.action == 0:
+            p1.sasuke_run.clip_composite_draw(p1.frame * 66, 0, 63, 31, 0, '', p1.x, p1.y, 230, 110)
+        elif p1.action == 1:
+            p1.sasuke_run.clip_composite_draw(p1.frame * 66, 0, 63, 31, 0, 'h', p1.x, p1.y, 230, 110)
 
 class Jump:
 
