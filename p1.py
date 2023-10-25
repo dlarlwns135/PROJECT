@@ -129,18 +129,22 @@ class Jump:
         # elif left_down(e):
         #     p1.x += p1.dir * 10  # 왼쪽 방향으로 이동
 
-        if p1.jump_count % 10 == 0:
-            p1.frame = (p1.frame + 1) % 4
-            #p1.jump_count = 0
+        # if p1.jump_count % 10 == 0 and p1.jump_count <= 40:
 
+            #p1.jump_count = 0
+        if p1.jump_count >= 40:
+            p1.frame = 3
+        else:
+            p1.frame = p1.jump_count // 10
         if p1.frame < 2:
             p1.y += p1.dir * 10
         else:
             p1.y -= p1.dir * 10
 
-        if p1.jump_count >= 40:
+        if p1.y < 70:
+            p1.y = 70
             p1.state_machine.handle_event(('JUMP_END', None))
-        delay(0.01)
+        #delay(0.01)
 
     @staticmethod
     def draw(p1):
@@ -158,7 +162,7 @@ class StateMachine:
         self.transitions = {
             Idle: {right_down: Run, left_down: Run, left_up: Run, right_up: Run, space_down: Jump},
             Run: {right_down: Idle, left_down: Idle, right_up: Idle, left_up: Idle, space_down: Jump},
-            Jump: {jump_end: Idle}
+            Jump: {jump_end: Idle, space_down: Jump}
         }
 
     def start(self):
