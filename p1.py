@@ -48,12 +48,9 @@ def jump_end_run(e):
 
 def teleport(e):
     return e[0] == 'TELEPORT'
-# def jump_end(e):
-#     global P1
-#     if P1.jump_count >= 40:
-#         return e[0] == 'jump_end'
-#     pass
 
+def stop(e):
+    return e[0] == 'STOP'
 
 class Idle:
 
@@ -89,16 +86,34 @@ class Run:
         p1.y -= 15
         if right_down(e):
             p1.dir = 1
+            p1.right = True
         elif left_down(e):
             p1.dir = -1
+            p1.left = True
+        elif right_up(e):
+            p1.right = False
+        elif left_up(e):
+            p1.left = False
+        # if right_down(e) or left_down(e):
+        #     p1.run_check += 1
+        #     print("RUN_CHECK++")
+        # elif left_up(e) or right_up(e):
+        #     p1.run_check -= 1
+        #     print("RUN_CHECK--")
 
     @staticmethod
     def exit(p1, e):
+        if right_up(e):
+            p1.right = False
+        elif left_up(e):
+            p1.left = False
         p1.y += 15
         p1.frame = 0
 
     @staticmethod
     def do(p1):
+        if not p1.right and not p1.left:
+            p1.state_machine.handle_event(('STOP', None))
         p1.frame = (p1.frame + 1) % 6
         p1.x += p1.dir * 10
         #delay(0.01)
@@ -114,19 +129,33 @@ class Run:
 class Jump:
     @staticmethod
     def enter(p1, e):
+        if right_down(e):
+            p1.dir = 1
+            p1.right = True
+            p1.jump_move = True
+        elif left_down(e):
+            p1.dir = -1
+            p1.left = True
+            p1.jump_move = True
+        elif right_up(e):
+            p1.right = False
+            #p1.jump_move = False
+        elif left_up(e):
+            p1.left = False
+            #p1.jump_move = False
         pass
 
     @staticmethod
     def exit(p1, e):
-        if right_down(e):
-            p1.jump_move = True
-            p1.dir = 1
-        elif left_down(e):
-            p1.jump_move = True
-            p1.dir = -1
-
-        if right_up(e) or left_up(e):
-            p1.jump_move = False
+        # if right_down(e):
+        #     p1.jump_move = True
+        #     p1.dir = 1
+        # elif left_down(e):
+        #     p1.jump_move = True
+        #     p1.dir = -1
+        #
+        # if right_up(e) or left_up(e):
+        #     p1.jump_move = False
 
         if up_down(e):
             p1.frame = 0
@@ -135,6 +164,8 @@ class Jump:
 
     @staticmethod
     def do(p1):
+        if not p1.right and not p1.left:
+            p1.jump_move = False
         p1.jump_count += 1
 
         if p1.jump_count >= 40:
@@ -147,7 +178,7 @@ class Jump:
         else:
             p1.y -= 10
 
-        if p1.jump_move:
+        if p1.jump_move and  (p1.right or p1.left):
             p1.x += p1.dir * 5
 
         if p1.y <= ground_y:
@@ -215,7 +246,7 @@ class StateMachine:
         self.cur_state = Idle
         self.transitions = {
             Idle: {right_down: Run, left_down: Run, up_down: Jump, period_down: Teleport},
-            Run: {right_up: Idle, left_up: Idle, right_down: Idle, left_down: Idle, up_down: Jump},
+            Run: {right_up: Run, left_up: Run, right_down: Run, left_down: Run, up_down: Jump, stop: Idle},
             Jump: {jump_end: Idle, jump_end_run: Run, up_down: Jump,
                    right_down: Jump, left_down: Jump, right_up: Jump, left_up: Jump},
             Teleport: {teleport: Idle}
@@ -261,6 +292,9 @@ class P1:
         self.state_machine.start()
         self.jump_count = 0
         self.jump_move = False
+        self.run_check = 0
+        self.right = False
+        self.left = False
 
     def update(self):
         self.state_machine.update()
