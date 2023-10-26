@@ -8,6 +8,14 @@ import game_world
 # ( state event type, event value )
 
 ground_y = 70
+
+def up_down(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_UP
+
+
+def up_up(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_UP
+
 def right_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_RIGHT
 
@@ -31,6 +39,9 @@ def time_out(e):
 
 def jump_end(e):
     return e[0] == 'JUMP_END'
+
+def jump_end_run(e):
+    return e[0] == 'JUMP_END_RUN'
 # def jump_end(e):
 #     global P1
 #     if P1.jump_count >= 40:
@@ -42,11 +53,6 @@ class Idle:
 
     @staticmethod
     def enter(p1, e):
-        # if p1.face_dir == -1:
-        #     p1.action = 0
-        # elif p1.face_dir == 1:
-        #     p1.action = 1
-        # p1.dir = 0
         p1.frame = 0
         #p1.wait_time = get_time() # pico2d import 필요
         pass
@@ -60,11 +66,10 @@ class Idle:
     @staticmethod
     def do(p1):
         p1.frame = (p1.frame + 1) % 6
-        delay(0.1)
+        #delay(0.1)
 
     @staticmethod
     def draw(p1):
-        # p1.image.clip_draw(p1.frame * 34, 0, 30, 64, p1.x, p1.y)
         if p1.dir == -1:
             p1.sasuke_idle.clip_composite_draw(p1.frame * 32, 0, 32, 64, 0, 'h', p1.x, p1.y, 100, 200)
         elif p1.dir == 1:
@@ -76,9 +81,9 @@ class Run:
     @staticmethod
     def enter(p1, e):
         p1.y -= 15
-        if right_down(e) or left_up(e): # 오른쪽으로 RUN
+        if right_down(e):
             p1.dir = 1
-        elif left_down(e) or right_up(e): # 왼쪽으로 RUN
+        elif left_down(e):
             p1.dir = -1
 
     @staticmethod
@@ -90,42 +95,35 @@ class Run:
     def do(p1):
         p1.frame = (p1.frame + 1) % 6
         p1.x += p1.dir * 10
-        delay(0.01)
+        #delay(0.01)
 
     @staticmethod
     def draw(p1):
-       # p1.sasuke_run.clip_draw(p1.frame * 64, p1.action * 31, 100, 100, p1.x, p1.y)
         if p1.dir == -1:
             p1.sasuke_run.clip_composite_draw(p1.frame * 64, 0, 64, 32, 0, 'h', p1.x, p1.y, 200, 100)
         elif p1.dir == 1:
             p1.sasuke_run.clip_composite_draw(p1.frame * 64, 0, 64, 32, 0, '', p1.x, p1.y, 200, 100)
 
 
-def key_event(SDL_KEYUP, SDLK_SPACE):
-    pass
-
-
 class Jump:
-    #global ground_y
     @staticmethod
     def enter(p1, e):
-        # p1.jump_count = 0
-        #p1.dir = 1
-        #p1.frame = 0
-        # if right_down(e) or left_up(e): # 오른쪽으로 RUN
-        #     p1.dir, p1.face_dir, p1.action = 1, 1, 1
-        # elif left_down(e) or right_up(e): # 왼쪽으로 RUN
-        #     p1.dir, p1.face_dir, p1.action = -1, -1, 0
         pass
 
     @staticmethod
     def exit(p1, e):
-        if right_down(e) or left_down(e):
+        if right_down(e):
             p1.jump_move = True
-        elif right_up(e) or left_up(e):
+            p1.dir = 1
+        elif left_down(e):
+            p1.jump_move = True
+            p1.dir = -1
+        elif right_up(e) and not p1.jump_move or left_up(e) and not p1.jump_move:
             p1.jump_move = False
-        elif space_down(e):
+
+        if up_down(e):
             p1.frame = 0
+            p1.jump_count = 0
         pass
 
     @staticmethod
@@ -136,6 +134,7 @@ class Jump:
             p1.frame = 3
         else:
             p1.frame = p1.jump_count // 10
+
         if p1.frame < 2:
             p1.y += 10
         else:
@@ -148,8 +147,14 @@ class Jump:
             p1.y = ground_y
             p1.jump_count = 0
             p1.frame = 0
+
+            if p1.jump_move:
+                p1.state_machine.handle_event(('JUMP_END_RUN', None))
+                print("JUMP_END_RUN")
+            else:
+                p1.state_machine.handle_event(('JUMP_END', None))
+                print("JUMP_END")
             p1.jump_move = False
-            p1.state_machine.handle_event(('JUMP_END', None))
         #delay(0.01)
 
     @staticmethod
@@ -166,9 +171,10 @@ class StateMachine:
         self.p1 = p1
         self.cur_state = Idle
         self.transitions = {
-            Idle: {right_down: Run, left_down: Run, left_up: Run, right_up: Run, space_down: Jump},
-            Run: {right_down: Idle, left_down: Idle, right_up: Idle, left_up: Idle, space_down: Jump},
-            Jump: {jump_end: Idle, space_down: Jump, right_down: Jump, left_down: Jump, right_up: Jump, left_up: Jump}
+            Idle: {right_down: Run, left_down: Run, up_down: Jump},
+            Run: {right_up: Idle, left_up: Idle, right_down: Idle, left_down: Idle, up_down: Jump},
+            Jump: {jump_end: Idle, jump_end_run: Run, up_down: Jump,
+                   right_down: Jump, left_down: Jump, right_up: Jump, left_up: Jump}
         }
 
     def start(self):
