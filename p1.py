@@ -34,6 +34,9 @@ def left_up(e):
 def space_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE
 
+def period_down(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_PERIOD
+
 def time_out(e):
     return e[0] == 'TIME_OUT'
 
@@ -42,6 +45,9 @@ def jump_end(e):
 
 def jump_end_run(e):
     return e[0] == 'JUMP_END_RUN'
+
+def teleport(e):
+    return e[0] == 'TELEPORT'
 # def jump_end(e):
 #     global P1
 #     if P1.jump_count >= 40:
@@ -118,7 +124,8 @@ class Jump:
         elif left_down(e):
             p1.jump_move = True
             p1.dir = -1
-        elif right_up(e) and not p1.jump_move or left_up(e) and not p1.jump_move:
+
+        if right_up(e) or left_up(e):
             p1.jump_move = False
 
         if up_down(e):
@@ -164,6 +171,42 @@ class Jump:
         elif p1.dir == 1:
             p1.sasuke_jump.clip_composite_draw(p1.frame * 32, 0, 32, 64, 0, '', p1.x, p1.y, 100, 200)
 
+class Teleport:
+    @staticmethod
+    def enter(p1, e):
+
+        pass
+
+    @staticmethod
+    def exit(p1, e):
+        p1.tele_count = 0
+        if p1.dir == 1:
+            p1.x += 300
+        elif p1.dir == -1:
+            p1.x -= 300
+        pass
+
+    @staticmethod
+    def do(p1):
+        p1.tele_count += 1
+        p1.frame = p1.tele_count // 2
+        # p1.frame += 1
+
+        if p1.frame >= 5:
+            p1.state_machine.handle_event(('TELEPORT', None))
+
+        #delay(0.01)
+        pass
+
+    @staticmethod
+    def draw(p1):
+        if p1.dir == -1:
+            p1.sasuke_teleport.clip_composite_draw(p1.frame * 32, 0, 32, 64, 0, 'h', p1.x, p1.y, 100, 200)
+            p1.teleport_motion.clip_composite_draw(p1.frame * 72, 0, 72, 75, 0, 'h', p1.x, p1.y, 150, 250)
+        elif p1.dir == 1:
+            p1.sasuke_teleport.clip_composite_draw(p1.frame * 32, 0, 32, 64, 0, '', p1.x, p1.y, 100, 200)
+            p1.teleport_motion.clip_composite_draw(p1.frame * 72, 0, 72, 75, 0, '', p1.x, p1.y, 150, 250)
+
 
 
 class StateMachine:
@@ -171,10 +214,11 @@ class StateMachine:
         self.p1 = p1
         self.cur_state = Idle
         self.transitions = {
-            Idle: {right_down: Run, left_down: Run, up_down: Jump},
+            Idle: {right_down: Run, left_down: Run, up_down: Jump, period_down: Teleport},
             Run: {right_up: Idle, left_up: Idle, right_down: Idle, left_down: Idle, up_down: Jump},
             Jump: {jump_end: Idle, jump_end_run: Run, up_down: Jump,
-                   right_down: Jump, left_down: Jump, right_up: Jump, left_up: Jump}
+                   right_down: Jump, left_down: Jump, right_up: Jump, left_up: Jump},
+            Teleport: {teleport: Idle}
         }
 
     def start(self):
@@ -207,9 +251,12 @@ class P1:
         self.frame = 0
         self.dir = 1
         self.idle_count = 0
+        self.tele_count = 0
         self.sasuke_idle = load_image('sasuke_idle.png')
         self.sasuke_run = load_image('sasuke_run.png')
         self.sasuke_jump = load_image('sasuke_jump.png')
+        self.sasuke_teleport = load_image('sasuke_teleport.png')
+        self.teleport_motion = load_image('teleport.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.jump_count = 0
