@@ -57,6 +57,10 @@ class Idle:
     @staticmethod
     def enter(p1, e):
         p1.frame = 0
+        if right_up(e):
+            p1.right = False
+        elif left_up(e):
+            p1.left = False
         #p1.wait_time = get_time() # pico2d import 필요
         pass
 
@@ -64,6 +68,10 @@ class Idle:
     def exit(p1, e):
         p1.frame = 0
         p1.idle_count = 0
+        if right_up(e):
+            p1.dir = -1
+        elif left_up(e):
+            p1.dir = 1
         pass
 
     @staticmethod
@@ -74,15 +82,16 @@ class Idle:
     @staticmethod
     def draw(p1):
         if p1.dir == -1:
-            p1.sasuke_idle.clip_composite_draw(p1.frame * 32, 0, 32, 64, 0, 'h', p1.x, p1.y, 100, 200)
+            p1.idle.clip_composite_draw(p1.frame * 32, 0, 32, 64, 0, 'h', p1.x, p1.y, 100, 200)
         elif p1.dir == 1:
-            p1.sasuke_idle.clip_composite_draw(p1.frame * 32, 0, 32, 64, 0, '', p1.x, p1.y, 100 , 200)
+            p1.idle.clip_composite_draw(p1.frame * 32, 0, 32, 64, 0, '', p1.x, p1.y, 100 , 200)
 
 
 class Run:
 
     @staticmethod
     def enter(p1, e):
+
         p1.y -= 15
         if right_down(e):
             p1.dir = 1
@@ -94,26 +103,24 @@ class Run:
             p1.right = False
         elif left_up(e):
             p1.left = False
-        # if right_down(e) or left_down(e):
-        #     p1.run_check += 1
-        #     print("RUN_CHECK++")
-        # elif left_up(e) or right_up(e):
-        #     p1.run_check -= 1
-        #     print("RUN_CHECK--")
 
     @staticmethod
     def exit(p1, e):
-        if right_up(e):
-            p1.right = False
-        elif left_up(e):
-            p1.left = False
         p1.y += 15
         p1.frame = 0
 
     @staticmethod
     def do(p1):
+        if p1.right and p1.left:
+            if p1.dir == 1:
+                p1.dir = -1
+            elif p1.dir == -1:
+                p1.dir = 1
+            p1.state_machine.handle_event(('STOP', None))
         if not p1.right and not p1.left:
             p1.state_machine.handle_event(('STOP', None))
+            p1.right = False
+            p1.left = False
         p1.frame = (p1.frame + 1) % 6
         p1.x += p1.dir * 10
         #delay(0.01)
@@ -121,9 +128,9 @@ class Run:
     @staticmethod
     def draw(p1):
         if p1.dir == -1:
-            p1.sasuke_run.clip_composite_draw(p1.frame * 64, 0, 64, 32, 0, 'h', p1.x, p1.y, 200, 100)
+            p1.run.clip_composite_draw(p1.frame * 64, 0, 64, 32, 0, 'h', p1.x, p1.y, 200, 100)
         elif p1.dir == 1:
-            p1.sasuke_run.clip_composite_draw(p1.frame * 64, 0, 64, 32, 0, '', p1.x, p1.y, 200, 100)
+            p1.run.clip_composite_draw(p1.frame * 64, 0, 64, 32, 0, '', p1.x, p1.y, 200, 100)
 
 
 class Jump:
@@ -139,24 +146,12 @@ class Jump:
             p1.jump_move = True
         elif right_up(e):
             p1.right = False
-            #p1.jump_move = False
         elif left_up(e):
             p1.left = False
-            #p1.jump_move = False
         pass
 
     @staticmethod
     def exit(p1, e):
-        # if right_down(e):
-        #     p1.jump_move = True
-        #     p1.dir = 1
-        # elif left_down(e):
-        #     p1.jump_move = True
-        #     p1.dir = -1
-        #
-        # if right_up(e) or left_up(e):
-        #     p1.jump_move = False
-
         if up_down(e):
             p1.frame = 0
             p1.jump_count = 0
@@ -198,9 +193,9 @@ class Jump:
     @staticmethod
     def draw(p1):
         if p1.dir == -1:
-            p1.sasuke_jump.clip_composite_draw(p1.frame * 32, 0, 32, 64, 0, 'h', p1.x, p1.y, 100, 200)
+            p1.jump.clip_composite_draw(p1.frame * 32, 0, 32, 64, 0, 'h', p1.x, p1.y, 100, 200)
         elif p1.dir == 1:
-            p1.sasuke_jump.clip_composite_draw(p1.frame * 32, 0, 32, 64, 0, '', p1.x, p1.y, 100, 200)
+            p1.jump.clip_composite_draw(p1.frame * 32, 0, 32, 64, 0, '', p1.x, p1.y, 100, 200)
 
 class Teleport:
     @staticmethod
@@ -221,8 +216,6 @@ class Teleport:
     def do(p1):
         p1.tele_count += 1
         p1.frame = p1.tele_count // 2
-        # p1.frame += 1
-
         if p1.frame >= 5:
             p1.state_machine.handle_event(('TELEPORT', None))
 
@@ -232,10 +225,10 @@ class Teleport:
     @staticmethod
     def draw(p1):
         if p1.dir == -1:
-            p1.sasuke_teleport.clip_composite_draw(p1.frame * 32, 0, 32, 64, 0, 'h', p1.x, p1.y, 100, 200)
+            p1.teleport.clip_composite_draw(p1.frame * 32, 0, 32, 64, 0, 'h', p1.x, p1.y, 100, 200)
             p1.teleport_motion.clip_composite_draw(p1.frame * 72, 0, 72, 75, 0, 'h', p1.x, p1.y, 150, 250)
         elif p1.dir == 1:
-            p1.sasuke_teleport.clip_composite_draw(p1.frame * 32, 0, 32, 64, 0, '', p1.x, p1.y, 100, 200)
+            p1.teleport.clip_composite_draw(p1.frame * 32, 0, 32, 64, 0, '', p1.x, p1.y, 100, 200)
             p1.teleport_motion.clip_composite_draw(p1.frame * 72, 0, 72, 75, 0, '', p1.x, p1.y, 150, 250)
 
 
@@ -245,7 +238,8 @@ class StateMachine:
         self.p1 = p1
         self.cur_state = Idle
         self.transitions = {
-            Idle: {right_down: Run, left_down: Run, up_down: Jump, period_down: Teleport},
+            Idle: {right_down: Run, left_down: Run, right_up: Run, left_up: Run,
+                   up_down: Jump, period_down: Teleport},
             Run: {right_up: Run, left_up: Run, right_down: Run, left_down: Run, up_down: Jump, stop: Idle},
             Jump: {jump_end: Idle, jump_end_run: Run, up_down: Jump,
                    right_down: Jump, left_down: Jump, right_up: Jump, left_up: Jump},
@@ -283,10 +277,10 @@ class P1:
         self.dir = 1
         self.idle_count = 0
         self.tele_count = 0
-        self.sasuke_idle = load_image('sasuke_idle.png')
-        self.sasuke_run = load_image('sasuke_run.png')
-        self.sasuke_jump = load_image('sasuke_jump.png')
-        self.sasuke_teleport = load_image('sasuke_teleport.png')
+        self.idle = load_image('sasuke_idle.png')
+        self.run = load_image('sasuke_run.png')
+        self.jump = load_image('sasuke_jump.png')
+        self.teleport = load_image('sasuke_teleport.png')
         self.teleport_motion = load_image('teleport.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start()
