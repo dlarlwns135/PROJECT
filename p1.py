@@ -37,6 +37,9 @@ def space_down(e):
 def period_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_PERIOD
 
+def comma_down(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_COMMA
+
 def time_out(e):
     return e[0] == 'TIME_OUT'
 
@@ -130,10 +133,6 @@ class Run:
     @staticmethod
     def do(p1):
         if p1.right and p1.left:
-            # if p1.dir == 1:
-            #     p1.dir = -1
-            # elif p1.dir == -1:
-            #     p1.dir = 1
             p1.state_machine.handle_event(('STOP', None))
         if not p1.right and not p1.left:
             p1.state_machine.handle_event(('STOP', None))
@@ -168,6 +167,8 @@ class Jump:
             p1.left = False
         if up_down(e):
             p1.up_tele = True
+        elif up_up(e):
+            p1.up_tele = False
         pass
 
     @staticmethod
@@ -222,27 +223,37 @@ class Jump:
 class Teleport:
     @staticmethod
     def enter(p1, e):
-
+        if right_down(e):
+            p1.dir = 1
+            p1.right = True
+        elif left_down(e):
+            p1.dir = -1
+            p1.left = True
+        elif right_up(e):
+            p1.right = False
+        elif left_up(e):
+            p1.left = False
         pass
 
     @staticmethod
     def exit(p1, e):
-        p1.tele_count = 0
-        if p1.up_tele:
-            p1.y += 300
-            p1.up_tele = False
-        else:
-            if p1.right:
-                p1.x += 300
-            elif p1.left:
-                p1.x -= 300
+        if p1.frame >= 4:
+            p1.tele_count = 0
+            if p1.up_tele:
+                p1.y += 300
+                p1.up_tele = False
+            else:
+                if p1.right:
+                    p1.x += 300
+                elif p1.left:
+                    p1.x -= 300
         pass
 
     @staticmethod
     def do(p1):
         p1.tele_count += 1
         p1.frame = p1.tele_count // 2
-        if p1.frame >= 5:
+        if p1.frame == 4:
             p1.state_machine.handle_event(('TELEPORT', None))
 
         #delay(0.01)
@@ -257,6 +268,56 @@ class Teleport:
             p1.teleport.clip_composite_draw(p1.frame * 32, 0, 32, 64, 0, '', p1.x, p1.y, 100, 200)
             p1.teleport_motion.clip_composite_draw(p1.frame * 72, 0, 72, 75, 0, '', p1.x, p1.y, 150, 250)
 
+class Attack:
+    @staticmethod
+    def enter(p1, e):
+        p1.frame = 0
+        p1.attack_count = 0
+        pass
+
+    @staticmethod
+    def exit(p1, e):
+        p1.frame = 0
+        p1.attack_count = 0
+        pass
+
+    @staticmethod
+    def do(p1):
+        p1.attack_count += 1
+        p1.frame = p1.attack_count // 3
+        if p1.attack_num == 1:
+            if p1.frame == 4:
+                p1.state_machine.handle_event(('STOP', None))
+                p1.attack_num = 2
+        if p1.attack_num == 2:
+            if p1.frame == 5:
+                p1.state_machine.handle_event(('STOP', None))
+                p1.attack_num = 3
+        if p1.attack_num == 3:
+            if p1.frame == 7:
+                p1.state_machine.handle_event(('STOP', None))
+                p1.attack_num = 1
+
+        pass
+
+    @staticmethod
+    def draw(p1):
+        if p1.attack_num == 1:
+            if p1.dir == -1:
+                p1.attack1.clip_composite_draw(p1.frame * 61, 0, 61, 64, 0, 'h', p1.x-45, p1.y, 191, 200)
+            elif p1.dir == 1:
+                p1.attack1.clip_composite_draw(p1.frame * 61, 0, 61, 64, 0, '', p1.x+45, p1.y, 191, 200)
+        elif p1.attack_num == 2:
+            if p1.dir == -1:
+                p1.attack2.clip_composite_draw(p1.frame * 64, 0, 64, 64, 0, 'h', p1.x-50, p1.y, 200, 200)
+            elif p1.dir == 1:
+                p1.attack2.clip_composite_draw(p1.frame * 64, 0, 64, 64, 0, '', p1.x+50, p1.y, 200, 200)
+        elif p1.attack_num == 3:
+            if p1.dir == -1:
+                    p1.attack3.clip_composite_draw(p1.frame * 77, 0, 77, 64, 0, 'h', p1.x - 70, p1.y, 241, 200)
+            elif p1.dir == 1:
+                    p1.attack3.clip_composite_draw(p1.frame * 77, 0, 77, 64, 0, '', p1.x + 70, p1.y, 241, 200)
+
 
 
 class StateMachine:
@@ -265,12 +326,15 @@ class StateMachine:
         self.cur_state = Idle
         self.transitions = {
             Idle: {right_down: Run, left_down: Run, right_up: Run, left_up: Run, run_state: Run,
-                   up_down: Jump, jump_state: Jump},
+                   up_down: Jump, jump_state: Jump, comma_down: Attack},
             Run: {right_up: Run, left_up: Run, right_down: Run, left_down: Run, up_down: Jump, stop: Idle
                   , period_down: Teleport},
-            Jump: {jump_end: Idle, jump_end_run: Run, up_down: Jump, period_down: Teleport,
+            Jump: {jump_end: Idle, jump_end_run: Run, up_down: Jump, up_up: Jump,
+                   period_down: Teleport,
                    right_down: Jump, left_down: Jump, right_up: Jump, left_up: Jump},
-            Teleport: {teleport: Idle}
+            Teleport: {right_down: Teleport, left_down: Teleport, right_up: Teleport, left_up: Teleport,
+                       teleport: Idle},
+            Attack: {stop: Idle}
         }
 
     def start(self):
@@ -309,6 +373,9 @@ class P1:
         self.jump = load_image('sasuke_jump.png')
         self.teleport = load_image('sasuke_teleport.png')
         self.teleport_motion = load_image('teleport.png')
+        self.attack1 = load_image('sasuke_attack1.png')
+        self.attack2 = load_image('sasuke_attack2.png')
+        self.attack3 = load_image('sasuke_attack3.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.jump_count = 0
@@ -317,6 +384,8 @@ class P1:
         self.right = False
         self.left = False
         self.up_tele = False
+        self.attack_num = 1
+        self.attack_count = 0
 
     def update(self):
         self.state_machine.update()
