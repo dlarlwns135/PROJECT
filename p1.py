@@ -273,12 +273,15 @@ class Attack:
     def enter(p1, e):
         p1.frame = 0
         p1.attack_count = 0
+        if get_time() - p1.wait_time > 1:
+            p1.attack_num = 1
         pass
 
     @staticmethod
     def exit(p1, e):
         p1.frame = 0
         p1.attack_count = 0
+        p1.wait_time = get_time()
         pass
 
     @staticmethod
@@ -386,6 +389,7 @@ class P1:
         self.up_tele = False
         self.attack_num = 1
         self.attack_count = 0
+        self.wait_time = 0
 
     def update(self):
         self.state_machine.update()
