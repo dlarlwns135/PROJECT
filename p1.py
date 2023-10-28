@@ -66,10 +66,16 @@ class Idle:
     @staticmethod
     def enter(p1, e):
         p1.frame = 0
+        # if p1.right and not p1.left:
+        #     p1.dir = 1
+        # if p1.left and not p1.right:
+        #     p1.dir = -1
         if right_up(e):
             p1.right = False
         elif left_up(e):
             p1.left = False
+
+
         #p1.wait_time = get_time() # pico2d import 필요
         pass
 
@@ -271,17 +277,22 @@ class Teleport:
 class Attack:
     @staticmethod
     def enter(p1, e):
-        p1.frame = 0
-        p1.attack_count = 0
-        if get_time() - p1.wait_time > 1:
+        # p1.frame = 0
+        # p1.attack_count = 0
+        if right_down(e):
+            p1.right = True
+        if left_down(e):
+            p1.left = True
+        if right_up(e):
+            p1.right = False
+        if left_up(e):
+            p1.left = False
+        if get_time() - p1.wait_time > 0.5:
             p1.attack_num = 1
         pass
 
     @staticmethod
     def exit(p1, e):
-        p1.frame = 0
-        p1.attack_count = 0
-        p1.wait_time = get_time()
         pass
 
     @staticmethod
@@ -292,14 +303,23 @@ class Attack:
             if p1.frame == 4:
                 p1.state_machine.handle_event(('STOP', None))
                 p1.attack_num = 2
+                p1.frame = 0
+                p1.attack_count = 0
+                p1.wait_time = get_time()
         if p1.attack_num == 2:
             if p1.frame == 5:
                 p1.state_machine.handle_event(('STOP', None))
                 p1.attack_num = 3
+                p1.frame = 0
+                p1.attack_count = 0
+                p1.wait_time = get_time()
         if p1.attack_num == 3:
             if p1.frame == 7:
                 p1.state_machine.handle_event(('STOP', None))
                 p1.attack_num = 1
+                p1.frame = 0
+                p1.attack_count = 0
+                p1.wait_time = get_time()
 
         pass
 
@@ -337,7 +357,7 @@ class StateMachine:
                    right_down: Jump, left_down: Jump, right_up: Jump, left_up: Jump},
             Teleport: {right_down: Teleport, left_down: Teleport, right_up: Teleport, left_up: Teleport,
                        teleport: Idle},
-            Attack: {stop: Idle}
+            Attack: {stop: Idle, right_down: Attack, left_down: Attack, right_up: Attack, left_up: Attack}
         }
 
     def start(self):
