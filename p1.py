@@ -95,7 +95,8 @@ class Idle:
             p1.state_machine.handle_event(('JUMP_STATE', None))
         if p1.right or p1.left:
             p1.state_machine.handle_event(('RUN_STATE', None))
-        p1.frame = (p1.frame + 1) % 6
+        p1.idle_count += 1
+        p1.frame = (p1.idle_count // 3) % 6
         #delay(0.1)
 
     @staticmethod
