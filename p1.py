@@ -315,72 +315,12 @@ class Attack:
         if p1.attack_num == 3:
             if p1.frame == 7:
                 p1.state_machine.handle_event(('STOP', None))
-                p1.attack_num = 1
+                p1.attack_num = 4
                 p1.frame = 0
                 p1.attack_count = 0
                 p1.wait_time = get_time()
-
-        pass
-
-    @staticmethod
-    def draw(p1):
-        if p1.attack_num == 1:
-            if p1.dir == -1:
-                p1.attack1.clip_composite_draw(p1.frame * 61, 0, 61, 64, 0, 'h', p1.x-45, p1.y, 191, 200)
-            elif p1.dir == 1:
-                p1.attack1.clip_composite_draw(p1.frame * 61, 0, 61, 64, 0, '', p1.x+45, p1.y, 191, 200)
-        elif p1.attack_num == 2:
-            if p1.dir == -1:
-                p1.attack2.clip_composite_draw(p1.frame * 64, 0, 64, 64, 0, 'h', p1.x-50, p1.y, 200, 200)
-            elif p1.dir == 1:
-                p1.attack2.clip_composite_draw(p1.frame * 64, 0, 64, 64, 0, '', p1.x+50, p1.y, 200, 200)
-        elif p1.attack_num == 3:
-            if p1.dir == -1:
-                    p1.attack3.clip_composite_draw(p1.frame * 77, 0, 77, 64, 0, 'h', p1.x - 70, p1.y, 241, 200)
-            elif p1.dir == 1:
-                    p1.attack3.clip_composite_draw(p1.frame * 77, 0, 77, 64, 0, '', p1.x + 70, p1.y, 241, 200)
-
-class Attack:
-    @staticmethod
-    def enter(p1, e):
-        # p1.frame = 0
-        # p1.attack_count = 0
-        if right_down(e):
-            p1.right = True
-        if left_down(e):
-            p1.left = True
-        if right_up(e):
-            p1.right = False
-        if left_up(e):
-            p1.left = False
-        if get_time() - p1.wait_time > 0.5:
-            p1.attack_num = 1
-        pass
-
-    @staticmethod
-    def exit(p1, e):
-        pass
-
-    @staticmethod
-    def do(p1):
-        p1.attack_count += 1
-        p1.frame = p1.attack_count // 3
-        if p1.attack_num == 1:
-            if p1.frame == 4:
-                p1.state_machine.handle_event(('STOP', None))
-                p1.attack_num = 2
-                p1.frame = 0
-                p1.attack_count = 0
-                p1.wait_time = get_time()
-        if p1.attack_num == 2:
-            if p1.frame == 5:
-                p1.state_machine.handle_event(('STOP', None))
-                p1.attack_num = 3
-                p1.frame = 0
-                p1.attack_count = 0
-                p1.wait_time = get_time()
-        if p1.attack_num == 3:
-            if p1.frame == 7:
+        if p1.attack_num == 4:
+            if p1.frame == 6:
                 p1.state_machine.handle_event(('STOP', None))
                 p1.attack_num = 1
                 p1.frame = 0
@@ -406,6 +346,12 @@ class Attack:
                     p1.attack3.clip_composite_draw(p1.frame * 77, 0, 77, 64, 0, 'h', p1.x - 70, p1.y, 241, 200)
             elif p1.dir == 1:
                     p1.attack3.clip_composite_draw(p1.frame * 77, 0, 77, 64, 0, '', p1.x + 70, p1.y, 241, 200)
+        elif p1.attack_num == 4:
+            if p1.dir == -1:
+                    p1.attack4.clip_composite_draw(p1.frame * 72, 0, 72, 66, 0, 'h', p1.x - 62, p1.y-3, 225, 206)
+            elif p1.dir == 1:
+                    p1.attack4.clip_composite_draw(p1.frame * 72, 0, 72, 66, 0, '', p1.x + 62, p1.y+3, 225, 206)
+
 
 class Skill_motion:
     @staticmethod
@@ -499,6 +445,7 @@ class P1:
         self.attack1 = load_image('sasuke_attack1.png')
         self.attack2 = load_image('sasuke_attack2.png')
         self.attack3 = load_image('sasuke_attack3.png')
+        self.attack4 = load_image('sasuke_attack4.png')
         self.skill1_stand = load_image('sasuke_skill1_stand.png')
         self.skill1_jump = load_image('sasuke_skill1_jump.png')
         self.state_machine = StateMachine(self)
