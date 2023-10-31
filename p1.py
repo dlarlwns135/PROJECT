@@ -3,7 +3,7 @@
 from pico2d import *
 
 import game_world
-from skill import Skill
+from skill import Skill1
 
 # state event check
 # ( state event type, event value )
@@ -70,16 +70,10 @@ class Idle:
     @staticmethod
     def enter(p1, e):
         p1.frame = 0
-        # if p1.right and not p1.left:
-        #     p1.dir = 1
-        # if p1.left and not p1.right:
-        #     p1.dir = -1
         if right_up(e):
             p1.right = False
         elif left_up(e):
             p1.left = False
-
-
         #p1.wait_time = get_time() # pico2d import 필요
         pass
 
@@ -89,11 +83,6 @@ class Idle:
         p1.idle_count = 0
         if slash_down(e):
             p1.skill()
-        # if right_up(e):
-        #     p1.dir = -1
-        # elif left_up(e):
-        #     p1.dir = 1
-        pass
 
     @staticmethod
     def do(p1):
@@ -348,7 +337,101 @@ class Attack:
             elif p1.dir == 1:
                     p1.attack3.clip_composite_draw(p1.frame * 77, 0, 77, 64, 0, '', p1.x + 70, p1.y, 241, 200)
 
+class Attack:
+    @staticmethod
+    def enter(p1, e):
+        # p1.frame = 0
+        # p1.attack_count = 0
+        if right_down(e):
+            p1.right = True
+        if left_down(e):
+            p1.left = True
+        if right_up(e):
+            p1.right = False
+        if left_up(e):
+            p1.left = False
+        if get_time() - p1.wait_time > 0.5:
+            p1.attack_num = 1
+        pass
 
+    @staticmethod
+    def exit(p1, e):
+        pass
+
+    @staticmethod
+    def do(p1):
+        p1.attack_count += 1
+        p1.frame = p1.attack_count // 3
+        if p1.attack_num == 1:
+            if p1.frame == 4:
+                p1.state_machine.handle_event(('STOP', None))
+                p1.attack_num = 2
+                p1.frame = 0
+                p1.attack_count = 0
+                p1.wait_time = get_time()
+        if p1.attack_num == 2:
+            if p1.frame == 5:
+                p1.state_machine.handle_event(('STOP', None))
+                p1.attack_num = 3
+                p1.frame = 0
+                p1.attack_count = 0
+                p1.wait_time = get_time()
+        if p1.attack_num == 3:
+            if p1.frame == 7:
+                p1.state_machine.handle_event(('STOP', None))
+                p1.attack_num = 1
+                p1.frame = 0
+                p1.attack_count = 0
+                p1.wait_time = get_time()
+
+        pass
+
+    @staticmethod
+    def draw(p1):
+        if p1.attack_num == 1:
+            if p1.dir == -1:
+                p1.attack1.clip_composite_draw(p1.frame * 61, 0, 61, 64, 0, 'h', p1.x-45, p1.y, 191, 200)
+            elif p1.dir == 1:
+                p1.attack1.clip_composite_draw(p1.frame * 61, 0, 61, 64, 0, '', p1.x+45, p1.y, 191, 200)
+        elif p1.attack_num == 2:
+            if p1.dir == -1:
+                p1.attack2.clip_composite_draw(p1.frame * 64, 0, 64, 64, 0, 'h', p1.x-50, p1.y, 200, 200)
+            elif p1.dir == 1:
+                p1.attack2.clip_composite_draw(p1.frame * 64, 0, 64, 64, 0, '', p1.x+50, p1.y, 200, 200)
+        elif p1.attack_num == 3:
+            if p1.dir == -1:
+                    p1.attack3.clip_composite_draw(p1.frame * 77, 0, 77, 64, 0, 'h', p1.x - 70, p1.y, 241, 200)
+            elif p1.dir == 1:
+                    p1.attack3.clip_composite_draw(p1.frame * 77, 0, 77, 64, 0, '', p1.x + 70, p1.y, 241, 200)
+
+class Skill_motion:
+    @staticmethod
+    def enter(p1, e):
+        p1.frame = 0
+        p1.skill_count = 0
+        pass
+
+    @staticmethod
+    def exit(p1, e):
+        p1.frame = 0
+        p1.skill_count = 0
+        pass
+
+    @staticmethod
+    def do(p1):
+        p1.skill_count += 1
+        p1.frame = (p1.skill_count // 3) % 4
+        if p1.frame == 3:
+            p1.state_machine.handle_event(('STOP', None))
+        pass
+
+    @staticmethod
+    def draw(p1):
+        if p1.dir == -1:
+            p1.skill1_stand.clip_composite_draw(p1.frame * 40, 0, 40, 64, 0, 'h', p1.x, p1.y, 125, 200)
+        elif p1.dir == 1:
+            p1.skill1_stand.clip_composite_draw(p1.frame * 40, 0, 40, 64, 0, '', p1.x, p1.y, 125, 200)
+        pass
 
 class StateMachine:
     def __init__(self, p1):
@@ -356,7 +439,7 @@ class StateMachine:
         self.cur_state = Idle
         self.transitions = {
             Idle: {right_down: Run, left_down: Run, right_up: Run, left_up: Run, run_state: Run,
-                   up_down: Jump, jump_state: Jump, comma_down: Attack, slash_down: Idle},
+                   up_down: Jump, jump_state: Jump, comma_down: Attack, slash_down: Skill_motion},
             Run: {right_up: Run, left_up: Run, right_down: Run, left_down: Run, up_down: Jump, stop: Idle
                   , period_down: Teleport},
             Jump: {jump_end: Idle, jump_end_run: Run, up_down: Jump, up_up: Jump,
@@ -364,7 +447,8 @@ class StateMachine:
                    right_down: Jump, left_down: Jump, right_up: Jump, left_up: Jump},
             Teleport: {right_down: Teleport, left_down: Teleport, right_up: Teleport, left_up: Teleport,
                        teleport: Idle},
-            Attack: {stop: Idle, right_down: Attack, left_down: Attack, right_up: Attack, left_up: Attack}
+            Attack: {stop: Idle, right_down: Attack, left_down: Attack, right_up: Attack, left_up: Attack},
+            Skill_motion: {stop: Idle}
         }
 
     def start(self):
@@ -406,6 +490,7 @@ class P1:
         self.attack1 = load_image('sasuke_attack1.png')
         self.attack2 = load_image('sasuke_attack2.png')
         self.attack3 = load_image('sasuke_attack3.png')
+        self.skill1_stand = load_image('sasuke_skill1_stand.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.jump_count = 0
@@ -418,9 +503,10 @@ class P1:
         self.attack_count = 0
         self.wait_time = 0
         self.skill_num = 1
+        self.skill_count = 0
 
     def skill(self):
-        skill1 = Skill(self.x, self.y, self.dir * 10)
+        skill1 = Skill1(self.x, self.y + 10, self.dir * 10)
         game_world.add_object(skill1)
         # if self.item == 'Ball':
         #     ball = Ball(self.x, self.y, self.face_dir * 10)

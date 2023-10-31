@@ -1,12 +1,12 @@
 from pico2d import *
 import game_world
 
-class Skill:
+class Skill1:
     image = None
 
     def __init__(self, x = 400, y = 300, velocity = 1):
-        if Skill.image == None:
-            Skill.image = load_image('shuriken1.png')
+        if Skill1.image == None:
+            Skill1.image = load_image('shuriken1.png')
         self.x, self.y, self.velocity = x, y, velocity
         self.frame = 0
 
