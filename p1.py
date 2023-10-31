@@ -17,6 +17,12 @@ def up_down(e):
 def up_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_UP
 
+def down_down(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_DOWN
+
+def down_up(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_DOWN
+
 def right_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_RIGHT
 
@@ -69,6 +75,7 @@ class Idle:
 
     @staticmethod
     def enter(p1, e):
+        # print(p1.skill_num)
         p1.frame = 0
         if right_up(e):
             p1.right = False
@@ -79,9 +86,15 @@ class Idle:
 
     @staticmethod
     def exit(p1, e):
+        print(p1.skill_num)
         p1.frame = 0
         p1.idle_count = 0
+        if down_down(e):
+            p1.skill_num = 2
+        if down_up(e):
+            p1.skill_num = 1
         if slash_down(e):
+            # p1.skill_num = 1
             p1.skill()
 
     @staticmethod
@@ -110,23 +123,21 @@ class Run:
         p1.y -= 15
         if right_down(e):
             p1.right = True
-            if p1.right and not p1.left:
-                p1.dir = 1
-
         elif left_down(e):
             p1.left = True
-            if p1.left and not p1.right:
-                p1.dir = -1
-
         elif right_up(e):
             p1.right = False
-            if not p1.right and p1.left:
-                p1.dir = -1
         elif left_up(e):
             p1.left = False
-            if not p1.left and p1.right:
-                p1.dir = 1
 
+        if p1.right and not p1.left:
+            p1.dir = 1
+        elif p1.left and not p1.right:
+            p1.dir = -1
+        elif not p1.right and p1.left:
+            p1.dir = -1
+        elif not p1.left and p1.right:
+                p1.dir = 1
     @staticmethod
     def exit(p1, e):
         p1.y += 15
@@ -348,7 +359,7 @@ class Attack:
                     p1.attack3.clip_composite_draw(p1.frame * 77, 0, 77, 64, 0, '', p1.x + 70, p1.y, 241, 200)
         elif p1.attack_num == 4:
             if p1.dir == -1:
-                    p1.attack4.clip_composite_draw(p1.frame * 72, 0, 72, 66, 0, 'h', p1.x - 62, p1.y-3, 225, 206)
+                    p1.attack4.clip_composite_draw(p1.frame * 72, 0, 72, 66, 0, 'h', p1.x - 62, p1.y+3, 225, 206)
             elif p1.dir == 1:
                     p1.attack4.clip_composite_draw(p1.frame * 72, 0, 72, 66, 0, '', p1.x + 62, p1.y+3, 225, 206)
 
@@ -356,36 +367,62 @@ class Attack:
 class Skill_motion:
     @staticmethod
     def enter(p1, e):
-        p1.frame = 0
-        p1.skill_count = 0
+        if right_down(e):
+            p1.right = True
+        elif left_down(e):
+            p1.left = True
+        elif right_up(e):
+            p1.right = False
+        elif left_up(e):
+            p1.left = False
         pass
 
     @staticmethod
     def exit(p1, e):
-        p1.frame = 0
-        p1.skill_count = 0
+
         pass
 
     @staticmethod
     def do(p1):
-        p1.skill_count += 1
-        p1.frame = (p1.skill_count // 3) % 4
-        if p1.frame == 3:
-            p1.state_machine.handle_event(('STOP', None))
+        if p1.skill_num == 2:
+            p1.skill_count += 1
+            p1.frame = (p1.skill_count // 4) % 19
+            if p1.frame >= 8:
+                p1.x += p1.dir * 15
+            if p1.frame == 18:
+                p1.frame = 0
+                p1.skill_count = 0
+                p1.skill_num = 1
+                p1.state_machine.handle_event(('STOP', None))
+        elif p1.skill_num == 1:
+            p1.skill_count += 1
+            p1.frame = (p1.skill_count // 3) % 4
+            if p1.frame == 3:
+                p1.frame = 0
+                p1.skill_count = 0
+                p1.skill_num = 1
+                p1.state_machine.handle_event(('STOP', None))
         pass
 
     @staticmethod
     def draw(p1):
-        if p1.jump_state:
+        # p1.attack4.clip_composite_draw(p1.frame * 72, 0, 72, 66, 0, 'h', p1.x - 62, p1.y - 3, 225, 206)
+        if p1.skill_num == 2:
             if p1.dir == -1:
-                p1.skill1_jump.clip_composite_draw(p1.frame * 40, 0, 40, 64, 0, 'h', p1.x, p1.y, 125, 200)
+                p1.skill2.clip_composite_draw(p1.frame * 104, 0, 104, 77, 0, 'h', p1.x, p1.y+41, 325, 241)
             elif p1.dir == 1:
-                p1.skill1_jump.clip_composite_draw(p1.frame * 40, 0, 40, 64, 0, '', p1.x, p1.y, 125, 200)
-        else:
-            if p1.dir == -1:
-                p1.skill1_stand.clip_composite_draw(p1.frame * 40, 0, 40, 64, 0, 'h', p1.x, p1.y, 125, 200)
-            elif p1.dir == 1:
-                p1.skill1_stand.clip_composite_draw(p1.frame * 40, 0, 40, 64, 0, '', p1.x, p1.y, 125, 200)
+                p1.skill2.clip_composite_draw(p1.frame * 104, 0, 104, 77, 0, '', p1.x, p1.y+41, 325, 241)
+        elif p1.skill_num == 1:
+            if p1.jump_state:
+                if p1.dir == -1:
+                    p1.skill1_jump.clip_composite_draw(p1.frame * 40, 0, 40, 64, 0, 'h', p1.x, p1.y, 125, 200)
+                elif p1.dir == 1:
+                    p1.skill1_jump.clip_composite_draw(p1.frame * 40, 0, 40, 64, 0, '', p1.x, p1.y, 125, 200)
+            else:
+                if p1.dir == -1:
+                    p1.skill1_stand.clip_composite_draw(p1.frame * 40, 0, 40, 64, 0, 'h', p1.x, p1.y, 125, 200)
+                elif p1.dir == 1:
+                    p1.skill1_stand.clip_composite_draw(p1.frame * 40, 0, 40, 64, 0, '', p1.x, p1.y, 125, 200)
         pass
 
 class StateMachine:
@@ -394,7 +431,8 @@ class StateMachine:
         self.cur_state = Idle
         self.transitions = {
             Idle: {right_down: Run, left_down: Run, right_up: Run, left_up: Run, run_state: Run,
-                   up_down: Jump, jump_state: Jump, comma_down: Attack, slash_down: Skill_motion},
+                   up_down: Jump, jump_state: Jump, comma_down: Attack, slash_down: Skill_motion,
+                   down_down: Idle, down_up: Idle},
             Run: {right_up: Run, left_up: Run, right_down: Run, left_down: Run, up_down: Jump, stop: Idle
                   , period_down: Teleport},
             Jump: {jump_end: Idle, jump_end_run: Run, up_down: Jump, up_up: Jump,
@@ -403,7 +441,8 @@ class StateMachine:
             Teleport: {right_down: Teleport, left_down: Teleport, right_up: Teleport, left_up: Teleport,
                        teleport: Idle},
             Attack: {stop: Idle, right_down: Attack, left_down: Attack, right_up: Attack, left_up: Attack},
-            Skill_motion: {stop: Idle}
+            Skill_motion: {stop: Idle, right_up: Skill_motion, left_up: Skill_motion,
+                           right_down: Skill_motion, left_down: Skill_motion}
         }
 
     def start(self):
@@ -430,6 +469,7 @@ class StateMachine:
 
 
 class P1:
+    global skill_num
     def __init__(self):
         self.up = None
         self.x, self.y = 400, ground_y
@@ -448,6 +488,7 @@ class P1:
         self.attack4 = load_image('sasuke_attack4.png')
         self.skill1_stand = load_image('sasuke_skill1_stand.png')
         self.skill1_jump = load_image('sasuke_skill1_jump.png')
+        self.skill2 = load_image('sasuke_skill2.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.jump_count = 0
@@ -464,7 +505,7 @@ class P1:
         self.skill_count = 0
 
     def skill(self):
-        skill1 = Skill1(self.x, self.y + 10, self.dir * 10)
+        skill1 = Skill1(self.x, self.y + 10, self.dir * 10, self.skill_num)
         game_world.add_object(skill1)
         # if self.item == 'Ball':
         #     ball = Ball(self.x, self.y, self.face_dir * 10)
