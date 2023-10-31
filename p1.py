@@ -171,6 +171,7 @@ class Jump:
             p1.up_tele = True
         elif up_up(e):
             p1.up_tele = False
+        p1.jump_state = True
         pass
 
     @staticmethod
@@ -178,7 +179,8 @@ class Jump:
         if up_down(e):
             p1.frame = 0
             p1.jump_count = 0
-
+        if slash_down(e):
+            p1.skill()
 
         pass
 
@@ -212,6 +214,7 @@ class Jump:
             else:
                 p1.state_machine.handle_event(('JUMP_END', None))
                 print("JUMP_END")
+            p1.jump_state = False
             p1.jump_move = False
         #delay(0.01)
 
@@ -427,10 +430,16 @@ class Skill_motion:
 
     @staticmethod
     def draw(p1):
-        if p1.dir == -1:
-            p1.skill1_stand.clip_composite_draw(p1.frame * 40, 0, 40, 64, 0, 'h', p1.x, p1.y, 125, 200)
-        elif p1.dir == 1:
-            p1.skill1_stand.clip_composite_draw(p1.frame * 40, 0, 40, 64, 0, '', p1.x, p1.y, 125, 200)
+        if p1.jump_state:
+            if p1.dir == -1:
+                p1.skill1_jump.clip_composite_draw(p1.frame * 40, 0, 40, 64, 0, 'h', p1.x, p1.y, 125, 200)
+            elif p1.dir == 1:
+                p1.skill1_jump.clip_composite_draw(p1.frame * 40, 0, 40, 64, 0, '', p1.x, p1.y, 125, 200)
+        else:
+            if p1.dir == -1:
+                p1.skill1_stand.clip_composite_draw(p1.frame * 40, 0, 40, 64, 0, 'h', p1.x, p1.y, 125, 200)
+            elif p1.dir == 1:
+                p1.skill1_stand.clip_composite_draw(p1.frame * 40, 0, 40, 64, 0, '', p1.x, p1.y, 125, 200)
         pass
 
 class StateMachine:
@@ -443,7 +452,7 @@ class StateMachine:
             Run: {right_up: Run, left_up: Run, right_down: Run, left_down: Run, up_down: Jump, stop: Idle
                   , period_down: Teleport},
             Jump: {jump_end: Idle, jump_end_run: Run, up_down: Jump, up_up: Jump,
-                   period_down: Teleport,
+                   period_down: Teleport, slash_down: Skill_motion,
                    right_down: Jump, left_down: Jump, right_up: Jump, left_up: Jump},
             Teleport: {right_down: Teleport, left_down: Teleport, right_up: Teleport, left_up: Teleport,
                        teleport: Idle},
@@ -491,10 +500,12 @@ class P1:
         self.attack2 = load_image('sasuke_attack2.png')
         self.attack3 = load_image('sasuke_attack3.png')
         self.skill1_stand = load_image('sasuke_skill1_stand.png')
+        self.skill1_jump = load_image('sasuke_skill1_jump.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.jump_count = 0
         self.jump_move = False
+        self.jump_state = False
         self.run_check = 0
         self.right = False
         self.left = False
