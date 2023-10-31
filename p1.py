@@ -3,6 +3,7 @@
 from pico2d import *
 
 import game_world
+from skill import Skill
 
 # state event check
 # ( state event type, event value )
@@ -39,6 +40,9 @@ def period_down(e):
 
 def comma_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_COMMA
+
+def slash_down(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SLASH
 
 def time_out(e):
     return e[0] == 'TIME_OUT'
@@ -83,6 +87,8 @@ class Idle:
     def exit(p1, e):
         p1.frame = 0
         p1.idle_count = 0
+        if slash_down(e):
+            p1.skill()
         # if right_up(e):
         #     p1.dir = -1
         # elif left_up(e):
@@ -350,7 +356,7 @@ class StateMachine:
         self.cur_state = Idle
         self.transitions = {
             Idle: {right_down: Run, left_down: Run, right_up: Run, left_up: Run, run_state: Run,
-                   up_down: Jump, jump_state: Jump, comma_down: Attack},
+                   up_down: Jump, jump_state: Jump, comma_down: Attack, slash_down: Idle},
             Run: {right_up: Run, left_up: Run, right_down: Run, left_down: Run, up_down: Jump, stop: Idle
                   , period_down: Teleport},
             Jump: {jump_end: Idle, jump_end_run: Run, up_down: Jump, up_up: Jump,
@@ -411,7 +417,18 @@ class P1:
         self.attack_num = 1
         self.attack_count = 0
         self.wait_time = 0
+        self.skill_num = 1
 
+    def skill(self):
+        skill1 = Skill(self.x, self.y, self.dir * 10)
+        game_world.add_object(skill1)
+        # if self.item == 'Ball':
+        #     ball = Ball(self.x, self.y, self.face_dir * 10)
+        #     game_world.add_object(ball)
+        # elif self.item == 'BigBall':
+        #     ball = BigBall(self.x, self.y, self.face_dir * 10)
+        #     game_world.add_object(ball)
+        pass
     def update(self):
         self.state_machine.update()
 
