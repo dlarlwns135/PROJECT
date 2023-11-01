@@ -506,7 +506,7 @@ class P1:
 
     def skill(self):
         skill1 = Skill1(self.x, self.y + 10, self.dir * 10, self.skill_num, self.dir)
-        game_world.add_object(skill1, 1)
+        game_world.add_object(skill1, 2)
         # if self.item == 'Ball':
         #     ball = Ball(self.x, self.y, self.face_dir * 10)
         #     game_world.add_object(ball)
