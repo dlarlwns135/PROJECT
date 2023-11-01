@@ -94,7 +94,6 @@ class Idle:
         if down_up(e):
             p1.skill_num = 1
         if slash_down(e):
-            # p1.skill_num = 1
             p1.skill()
 
     @staticmethod
