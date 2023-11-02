@@ -84,6 +84,10 @@ class Idle:
             p1.right = False
         elif left_up(e):
             p1.left = False
+        elif right_down(e):
+            p1.right = True
+        elif left_down(e):
+            p1.left = True
         #p1.wait_time = get_time() # pico2d import 필요
         pass
 
@@ -97,13 +101,25 @@ class Idle:
             p1.skill_num = 1
         if slash_down(e):
             p1.skill()
+        if right_down(e):
+            p1.right = True
+        elif left_down(e):
+            p1.left = True
+        elif right_up(e):
+            p1.right = False
+        elif left_up(e):
+            p1.left = False
 
     @staticmethod
     def do(p1):
         if p1.y > ground_y:
             p1.state_machine.handle_event(('JUMP_STATE', None))
-        if p1.right or p1.left:
+        if p1.right and not p1.left:
             p1.state_machine.handle_event(('RUN_STATE', None))
+        if not p1.right and p1.left:
+            p1.state_machine.handle_event(('RUN_STATE', None))
+        # if not (p1.right and p1.left):
+        #     p1.state_machine.handle_event(('RUN_STATE', None))
         p1.frame = (p1.frame + 6 * 1 * game_framework.frame_time) % 6
         #delay(0.1)
 
@@ -127,8 +143,10 @@ class Run:
             p1.left = True
         elif right_up(e):
             p1.right = False
+            p1.dir = -1
         elif left_up(e):
             p1.left = False
+            p1.dir = 1
 
         if p1.right and not p1.left:
             p1.dir = 1
@@ -145,10 +163,10 @@ class Run:
 
     @staticmethod
     def do(p1):
-        if p1.right and p1.left:
-            p1.state_machine.handle_event(('STOP', None))
-        if not p1.right and not p1.left:
-            p1.state_machine.handle_event(('STOP', None))
+        # if p1.right and p1.left:
+        #     p1.state_machine.handle_event(('STOP', None))
+        # if not p1.right and not p1.left:
+        #     p1.state_machine.handle_event(('STOP', None))
         p1.frame = (p1.frame + 6 * 2 * game_framework.frame_time) % 6
         p1.x += p1.dir * RUN_SPEED_PPS * game_framework.frame_time
         #delay(0.01)
@@ -215,12 +233,13 @@ class Jump:
         if p1.y <= ground_y:
             p1.y = ground_y
             p1.frame = 0
-            if p1.jump_move:
-                p1.state_machine.handle_event(('JUMP_END_RUN', None))
-                print("JUMP_END_RUN")
-            else:
-                p1.state_machine.handle_event(('JUMP_END', None))
-                print("JUMP_END")
+            # if p1.jump_move:
+            #     pass
+            #     # p1.state_machine.handle_event(('JUMP_END_RUN', None))
+            #     # print("JUMP_END_RUN")
+            # else:
+            p1.state_machine.handle_event(('JUMP_END', None))
+            print("JUMP_END")
             p1.jump_state = False
             p1.jump_move = False
         #delay(0.01)
@@ -249,7 +268,7 @@ class Teleport:
 
     @staticmethod
     def exit(p1, e):
-        if p1.frame >= 4:
+        if p1.frame >= 3:
             if p1.up_tele:
                 p1.y += 300
                 p1.up_tele = False
@@ -263,7 +282,7 @@ class Teleport:
     @staticmethod
     def do(p1):
         p1.frame = p1.frame + 4 * 5 * game_framework.frame_time
-        if p1.frame >= 4:
+        if p1.frame >= 3:
             p1.state_machine.handle_event(('TELEPORT', None))
         #delay(0.01)
         pass
@@ -280,7 +299,6 @@ class Teleport:
 class Attack:
     @staticmethod
     def enter(p1, e):
-        p1.frame = 0
         if right_down(e):
             p1.right = True
         if left_down(e):
@@ -304,21 +322,25 @@ class Attack:
             if p1.frame >= 4:
                 p1.state_machine.handle_event(('STOP', None))
                 p1.attack_num = 2
+                p1.frame = 0
                 p1.wait_time = get_time()
         if p1.attack_num == 2:
             if p1.frame >= 5:
                 p1.state_machine.handle_event(('STOP', None))
                 p1.attack_num = 3
+                p1.frame = 0
                 p1.wait_time = get_time()
         if p1.attack_num == 3:
             if p1.frame >= 7:
                 p1.state_machine.handle_event(('STOP', None))
                 p1.attack_num = 4
+                p1.frame = 0
                 p1.wait_time = get_time()
         if p1.attack_num == 4:
-            if p1.frame >= 6:
+            if p1.frame >= 6.5:
                 p1.state_machine.handle_event(('STOP', None))
                 p1.attack_num = 1
+                p1.frame = 0
                 p1.wait_time = get_time()
         pass
 
@@ -408,10 +430,10 @@ class StateMachine:
         self.p1 = p1
         self.cur_state = Idle
         self.transitions = {
-            Idle: {right_down: Run, left_down: Run, right_up: Run, left_up: Run, run_state: Run,
+            Idle: {right_down: Run, left_down: Run, right_up: Idle, left_up: Idle, run_state: Run,
                    up_down: Jump, jump_state: Jump, comma_down: Attack, slash_down: Skill_motion,
                    down_down: Idle, down_up: Idle},
-            Run: {right_up: Run, left_up: Run, right_down: Run, left_down: Run, up_down: Jump, stop: Idle
+            Run: {right_up: Idle, left_up: Idle, right_down: Idle, left_down: Idle, up_down: Jump, stop: Idle
                   , period_down: Teleport},
             Jump: {jump_end: Idle, jump_end_run: Run, up_down: Jump, up_up: Jump,
                    period_down: Teleport, slash_down: Skill_motion,
