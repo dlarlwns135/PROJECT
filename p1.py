@@ -20,7 +20,6 @@ ground_y = 70
 def up_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_UP
 
-
 def up_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_UP
 
@@ -33,14 +32,11 @@ def down_up(e):
 def right_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_RIGHT
 
-
 def right_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_RIGHT
 
-
 def left_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_LEFT
-
 
 def left_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_LEFT
@@ -203,10 +199,6 @@ class Jump:
     def do(p1):
         if not p1.right and not p1.left:
             p1.jump_move = False
-        # if p1.jump_count >= 40:
-        #     p1.frame = 3
-        # else:
-        #     p1.frame = p1.jump_count // 10
         if p1.frame >= 3:
             p1.frame = 3
         else:
@@ -461,8 +453,6 @@ class P1:
         self.x, self.y = 400, ground_y
         self.frame = 0
         self.dir = 1
-        self.idle_count = 0
-        self.tele_count = 0
         self.idle = load_image('sasuke_idle.png')
         self.run = load_image('sasuke_run.png')
         self.jump = load_image('sasuke_jump.png')
@@ -477,7 +467,6 @@ class P1:
         self.skill2 = load_image('sasuke_skill2.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start()
-        self.jump_count = 0
         self.jump_move = False
         self.jump_state = False
         self.run_check = 0
@@ -485,24 +474,16 @@ class P1:
         self.left = False
         self.up_tele = False
         self.attack_num = 1
-        self.attack_count = 0
         self.wait_time = 0
         self.skill_num = 1
-        self.skill_count = 0
 
     def skill(self):
         if self.skill_num == 1:
-            skill1 = Skill1(self.x, self.y + 10, self.dir * 10, self.dir)
+            skill1 = Skill1(self.x, self.y + 10, self.dir)
             game_world.add_object(skill1, 2)
         elif self.skill_num == 2:
-            skill2 = Skill2(self.x, self.y + 10, self.dir * 10, self.dir)
+            skill2 = Skill2(self.x, self.y + 10, self.dir)
             game_world.add_object(skill2, 2)
-        # if self.item == 'Ball':
-        #     ball = Ball(self.x, self.y, self.face_dir * 10)
-        #     game_world.add_object(ball)
-        # elif self.item == 'BigBall':
-        #     ball = BigBall(self.x, self.y, self.face_dir * 10)
-        #     game_world.add_object(ball)
         pass
     def update(self):
         self.state_machine.update()

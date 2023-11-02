@@ -2,14 +2,18 @@ from pico2d import *
 
 import game_framework
 import game_world
-import p1
+PIXEL_PER_METER = (10.0 / 0.3) # 10 pixel 30 cm
+RUN_SPEED_KMPH = 50.0 # Km / Hour
+RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
+RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
+RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
 class Skill1:
     shuriken = None
-    def __init__(self, x = 400, y = 300, velocity = 1, dir = 1):
+    def __init__(self, x = 400, y = 300, dir = 1):
         if Skill1.shuriken == None:
             Skill1.shuriken = load_image('shuriken1.png')
-        self.x, self.y, self.velocity = x, y, velocity
+        self.x, self.y = x, y,
         self.frame = 0
         self.dir = dir
         self.count = 0
@@ -19,19 +23,19 @@ class Skill1:
 
     def update(self):
         self.frame = (self.frame + 4 * 4 * game_framework.frame_time) % 4
-        self.x += self.dir * p1.RUN_SPEED_PPS * 3 * game_framework.frame_time
+        self.x += self.dir * RUN_SPEED_PPS * 3 * game_framework.frame_time
         if self.x < 25 or self.x > 800 - 25:
             game_world.remove_object(self)
 
 class Skill2:
     skill2_effect1 = None
     skill2_effect2 = None
-    def __init__(self, x = 400, y = 300, velocity = 1, dir = 1):
+    def __init__(self, x = 400, y = 300, dir = 1):
         if Skill2.skill2_effect1 == None:
             Skill2.skill2_effect1 = load_image('sasuke_skill2_effect1.png')
         if Skill2.skill2_effect2 == None:
             Skill2.skill2_effect2 = load_image('sasuke_skill2_effect2.png')
-        self.x, self.y, self.velocity = x, y, velocity
+        self.x, self.y = x, y
         self.frame = 0
         self.dir = dir
         self.count = 0
@@ -62,7 +66,7 @@ class Skill2:
         self.count += 1
         self.frame = (self.frame + 18 * 1 * game_framework.frame_time) % 18
         if self.frame >= 7:
-            self.x += self.dir * p1.RUN_SPEED_PPS * 2 * game_framework.frame_time
+            self.x += self.dir * RUN_SPEED_PPS * 2 * game_framework.frame_time
         if self.frame >= 17:
             game_world.remove_object(self)
         pass
