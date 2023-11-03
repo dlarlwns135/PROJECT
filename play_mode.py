@@ -1,4 +1,6 @@
 from pico2d import *
+
+from map import Map
 from p1 import P1
 import game_framework
 import game_world
@@ -18,9 +20,13 @@ def init():
     global running
     global world
     global p1
+    global map
 
     running = True
     world = []
+
+    map = Map()
+    game_world.add_object(map, 1)
 
     p1 = P1()
     game_world.add_object(p1, 1)
