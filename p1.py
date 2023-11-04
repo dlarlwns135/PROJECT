@@ -254,6 +254,7 @@ class Jump:
 class Teleport:
     @staticmethod
     def enter(p1, e):
+        p1.frame = 0
         if right_down(e):
             p1.dir = 1
             p1.right = True
