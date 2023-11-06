@@ -24,9 +24,9 @@ def running():
     pass
 def draw():
     clear_canvas()
-    image1.draw(400,300)
-    image2.draw(400, 300)
-    delay(0.01)
+    image1.clip_composite_draw(0, 0, 900, 507, 0, '', 600, 300, 1200, 600)
+    image2.draw(600, 300)
+    #delay(0.01)
     update_canvas()
 
 def update():

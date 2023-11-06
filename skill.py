@@ -24,7 +24,7 @@ class Skill1:
     def update(self):
         self.frame = (self.frame + 4 * 4 * game_framework.frame_time) % 4
         self.x += self.dir * RUN_SPEED_PPS * 3 * game_framework.frame_time
-        if self.x < 25 or self.x > 800 - 25:
+        if self.x < 0 or self.x > 1200:
             game_world.remove_object(self)
 
 class Skill2:

@@ -9,5 +9,5 @@ class Map:
         pass
 
     def draw(self):
-        self.uchihamap.clip_composite_draw(0, 0, 506, 318, 0, 'h', 400, 300, 800, 600)
+        self.uchihamap.clip_composite_draw(0, 0, 506, 318, 0, '', 600, 300, 1200, 600)
         # self.image.draw(1200, 30)
