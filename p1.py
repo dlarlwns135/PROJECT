@@ -16,6 +16,7 @@ RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 # ( state event type, event value )
 
 ground_y = 70
+tele_dis = 220
 
 def up_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_UP
@@ -271,13 +272,13 @@ class Teleport:
     def exit(p1, e):
         if p1.frame >= 3:
             if p1.up_tele:
-                p1.y += 300
+                p1.y += tele_dis
                 p1.up_tele = False
             else:
                 if p1.right:
-                    p1.x += 300
+                    p1.x += tele_dis
                 elif p1.left:
-                    p1.x -= 300
+                    p1.x -= tele_dis
         pass
 
     @staticmethod
