@@ -20,12 +20,16 @@ class Skill1:
 
     def draw(self):
         self.shuriken.clip_composite_draw(int(self.frame) * 44, 0, 44, 35, 0, '', self.x, self.y, 44, 35)
+        draw_rectangle(*self.get_bb())
 
     def update(self):
         self.frame = (self.frame + 4 * 4 * game_framework.frame_time) % 4
         self.x += self.dir * RUN_SPEED_PPS * 3 * game_framework.frame_time
         if self.x < 0 or self.x > 1200:
             game_world.remove_object(self)
+
+    def get_bb(self):
+        return self.x - 22, self.y - 18, self.x + 22, self.y + 18
 
 class Skill2:
     skill2_effect1 = None
@@ -60,7 +64,7 @@ class Skill2:
                 else:
                     self.skill2_effect1.clip_composite_draw((int(self.frame) - 1) * 104, 0, 104, 77, 0, '',
                                                             self.x - 30, self.y + 41 - 10, 325, 241)
-            pass
+        draw_rectangle(*self.get_bb())
 
     def update(self):
         self.count += 1
@@ -70,3 +74,6 @@ class Skill2:
         if self.frame >= 17:
             game_world.remove_object(self)
         pass
+
+    def get_bb(self):
+        return self.x - 130, self.y - 70, self.x + 130, self.y + 70

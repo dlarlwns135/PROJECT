@@ -127,9 +127,9 @@ class Idle:
     @staticmethod
     def draw(p1):
         if p1.dir == -1:
-            p1.idle.clip_composite_draw(int(p1.frame) * 32, 0, 32, 64, 0, 'h', p1.x, p1.y, 100, 200)
+            p1.idle.clip_composite_draw(int(p1.frame) * 32, 0, 32, 64, 0, 'h', p1.x + 10, p1.y, 100, 200)
         elif p1.dir == 1:
-            p1.idle.clip_composite_draw(int(p1.frame) * 32, 0, 32, 64, 0, '', p1.x, p1.y, 100 , 200)
+            p1.idle.clip_composite_draw(int(p1.frame) * 32, 0, 32, 64, 0, '', p1.x - 10, p1.y, 100 , 200)
 
 
 class Run:
@@ -520,4 +520,4 @@ class P1:
         draw_rectangle(*self.get_bb())
 
     def get_bb(self):
-        return self.x - 50, self.y - 50, self.x + 50, self.y + 50
+        return self.x - 30, self.y - 70, self.x + 30, self.y + 70
