@@ -212,21 +212,23 @@ class Jump:
             p2.right = True
             p2.jump_move = True
             p2.up_tele = False
-        elif a_down(e):
+        if a_down(e):
             p2.dir = -1
             p2.left = True
             p2.jump_move = True
             p2.up_tele = False
-        elif d_up(e):
+        if d_up(e):
             p2.right = False
-        elif a_up(e):
+        if a_up(e):
             p2.left = False
         if w_down(e):
             p2.up_tele = True
-        elif w_up(e):
+        if w_up(e):
             p2.up_tele = False
         if jump_state(e):
             p2.frame = 2
+        if p2.right or p2.left:
+            p2.jump_move = True
         p2.jump_state = True
         pass
 
@@ -272,9 +274,15 @@ class Jump:
     @staticmethod
     def draw(p2):
         if p2.dir == -1:
-            p2.jump.clip_composite_draw(int(p2.frame) * 32, 0, 32, 64, 0, 'h', p2.x, p2.y, 100, 200)
+            if int(p2.frame) < 2:
+                p2.jump.clip_composite_draw(int(p2.frame) * 32, 0, 32, 48, 0, 'h', p2.x, p2.y, 90, 135)
+            else:
+                p2.jump.clip_composite_draw(64 + (int(p2.frame) - 2) * 40, 0, 40, 48, 0, 'h', p2.x, p2.y, 90, 135)
         elif p2.dir == 1:
-            p2.jump.clip_composite_draw(int(p2.frame) * 32, 0, 32, 64, 0, '', p2.x, p2.y, 100, 200)
+            if int(p2.frame) < 2:
+                p2.jump.clip_composite_draw(int(p2.frame) * 32, 0, 32, 48, 0, '', p2.x, p2.y, 90, 135)
+            else:
+                p2.jump.clip_composite_draw(64 + (int(p2.frame) - 2) * 40, 0, 40, 48, 0, '', p2.x, p2.y, 90, 135)
 
 class Teleport:
     @staticmethod
@@ -503,7 +511,7 @@ class P2:
         self.dir = 1
         self.idle = load_image('naruto_idle.png')
         self.run = load_image('naruto_run.png')
-        self.jump = load_image('sasuke_jump.png')
+        self.jump = load_image('naruto_jump.png')
         self.teleport = load_image('sasuke_teleport.png')
         self.teleport_motion = load_image('teleport.png')
         self.attack1 = load_image('sasuke_attack1.png')
