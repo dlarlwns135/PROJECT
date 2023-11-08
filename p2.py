@@ -151,9 +151,9 @@ class Idle:
     @staticmethod
     def draw(p2):
         if p2.dir == -1:
-            p2.idle.clip_composite_draw(int(p2.frame) * 32, 0, 32, 64, 0, 'h', p2.x + 10, p2.y, 100, 200)
+            p2.idle.clip_composite_draw(int(p2.frame) * 32, 0, 32, 48, 0, 'h', p2.x, p2.y, 90, 135)
         elif p2.dir == 1:
-            p2.idle.clip_composite_draw(int(p2.frame) * 32, 0, 32, 64, 0, '', p2.x - 10, p2.y, 100 , 200)
+            p2.idle.clip_composite_draw(int(p2.frame) * 32, 0, 32, 48, 0, '', p2.x, p2.y, 90, 135)
 
 
 class Run:
@@ -199,9 +199,9 @@ class Run:
     @staticmethod
     def draw(p2):
         if p2.dir == -1:
-            p2.run.clip_composite_draw(int(p2.frame) * 64, 0, 64, 32, 0, 'h', p2.x, p2.y, 200, 100)
+            p2.run.clip_composite_draw(int(p2.frame) * 48, 0, 48, 48, 0, 'h', p2.x, p2.y, 135, 135)
         elif p2.dir == 1:
-            p2.run.clip_composite_draw(int(p2.frame) * 64, 0, 64, 32, 0, '', p2.x, p2.y, 200, 100)
+            p2.run.clip_composite_draw(int(p2.frame) * 48, 0, 48, 48, 0, '', p2.x, p2.y, 135, 135)
 
 
 class Jump:
@@ -501,8 +501,8 @@ class P2:
         self.x, self.y = 400, ground_y
         self.frame = 0
         self.dir = 1
-        self.idle = load_image('sasuke_idle.png')
-        self.run = load_image('sasuke_run.png')
+        self.idle = load_image('naruto_idle.png')
+        self.run = load_image('naruto_run.png')
         self.jump = load_image('sasuke_jump.png')
         self.teleport = load_image('sasuke_teleport.png')
         self.teleport_motion = load_image('teleport.png')
