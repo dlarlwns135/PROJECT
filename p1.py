@@ -188,21 +188,23 @@ class Jump:
             p1.right = True
             p1.jump_move = True
             p1.up_tele = False
-        elif left_down(e):
+        if left_down(e):
             p1.dir = -1
             p1.left = True
             p1.jump_move = True
             p1.up_tele = False
-        elif right_up(e):
+        if right_up(e):
             p1.right = False
-        elif left_up(e):
+        if left_up(e):
             p1.left = False
         if up_down(e):
             p1.up_tele = True
-        elif up_up(e):
+        if up_up(e):
             p1.up_tele = False
         if jump_state(e):
             p1.frame = 2
+        if p1.right or p1.left:
+            p1.jump_move = True
         p1.jump_state = True
         pass
 
@@ -228,7 +230,7 @@ class Jump:
         else:
             p1.y -= 1.5 * RUN_SPEED_PPS * game_framework.frame_time
 
-        if p1.jump_move and  (p1.right or p1.left):
+        if p1.jump_move:
             p1.x += p1.dir * RUN_SPEED_PPS * game_framework.frame_time
 
         if p1.y <= ground_y:
