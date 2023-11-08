@@ -144,10 +144,10 @@ class Run:
             p1.left = True
         elif right_up(e):
             p1.right = False
-            p1.dir = -1
+            # p1.dir = -1
         elif left_up(e):
             p1.left = False
-            p1.dir = 1
+            # p1.dir = 1
 
         if p1.right and not p1.left:
             p1.dir = 1
@@ -257,7 +257,7 @@ class Jump:
 class Teleport:
     @staticmethod
     def enter(p1, e):
-        p1.frame = 0
+        # p1.frame = 0
         if right_down(e):
             p1.dir = 1
             p1.right = True
@@ -276,11 +276,13 @@ class Teleport:
             if p1.up_tele:
                 p1.y += tele_dis
                 p1.up_tele = False
+                p1.frame = 0
             else:
                 if p1.right:
                     p1.x += tele_dis
                 elif p1.left:
                     p1.x -= tele_dis
+                p1.frame = 0
         pass
 
     @staticmethod

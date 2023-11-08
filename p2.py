@@ -168,10 +168,10 @@ class Run:
             p2.left = True
         elif d_up(e):
             p2.right = False
-            p2.dir = -1
+            # p2.dir = -1
         elif a_up(e):
             p2.left = False
-            p2.dir = 1
+            # p2.dir = 1
 
         if p2.right and not p2.left:
             p2.dir = 1
