@@ -151,9 +151,9 @@ class Idle:
     @staticmethod
     def draw(p2):
         if p2.dir == -1:
-            p2.idle.clip_composite_draw(int(p2.frame) * 32, 0, 32, 48, 0, 'h', p2.x, p2.y, 90, 135)
+            p2.idle.clip_composite_draw(int(p2.frame) * 32, 0, 32, 48, 0, 'h', p2.x, p2.y - 15, 90, 135)
         elif p2.dir == 1:
-            p2.idle.clip_composite_draw(int(p2.frame) * 32, 0, 32, 48, 0, '', p2.x, p2.y, 90, 135)
+            p2.idle.clip_composite_draw(int(p2.frame) * 32, 0, 32, 48, 0, '', p2.x, p2.y - 15, 90, 135)
 
 
 class Run:
