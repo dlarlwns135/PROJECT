@@ -76,4 +76,90 @@ class Skill2:
         pass
 
     def get_bb(self):
+        # return self.x - skill_range_x, self.y - skill_range_y, self.x + skill_range_x, self.y + skill_range_y
         return self.x - 130, self.y - 70, self.x + 130, self.y + 70
+
+class Attack_range:
+    def __init__(self, x = 400, y = 300, dir = 1, attack_num = 0):
+        self.x, self.y = x, y
+        self.frame = 0
+        self.dir = dir
+        self.attack_x_dis = 30
+        self.attack_num = attack_num
+        self.attack_range_x = 0
+        self.attack_range_y = 0
+        if self.attack_num == 1:
+            self.attack_range_x = 50
+            self.attack_range_y = 30
+            pass
+        elif self.attack_num == 2:
+            self.attack_range_x = 50
+            self.attack_range_y = 30
+            pass
+        elif self.attack_num == 3:
+            self.attack_range_x = 50
+            self.attack_range_y = 30
+            pass
+        elif self.attack_num == 4:
+            self.attack_range_x = 100
+            self.attack_range_y = 100
+            pass
+    def update(self):
+        self.frame = self.frame + 7 * 3 * game_framework.frame_time
+        if self.attack_num == 1:
+            if self.frame >= 4:
+                self.attack_num = 2
+                self.frame = 0
+                game_world.remove_object(self)
+        if self.attack_num == 2:
+            if self.frame >= 5:
+                self.attack_num = 3
+                self.frame = 0
+                game_world.remove_object(self)
+        if self.attack_num == 3:
+            if self.frame >= 7:
+                self.attack_num = 4
+                self.frame = 0
+                game_world.remove_object(self)
+        if self.attack_num == 4:
+            if self.frame >= 6.5:
+                self.attack_num = 1
+                self.frame = 0
+                game_world.remove_object(self)
+        # if self.frame >= 7:
+        #     game_world.remove_object(self)
+
+
+        # p1.frame = p1.frame + 7 * 3 * game_framework.frame_time
+        # if p1.attack_num == 1:
+        #     if p1.frame >= 4:
+        #         p1.state_machine.handle_event(('STOP', None))
+        #         p1.attack_num = 2
+        #         p1.frame = 0
+        #         p1.wait_time = get_time()
+        # if p1.attack_num == 2:
+        #     if p1.frame >= 5:
+        #         p1.state_machine.handle_event(('STOP', None))
+        #         p1.attack_num = 3
+        #         p1.frame = 0
+        #         p1.wait_time = get_time()
+        # if p1.attack_num == 3:
+        #     if p1.frame >= 7:
+        #         p1.state_machine.handle_event(('STOP', None))
+        #         p1.attack_num = 4
+        #         p1.frame = 0
+        #         p1.wait_time = get_time()
+        # if p1.attack_num == 4:
+        #     if p1.frame >= 6.5:
+        #         p1.state_machine.handle_event(('STOP', None))
+        #         p1.attack_num = 1
+        #         p1.frame = 0
+        #         p1.wait_time = get_time()
+        pass
+
+    def draw(self):
+        draw_rectangle(*self.get_bb())
+
+    def get_bb(self):
+        return (self.x - self.attack_range_x + self.dir * self.attack_x_dis, self.y - self.attack_range_y,
+                self.x + self.attack_range_x + self.dir * self.attack_x_dis, self.y + self.attack_range_y)
