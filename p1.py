@@ -305,6 +305,8 @@ class Teleport:
 class Attack:
     @staticmethod
     def enter(p1, e):
+        if get_time() - p1.wait_time > 0.5:
+            p1.attack_num = 1
         if right_down(e):
             p1.right = True
         elif left_down(e):
@@ -315,8 +317,7 @@ class Attack:
             p1.left = False
         else:
             p1.attack()
-        if get_time() - p1.wait_time > 0.5:
-            p1.attack_num = 1
+
 
         pass
 
