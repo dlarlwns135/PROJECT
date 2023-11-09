@@ -85,45 +85,50 @@ class Attack_range:
         self.frame = 0
         self.dir = dir
         self.attack_x_dis = 30
+        self.attack_y_dis = 0
         self.attack_num = attack_num
         self.attack_range_x = 0
         self.attack_range_y = 0
         if self.attack_num == 1:
-            self.attack_range_x = 50
+            self.attack_range_x = 70
             self.attack_range_y = 30
+            self.attack_x_dis = 60
+            self.attack_y_dis = 0
             pass
         elif self.attack_num == 2:
             self.attack_range_x = 50
             self.attack_range_y = 30
+            self.attack_x_dis = 30
+            self.attack_y_dis = 0
             pass
         elif self.attack_num == 3:
             self.attack_range_x = 50
             self.attack_range_y = 30
+            self.attack_x_dis = 30
+            self.attack_y_dis = 0
             pass
         elif self.attack_num == 4:
             self.attack_range_x = 100
             self.attack_range_y = 100
+            self.attack_x_dis = 30
+            self.attack_y_dis = 0
             pass
     def update(self):
         self.frame = self.frame + 7 * 3 * game_framework.frame_time
         if self.attack_num == 1:
             if self.frame >= 4:
-                self.attack_num = 2
                 self.frame = 0
                 game_world.remove_object(self)
         if self.attack_num == 2:
             if self.frame >= 5:
-                self.attack_num = 3
                 self.frame = 0
                 game_world.remove_object(self)
         if self.attack_num == 3:
             if self.frame >= 7:
-                self.attack_num = 4
                 self.frame = 0
                 game_world.remove_object(self)
         if self.attack_num == 4:
             if self.frame >= 6.5:
-                self.attack_num = 1
                 self.frame = 0
                 game_world.remove_object(self)
         # if self.frame >= 7:
@@ -161,5 +166,7 @@ class Attack_range:
         draw_rectangle(*self.get_bb())
 
     def get_bb(self):
-        return (self.x - self.attack_range_x + self.dir * self.attack_x_dis, self.y - self.attack_range_y,
-                self.x + self.attack_range_x + self.dir * self.attack_x_dis, self.y + self.attack_range_y)
+        return (self.x - self.attack_range_x + self.dir * self.attack_x_dis,
+                self.y - self.attack_range_y + self.attack_range_y,
+                self.x + self.attack_range_x + self.dir * self.attack_x_dis,
+                self.y + self.attack_range_y + self.attack_range_y)
