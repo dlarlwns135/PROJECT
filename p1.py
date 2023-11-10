@@ -81,14 +81,14 @@ class Idle:
     def enter(p1, e):
         # print(p1.skill_num)
         p1.frame = 0
-        if right_up(e):
-            p1.right = False
-        elif left_up(e):
-            p1.left = False
-        elif right_down(e):
-            p1.right = True
-        elif left_down(e):
-            p1.left = True
+        # if right_up(e):
+        #     p1.right = False
+        # elif left_up(e):
+        #     p1.left = False
+        # elif right_down(e):
+        #     p1.right = True
+        # elif left_down(e):
+        #     p1.left = True
         #p1.wait_time = get_time() # pico2d import 필요
         pass
 
@@ -138,16 +138,16 @@ class Run:
     def enter(p1, e):
 
         p1.y -= 15
-        if right_down(e):
-            p1.right = True
-        elif left_down(e):
-            p1.left = True
-        elif right_up(e):
-            p1.right = False
-            # p1.dir = -1
-        elif left_up(e):
-            p1.left = False
-            # p1.dir = 1
+        # if right_down(e):
+        #     p1.right = True
+        # elif left_down(e):
+        #     p1.left = True
+        # elif right_up(e):
+        #     p1.right = False
+        #     # p1.dir = -1
+        # elif left_up(e):
+        #     p1.left = False
+        #     # p1.dir = 1
 
         if p1.right and not p1.left:
             p1.dir = 1
@@ -214,6 +214,8 @@ class Jump:
             p1.frame = 0
         if slash_down(e):
             p1.skill()
+        if period_down(e):
+            p1.frame = 0
         pass
 
     @staticmethod
@@ -276,13 +278,12 @@ class Teleport:
             if p1.up_tele:
                 p1.y += tele_dis
                 p1.up_tele = False
-                p1.frame = 0
             else:
                 if p1.right:
                     p1.x += tele_dis
                 elif p1.left:
                     p1.x -= tele_dis
-                p1.frame = 0
+        p1.frame = 0
         pass
 
     @staticmethod
@@ -536,6 +537,14 @@ class P1:
 
     def handle_event(self, event):
         self.state_machine.handle_event(('INPUT', event))
+        if right_up(('INPUT', event)):
+            self.right = False
+        elif left_up(('INPUT', event)):
+            self.left = False
+        elif right_down(('INPUT', event)):
+            self.right = True
+        elif left_down(('INPUT', event)):
+            self.left = True
 
     def draw(self):
         self.state_machine.draw()

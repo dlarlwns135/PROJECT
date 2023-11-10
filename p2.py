@@ -78,6 +78,27 @@ def d_down(e):
 def d_up(e):
     return  e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_d
 
+def c_down(e):
+    return  e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_c
+
+def c_up(e):
+    return  e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_c
+
+def v_down(e):
+    return  e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_v
+
+def v_up(e):
+    return  e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_v
+
+def b_down(e):
+    return  e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_b
+
+def b_up(e):
+    return  e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_b
+
+
+
+
 def time_out(e):
     return e[0] == 'TIME_OUT'
 
@@ -124,7 +145,7 @@ class Idle:
             p2.skill_num = 2
         if s_up(e):
             p2.skill_num = 1
-        if slash_down(e):
+        if b_down(e):
             p2.skill()
         if d_down(e):
             p2.right = True
@@ -236,7 +257,7 @@ class Jump:
     def exit(p2, e):
         if w_down(e):
             p2.frame = 0
-        if slash_down(e):
+        if b_down(e):
             p2.skill()
         pass
 
@@ -465,12 +486,12 @@ class StateMachine:
         self.cur_state = Idle
         self.transitions = {
             Idle: {d_down: Run, a_down: Run, d_up: Idle, a_up: Idle, run_state: Run,
-                   w_down: Jump, jump_state: Jump, comma_down: Attack, slash_down: Skill_motion,
+                   w_down: Jump, jump_state: Jump, c_down: Attack, b_down: Skill_motion,
                    s_down: Idle, s_up: Idle},
             Run: {d_up: Idle, a_up: Idle, d_down: Idle, a_down: Idle, w_down: Jump, stop: Idle
-                  , period_down: Teleport},
+                  , v_down: Teleport},
             Jump: {jump_end: Idle, jump_end_run: Run, w_down: Jump, w_up: Jump,
-                   period_down: Teleport, slash_down: Skill_motion,
+                   v_down: Teleport, b_down: Skill_motion,
                    d_down: Jump, a_down: Jump, d_up: Jump, a_up: Jump},
             Teleport: {d_down: Teleport, a_down: Teleport, d_up: Teleport, a_up: Teleport,
                        teleport: Idle},
