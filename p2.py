@@ -403,14 +403,14 @@ class Attack:
     def draw(p2):
         if p2.attack_num == 1:
             if p2.dir == -1:
-                p2.attack1.clip_composite_draw(int(p2.frame) * 56, 0, 56, 48, 0, 'h', p2.x-34, p2.y - 15, 158, 135)
+                p2.attack1.clip_composite_draw(int(p2.frame) * 56, 0, 56, 48, 0, 'h', p2.x - 10, p2.y - 15, 158, 135)
             elif p2.dir == 1:
                 p2.attack1.clip_composite_draw(int(p2.frame) * 56, 0, 56, 48, 0, '', p2.x + 10, p2.y - 15, 158, 135)
         elif p2.attack_num == 2:
             if p2.dir == -1:
-                p2.attack2.clip_composite_draw(int(p2.frame) * 64, 0, 64, 64, 0, 'h', p2.x-50, p2.y, 200, 200)
+                p2.attack2.clip_composite_draw(int(p2.frame) * 48, 0, 48, 48, 0, 'h', p2.x-10, p2.y - 15, 135, 135)
             elif p2.dir == 1:
-                p2.attack2.clip_composite_draw(int(p2.frame) * 64, 0, 64, 64, 0, '', p2.x+50, p2.y, 200, 200)
+                p2.attack2.clip_composite_draw(int(p2.frame) * 48, 0, 48, 48, 0, '', p2.x+10, p2.y - 15, 135, 135)
         elif p2.attack_num == 3:
             if p2.dir == -1:
                     p2.attack3.clip_composite_draw(int(p2.frame) * 77, 0, 77, 64, 0, 'h', p2.x - 70, p2.y, 241, 200)
@@ -536,7 +536,7 @@ class P2:
         self.teleport = load_image('sasuke_teleport.png')
         self.teleport_motion = load_image('teleport.png')
         self.attack1 = load_image('naruto_attack1.png')
-        self.attack2 = load_image('sasuke_attack2.png')
+        self.attack2 = load_image('naruto_attack2.png')
         self.attack3 = load_image('sasuke_attack3.png')
         self.attack4 = load_image('sasuke_attack4.png')
         self.skill1_stand = load_image('sasuke_skill1_stand.png')
