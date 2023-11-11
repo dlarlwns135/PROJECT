@@ -360,14 +360,14 @@ class Attack:
     def draw(p1):
         if p1.attack_num == 1:
             if p1.dir == -1:
-                p1.attack1.clip_composite_draw(int(p1.frame) * 61, 0, 61, 64, 0, 'h', p1.x-45, p1.y, 191, 200)
+                p1.attack1.clip_composite_draw(int(p1.frame) * 61, 0, 61, 64, 0, 'h', p1.x-35, p1.y, 191, 200)
             elif p1.dir == 1:
-                p1.attack1.clip_composite_draw(int(p1.frame) * 61, 0, 61, 64, 0, '', p1.x+45, p1.y, 191, 200)
+                p1.attack1.clip_composite_draw(int(p1.frame) * 61, 0, 61, 64, 0, '', p1.x+35, p1.y, 191, 200)
         elif p1.attack_num == 2:
             if p1.dir == -1:
-                p1.attack2.clip_composite_draw(int(p1.frame) * 64, 0, 64, 64, 0, 'h', p1.x-50, p1.y, 200, 200)
+                p1.attack2.clip_composite_draw(int(p1.frame) * 64, 0, 64, 64, 0, 'h', p1.x-40, p1.y, 200, 200)
             elif p1.dir == 1:
-                p1.attack2.clip_composite_draw(int(p1.frame) * 64, 0, 64, 64, 0, '', p1.x+50, p1.y, 200, 200)
+                p1.attack2.clip_composite_draw(int(p1.frame) * 64, 0, 64, 64, 0, '', p1.x+40, p1.y, 200, 200)
         elif p1.attack_num == 3:
             if p1.dir == -1:
                     p1.attack3.clip_composite_draw(int(p1.frame) * 77, 0, 77, 64, 0, 'h', p1.x - 70, p1.y, 241, 200)
