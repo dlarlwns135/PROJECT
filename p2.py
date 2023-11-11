@@ -372,7 +372,7 @@ class Attack:
 
     @staticmethod
     def do(p2):
-        p2.frame = p2.frame + 7 * 3 * game_framework.frame_time
+        p2.frame = p2.frame + 5 * 3 * game_framework.frame_time
         if p2.attack_num == 1:
             if p2.frame >= 4:
                 p2.state_machine.handle_event(('STOP', None))
@@ -392,7 +392,7 @@ class Attack:
                 p2.frame = 0
                 p2.wait_time = get_time()
         if p2.attack_num == 4:
-            if p2.frame >= 6.5:
+            if p2.frame >= 5:
                 p2.state_machine.handle_event(('STOP', None))
                 p2.attack_num = 1
                 p2.frame = 0
@@ -418,9 +418,9 @@ class Attack:
                     p2.attack3.clip_composite_draw(int(p2.frame) * 48, 0, 48, 48, 0, '', p2.x + 10, p2.y-15, 135, 135)
         elif p2.attack_num == 4:
             if p2.dir == -1:
-                    p2.attack4.clip_composite_draw(int(p2.frame) * 72, 0, 72, 66, 0, 'h', p2.x - 62, p2.y+3, 225, 206)
+                    p2.attack4.clip_composite_draw(int(p2.frame) * 40, 0, 40, 56, 0, 'h', p2.x, p2.y, 113, 158)
             elif p2.dir == 1:
-                    p2.attack4.clip_composite_draw(int(p2.frame) * 72, 0, 72, 66, 0, '', p2.x + 62, p2.y+3, 225, 206)
+                    p2.attack4.clip_composite_draw(int(p2.frame) * 40, 0, 40, 56, 0, '', p2.x, p2.y, 113, 158)
 
 
 class Skill_motion:
@@ -538,7 +538,7 @@ class P2:
         self.attack1 = load_image('naruto_attack1.png')
         self.attack2 = load_image('naruto_attack2.png')
         self.attack3 = load_image('naruto_attack3.png')
-        self.attack4 = load_image('sasuke_attack4.png')
+        self.attack4 = load_image('naruto_attack4.png')
         self.skill1_stand = load_image('sasuke_skill1_stand.png')
         self.skill1_jump = load_image('sasuke_skill1_jump.png')
         self.skill2 = load_image('sasuke_skill2.png')
