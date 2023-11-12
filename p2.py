@@ -457,10 +457,8 @@ class Skill_motion:
     @staticmethod
     def do(p2):
         if p2.skill_num == 2:
-            p2.frame = (p2.frame + 19 * 1.0 * game_framework.frame_time) % 19
-            if p2.frame >= 8:
-                p2.x += p2.dir * RUN_SPEED_PPS * 2 * game_framework.frame_time
-            if p2.frame >= 18:
+            p2.frame = (p2.frame + 11 * 1.0 * game_framework.frame_time) % 11
+            if p2.frame >= 10:
                 p2.skill_num = 1
                 p2.frame = 0
                 p2.state_machine.handle_event(('STOP', None))
@@ -482,12 +480,11 @@ class Skill_motion:
 
     @staticmethod
     def draw(p2):
-        # p2.attack4.clip_composite_draw(p2.frame * 72, 0, 72, 66, 0, 'h', p2.x - 62, p2.y - 3, 225, 206)
         if p2.skill_num == 2:
             if p2.dir == -1:
-                p2.skill2.clip_composite_draw(int(p2.frame) * 104, 0, 104, 77, 0, 'h', p2.x, p2.y+41, 325, 241)
+                p2.skill2.clip_composite_draw(int(p2.frame) * 83, 0, 83, 50, 0, 'h', p2.x-20, p2.y-15, 233, 140)
             elif p2.dir == 1:
-                p2.skill2.clip_composite_draw(int(p2.frame) * 104, 0, 104, 77, 0, '', p2.x, p2.y+41, 325, 241)
+                p2.skill2.clip_composite_draw(int(p2.frame) * 83, 0, 83, 50, 0, '', p2.x+20, p2.y-15, 233, 140)
         elif p2.skill_num == 1:
             if p2.jump_state:
                 if p2.dir == -1:
@@ -563,7 +560,7 @@ class P2:
         self.attack5 = load_image('naruto_attack5.png')
         self.skill1_stand = load_image('naruto_skill1_stand.png')
         self.skill1_jump = load_image('naruto_skill1_jump.png')
-        self.skill2 = load_image('sasuke_skill2.png')
+        self.skill2 = load_image('naruto_skill2.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.jump_move = False
@@ -581,7 +578,7 @@ class P2:
             skill1 = Skill1(self.x, self.y + 10, self.dir)
             game_world.add_object(skill1, 2)
         elif self.skill_num == 2:
-            skill2 = Skill2(self.x, self.y + 10, self.dir)
+            skill2 = Skill2(self.x, self.y + 50, self.dir)
             game_world.add_object(skill2, 2)
         pass
 

@@ -32,52 +32,40 @@ class Skill1:
         return self.x - 22, self.y - 18, self.x + 22, self.y + 18
 
 class Skill2:
-    skill2_effect1 = None
-    skill2_effect2 = None
+    skill2_effect = None
     def __init__(self, x = 400, y = 300, dir = 1):
-        if Skill2.skill2_effect1 == None:
-            Skill2.skill2_effect1 = load_image('sasuke_skill2_effect1.png')
-        if Skill2.skill2_effect2 == None:
-            Skill2.skill2_effect2 = load_image('sasuke_skill2_effect2.png')
+        if Skill2.skill2_effect == None:
+            Skill2.skill2_effect = load_image('naruto_skill2_effect.png')
         self.x, self.y = x, y
         self.frame = 0
         self.dir = dir
         self.count = 0
 
     def draw(self):
-        if self.frame <= 7:
-            self.skill2_effect2.clip_composite_draw(int(self.frame) * 104, 0, 104, 77, 0, '',
-                                                    self.x, self.y + 41, 325, 241)
-            # p1.skill1_stand.clip_composite_draw(int(p1.frame) * 40, 0, 40, 64, 0, 'h', p1.x, p1.y, 125, 200)
-        if self.frame >= 1:
-            if self.dir == -1:
-                if self.frame > 7:
-                    self.skill2_effect1.clip_composite_draw((int(self.frame) - 1) * 104, 0, 104, 77, 0, 'h',
-                                                            self.x + 30, self.y - 10, 325, 241)
-                else:
-                    self.skill2_effect1.clip_composite_draw((int(self.frame) - 1) * 104, 0, 104, 77, 0, 'h',
-                                                            self.x + 30, self.y + 41 - 10, 325, 241)
-            elif self.dir == 1:
-                if self.frame > 7:
-                    self.skill2_effect1.clip_composite_draw((int(self.frame) - 1) * 104, 0, 104, 77, 0, '',
-                                                            self.x - 30, self.y - 10, 325, 241)
-                else:
-                    self.skill2_effect1.clip_composite_draw((int(self.frame) - 1) * 104, 0, 104, 77, 0, '',
-                                                            self.x - 30, self.y + 41 - 10, 325, 241)
+        if self.frame >= 7:
+            if self.dir == 1:
+                self.skill2_effect.clip_composite_draw((int(self.frame)-7) * 159, 0, 159, 88, 0, '',
+                                                       self.x, self.y , 447, 247)
+            elif self.dir == -1:
+                self.skill2_effect.clip_composite_draw((int(self.frame)-7) * 159, 0, 159, 88, 0, 'h',
+                                                       self.x, self.y, 447, 247)
         draw_rectangle(*self.get_bb())
 
     def update(self):
-        self.count += 1
-        self.frame = (self.frame + 18 * 1 * game_framework.frame_time) % 18
+        self.frame = (self.frame + 16 * 1 * game_framework.frame_time) % 16
         if self.frame >= 7:
-            self.x += self.dir * RUN_SPEED_PPS * 2 * game_framework.frame_time
-        if self.frame >= 17:
+            self.x += self.dir * RUN_SPEED_PPS * 1 * game_framework.frame_time
+            if self.frame >= 15:
+                self.frame = 12
+        if self.x < 0 or self.x > 1200:
             game_world.remove_object(self)
         pass
 
     def get_bb(self):
-        # return self.x - skill_range_x, self.y - skill_range_y, self.x + skill_range_x, self.y + skill_range_y
-        return self.x - 130, self.y - 70, self.x + 130, self.y + 70
+        if self.dir == 1:
+            return self.x - 80, self.y - 130, self.x + 220, self.y + 110
+        elif self.dir == -1:
+            return self.x - 220, self.y - 130, self.x + 80, self.y + 110
 
 class Attack_range:
     def __init__(self, x = 400, y = 300, dir = 1, attack_num = 0):
