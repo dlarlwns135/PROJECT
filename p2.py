@@ -463,11 +463,19 @@ class Skill_motion:
                 p2.frame = 0
                 p2.state_machine.handle_event(('STOP', None))
         elif p2.skill_num == 1:
-            p2.frame = (p2.frame + 4 * 4 * game_framework.frame_time) % 4
-            if p2.frame >= 3:
-                p2.skill_num = 1
-                p2.frame = 0
-                p2.state_machine.handle_event(('STOP', None))
+            if p2.jump_state:
+                p2.frame = (p2.frame + 3 * 7 * game_framework.frame_time) % 3
+                if p2.frame >= 2:
+                    p2.skill_num = 1
+                    p2.frame = 0
+                    p2.state_machine.handle_event(('STOP', None))
+            else:
+                p2.frame = (p2.frame + 5 * 4 * game_framework.frame_time) % 5
+                if p2.frame >= 4:
+                    p2.skill_num = 1
+                    p2.frame = 0
+                    p2.state_machine.handle_event(('STOP', None))
+
         pass
 
     @staticmethod
@@ -481,14 +489,14 @@ class Skill_motion:
         elif p2.skill_num == 1:
             if p2.jump_state:
                 if p2.dir == -1:
-                    p2.skill1_jump.clip_composite_draw(int(p2.frame) * 40, 0, 40, 64, 0, 'h', p2.x, p2.y, 125, 200)
+                    p2.skill1_jump.clip_composite_draw(int(p2.frame) * 40, 0, 40, 64, 0, 'h', p2.x, p2.y-30, 112, 180)
                 elif p2.dir == 1:
-                    p2.skill1_jump.clip_composite_draw(int(p2.frame) * 40, 0, 40, 64, 0, '', p2.x, p2.y, 125, 200)
+                    p2.skill1_jump.clip_composite_draw(int(p2.frame) * 40, 0, 40, 64, 0, '', p2.x, p2.y-30, 112, 180)
             else:
                 if p2.dir == -1:
-                    p2.skill1_stand.clip_composite_draw(int(p2.frame) * 40, 0, 40, 64, 0, 'h', p2.x, p2.y, 125, 200)
+                    p2.skill1_stand.clip_composite_draw(int(p2.frame) * 40, 0, 40, 48, 0, 'h', p2.x-10, p2.y-15, 112, 135)
                 elif p2.dir == 1:
-                    p2.skill1_stand.clip_composite_draw(int(p2.frame) * 40, 0, 40, 64, 0, '', p2.x, p2.y, 125, 200)
+                    p2.skill1_stand.clip_composite_draw(int(p2.frame) * 40, 0, 40, 48, 0, '', p2.x+10, p2.y-15, 112, 135)
         pass
 
 class StateMachine:
@@ -551,8 +559,8 @@ class P2:
         self.attack3 = load_image('naruto_attack3.png')
         self.attack4 = load_image('naruto_attack4.png')
         self.attack5 = load_image('naruto_attack5.png')
-        self.skill1_stand = load_image('sasuke_skill1_stand.png')
-        self.skill1_jump = load_image('sasuke_skill1_jump.png')
+        self.skill1_stand = load_image('naruto_skill1_stand.png')
+        self.skill1_jump = load_image('naruto_skill1_jump.png')
         self.skill2 = load_image('sasuke_skill2.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start()
