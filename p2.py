@@ -4,7 +4,8 @@ from pico2d import *
 
 import game_framework
 import game_world
-from skill import Skill1, Skill2
+# from skill import Skill1, Skill2
+from P2_attack_range import Skill1, Skill2, Attack_range
 
 PIXEL_PER_METER = (10.0 / 0.3) # 10 pixel 30 cm
 RUN_SPEED_KMPH = 50.0 # Km / Hour
@@ -364,6 +365,7 @@ class Attack:
             p2.left = False
         if get_time() - p2.wait_time > 0.5:
             p2.attack_num = 1
+        p2.attack()
         pass
 
     @staticmethod
@@ -581,6 +583,11 @@ class P2:
         elif self.skill_num == 2:
             skill2 = Skill2(self.x, self.y + 10, self.dir)
             game_world.add_object(skill2, 2)
+        pass
+
+    def attack(self):
+        attack_range = Attack_range(self.x, self.y, self.dir, self.attack_num)
+        game_world.add_object(attack_range, 2)
         pass
     def update(self):
         self.state_machine.update()
