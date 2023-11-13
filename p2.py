@@ -18,42 +18,111 @@ RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
 ground_y = 70
 tele_dis = 220
+player_num = 0
 
+# def up_down(e):
+#     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_UP
+#
+# def up_up(e):
+#     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_UP
+#
+# def down_down(e):
+#     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_DOWN
+#
+# def down_up(e):
+#     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_DOWN
+#
+# def right_down(e):
+#     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_RIGHT
+#
+# def right_up(e):
+#     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_RIGHT
+#
+# def left_down(e):
+#     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_LEFT
+#
+# def left_up(e):
+#     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_LEFT
+#
+# def space_down(e):
+#     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE
+#
+# def period_down(e):
+#     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_PERIOD
+#
+# def comma_down(e):
+#     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_COMMA
+#
+# def slash_down(e):
+#     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SLASH
 def up_down(e):
-    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_UP
+    if player_num == 1:
+        return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_UP
+    elif player_num == 2:
+        return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_w
 
 def up_up(e):
-    return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_UP
+    if player_num == 1:
+        return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_UP
+    elif player_num == 2:
+        return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_w
 
 def down_down(e):
-    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_DOWN
+    if player_num == 1:
+        return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_DOWN
+    elif player_num == 2:
+        return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_s
 
 def down_up(e):
-    return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_DOWN
+    if player_num == 1:
+        return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_DOWN
+    elif player_num == 2:
+        return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_s
 
 def right_down(e):
-    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_RIGHT
+    if player_num == 1:
+        return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_RIGHT
+    elif player_num == 2:
+        return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_d
 
 def right_up(e):
-    return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_RIGHT
+    if player_num == 1:
+        return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_RIGHT
+    elif player_num == 2:
+        return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_d
 
 def left_down(e):
-    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_LEFT
+    if player_num == 1:
+        return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_LEFT
+    elif player_num == 2:
+        return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_a
 
 def left_up(e):
-    return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_LEFT
+    if player_num == 1:
+        return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_LEFT
+    elif player_num == 2:
+        return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_a
 
 def space_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE
 
 def period_down(e):
-    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_PERIOD
+    if player_num == 1:
+        return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_PERIOD
+    elif player_num == 2:
+        return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_v
 
 def comma_down(e):
-    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_COMMA
+    if player_num == 1:
+        return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_COMMA
+    elif player_num == 2:
+        return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_c
 
 def slash_down(e):
-    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SLASH
+    if player_num == 1:
+        return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SLASH
+    elif player_num == 2:
+        return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_b
 
 def w_down(e):
     return  e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_w
@@ -127,14 +196,16 @@ class Idle:
     def enter(p2, e):
         # print(p2.skill_num)
         p2.frame = 0
-        if d_up(e):
-            p2.right = False
-        elif a_up(e):
-            p2.left = False
-        elif d_down(e):
-            p2.right = True
-        elif a_down(e):
-            p2.left = True
+        # # if d_up(e):
+        # if right_up(e):
+        #     p2.right = False
+        # # elif a_up(e):
+        # elif left_up(e):
+        #     p2.left = False
+        # elif d_down(e):
+        #     p2.right = True
+        # elif a_down(e):
+        #     p2.left = True
         #p2.wait_time = get_time() # pico2d import 필요
         pass
 
@@ -142,19 +213,19 @@ class Idle:
     def exit(p2, e):
         print(p2.skill_num)
         p2.frame = 0
-        if s_down(e):
+        if down_down(e):
             p2.skill_num = 2
-        if s_up(e):
+        if down_up(e):
             p2.skill_num = 1
-        if b_down(e):
+        if slash_down(e):
             p2.skill()
-        if d_down(e):
+        if right_down(e):
             p2.right = True
-        elif a_down(e):
+        elif left_down(e):
             p2.left = True
-        elif d_up(e):
+        elif right_up(e):
             p2.right = False
-        elif a_up(e):
+        elif left_up(e):
             p2.left = False
 
     @staticmethod
@@ -184,16 +255,16 @@ class Run:
     def enter(p2, e):
 
         p2.y -= 15
-        if d_down(e):
-            p2.right = True
-        elif a_down(e):
-            p2.left = True
-        elif d_up(e):
-            p2.right = False
-            # p2.dir = -1
-        elif a_up(e):
-            p2.left = False
-            # p2.dir = 1
+        # if d_down(e):
+        #     p2.right = True
+        # elif a_down(e):
+        #     p2.left = True
+        # elif d_up(e):
+        #     p2.right = False
+        #     # p2.dir = -1
+        # elif a_up(e):
+        #     p2.left = False
+        #     # p2.dir = 1
 
         if p2.right and not p2.left:
             p2.dir = 1
@@ -229,23 +300,23 @@ class Run:
 class Jump:
     @staticmethod
     def enter(p2, e):
-        if d_down(e):
+        if right_down(e):
             p2.dir = 1
             p2.right = True
             p2.jump_move = True
             p2.up_tele = False
-        if a_down(e):
+        if left_down(e):
             p2.dir = -1
             p2.left = True
             p2.jump_move = True
             p2.up_tele = False
-        if d_up(e):
+        if right_up(e):
             p2.right = False
-        if a_up(e):
+        if left_up(e):
             p2.left = False
-        if w_down(e):
+        if up_down(e):
             p2.up_tele = True
-        if w_up(e):
+        if up_up(e):
             p2.up_tele = False
         if jump_state(e):
             p2.frame = 2
@@ -256,10 +327,12 @@ class Jump:
 
     @staticmethod
     def exit(p2, e):
-        if w_down(e):
+        if up_down(e):
             p2.frame = 0
-        if b_down(e):
+        if slash_down(e):
             p2.skill()
+        if period_down(e):
+            p2.frame = 0
         pass
 
     @staticmethod
@@ -307,15 +380,15 @@ class Teleport:
     @staticmethod
     def enter(p2, e):
         p2.frame = 0
-        if d_down(e):
+        if right_down(e):
             p2.dir = 1
             p2.right = True
-        elif a_down(e):
+        elif left_down(e):
             p2.dir = -1
             p2.left = True
-        elif d_up(e):
+        elif right_up(e):
             p2.right = False
-        elif a_up(e):
+        elif left_up(e):
             p2.left = False
         pass
 
@@ -352,14 +425,14 @@ class Teleport:
 class Attack:
     @staticmethod
     def enter(p2, e):
-        if d_down(e):
-            p2.right = True
-        if a_down(e):
-            p2.left = True
-        if d_up(e):
-            p2.right = False
-        if a_up(e):
-            p2.left = False
+        # if d_down(e):
+        #     p2.right = True
+        # if a_down(e):
+        #     p2.left = True
+        # if d_up(e):
+        #     p2.right = False
+        # if a_up(e):
+        #     p2.left = False
         if get_time() - p2.wait_time > 0.5:
             p2.attack_num = 1
         p2.attack()
@@ -436,14 +509,14 @@ class Attack:
 class Skill_motion:
     @staticmethod
     def enter(p2, e):
-        if d_down(e):
-            p2.right = True
-        elif a_down(e):
-            p2.left = True
-        elif d_up(e):
-            p2.right = False
-        elif a_up(e):
-            p2.left = False
+        # if d_down(e):
+        #     p2.right = True
+        # elif a_down(e):
+        #     p2.left = True
+        # elif d_up(e):
+        #     p2.right = False
+        # elif a_up(e):
+        #     p2.left = False
         pass
 
     @staticmethod
@@ -500,20 +573,35 @@ class StateMachine:
         self.p2 = p2
         self.cur_state = Idle
         self.transitions = {
-            Idle: {d_down: Run, a_down: Run, d_up: Idle, a_up: Idle, run_state: Run,
-                   w_down: Jump, jump_state: Jump, c_down: Attack, b_down: Skill_motion,
-                   s_down: Idle, s_up: Idle},
-            Run: {d_up: Idle, a_up: Idle, d_down: Idle, a_down: Idle, w_down: Jump, stop: Idle
-                  , v_down: Teleport},
-            Jump: {jump_end: Idle, jump_end_run: Run, w_down: Jump, w_up: Jump,
-                   v_down: Teleport, b_down: Skill_motion,
-                   d_down: Jump, a_down: Jump, d_up: Jump, a_up: Jump},
-            Teleport: {d_down: Teleport, a_down: Teleport, d_up: Teleport, a_up: Teleport,
+            Idle: {right_down: Run, left_down: Run, right_up: Idle, left_up: Idle, run_state: Run,
+                   up_down: Jump, jump_state: Jump, comma_down: Attack, slash_down: Skill_motion,
+                   down_down: Idle, down_up: Idle},
+            Run: {right_up: Idle, left_up: Idle, right_down: Idle, left_down: Idle, up_down: Jump, stop: Idle
+                  , period_down: Teleport},
+            Jump: {jump_end: Idle, jump_end_run: Run, up_down: Jump, up_up: Jump,
+                   period_down: Teleport, slash_down: Skill_motion,
+                   right_down: Jump, left_down: Jump, right_up: Jump, left_up: Jump},
+            Teleport: {right_down: Teleport, left_down: Teleport, right_up: Teleport, left_up: Teleport,
                        teleport: Idle},
-            Attack: {stop: Idle, d_down: Attack, a_down: Attack, d_up: Attack, a_up: Attack},
-            Skill_motion: {stop: Idle, d_up: Skill_motion, a_up: Skill_motion,
-                           d_down: Skill_motion, a_down: Skill_motion}
+            Attack: {stop: Idle, right_down: Attack, left_down: Attack, right_up: Attack, left_up: Attack},
+            Skill_motion: {stop: Idle, right_up: Skill_motion, left_up: Skill_motion,
+                           right_down: Skill_motion, left_down: Skill_motion}
         }
+        # self.transitions = {
+        #     Idle: {d_down: Run, a_down: Run, d_up: Idle, a_up: Idle, run_state: Run,
+        #            w_down: Jump, jump_state: Jump, c_down: Attack, b_down: Skill_motion,
+        #            s_down: Idle, s_up: Idle},
+        #     Run: {d_up: Idle, a_up: Idle, d_down: Idle, a_down: Idle, w_down: Jump, stop: Idle
+        #           , v_down: Teleport},
+        #     Jump: {jump_end: Idle, jump_end_run: Run, w_down: Jump, w_up: Jump,
+        #            v_down: Teleport, b_down: Skill_motion,
+        #            d_down: Jump, a_down: Jump, d_up: Jump, a_up: Jump},
+        #     Teleport: {d_down: Teleport, a_down: Teleport, d_up: Teleport, a_up: Teleport,
+        #                teleport: Idle},
+        #     Attack: {stop: Idle, d_down: Attack, a_down: Attack, d_up: Attack, a_up: Attack},
+        #     Skill_motion: {stop: Idle, d_up: Skill_motion, a_up: Skill_motion,
+        #                    d_down: Skill_motion, a_down: Skill_motion}
+        # }
 
     def start(self):
         self.cur_state.enter(self.p2, ('NONE', 0))
@@ -540,7 +628,7 @@ class StateMachine:
 
 class P2:
     global skill_num
-    def __init__(self):
+    def __init__(self, p_num):
         self.up = None
         self.x, self.y = 400, ground_y
         self.frame = 0
@@ -569,6 +657,8 @@ class P2:
         self.attack_num = 1
         self.wait_time = 0
         self.skill_num = 1
+        global player_num
+        player_num = p_num
 
     def skill(self):
         if self.skill_num == 1:
@@ -588,6 +678,14 @@ class P2:
 
     def handle_event(self, event):
         self.state_machine.handle_event(('INPUT', event))
+        if right_up(('INPUT', event)):
+            self.right = False
+        elif left_up(('INPUT', event)):
+            self.left = False
+        elif right_down(('INPUT', event)):
+            self.right = True
+        elif left_down(('INPUT', event)):
+            self.left = True
 
     def draw(self):
         self.state_machine.draw()
