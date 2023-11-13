@@ -225,12 +225,9 @@ class Jump:
         if p1.frame >= 3:
             p1.frame = 3
         else:
-            p1.frame = (p1.frame + 4 * 2 * game_framework.frame_time) % 4
+            p1.frame = (p1.frame + 4 * 1.5 * game_framework.frame_time) % 4
 
-        if p1.frame < 2:
-            p1.y += 1.5 * RUN_SPEED_PPS * game_framework.frame_time
-        else:
-            p1.y -= 1.5 * RUN_SPEED_PPS * game_framework.frame_time
+        p1.y += 1.2 * RUN_SPEED_PPS * game_framework.frame_time * (2 - p1.frame)
 
         if p1.jump_move:
             p1.x += p1.dir * RUN_SPEED_PPS * game_framework.frame_time

@@ -269,12 +269,9 @@ class Jump:
         if p2.frame >= 3:
             p2.frame = 3
         else:
-            p2.frame = (p2.frame + 4 * 2 * game_framework.frame_time) % 4
+            p2.frame = (p2.frame + 4 * 1.5 * game_framework.frame_time) % 4
 
-        if p2.frame < 2:
-            p2.y += 1.5 * RUN_SPEED_PPS * game_framework.frame_time
-        else:
-            p2.y -= 1.5 * RUN_SPEED_PPS * game_framework.frame_time
+        p2.y += 1.2 * RUN_SPEED_PPS * game_framework.frame_time * (2 - p2.frame)
 
         if p2.jump_move and  (p2.right or p2.left):
             p2.x += p2.dir * RUN_SPEED_PPS * game_framework.frame_time
