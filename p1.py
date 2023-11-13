@@ -17,6 +17,7 @@ RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
 ground_y = 70
 tele_dis = 220
+player_num = 0
 
 def up_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_UP
@@ -31,7 +32,10 @@ def down_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_DOWN
 
 def right_down(e):
-    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_RIGHT
+    if player_num == 1:
+        return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_RIGHT
+    elif player_num == 2:
+        return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_d
 
 def right_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_RIGHT
@@ -53,6 +57,48 @@ def comma_down(e):
 
 def slash_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SLASH
+
+def w_down(e):
+    return  e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_w
+
+def w_up(e):
+    return  e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_w
+
+def s_down(e):
+    return  e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_s
+
+def s_up(e):
+    return  e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_s
+
+def a_down(e):
+    return  e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_a
+
+def a_up(e):
+    return  e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_a
+
+def d_down(e):
+    return  e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_d
+
+def d_up(e):
+    return  e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_d
+
+def c_down(e):
+    return  e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_c
+
+def c_up(e):
+    return  e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_c
+
+def v_down(e):
+    return  e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_v
+
+def v_up(e):
+    return  e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_v
+
+def b_down(e):
+    return  e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_b
+
+def b_up(e):
+    return  e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_b
 
 def time_out(e):
     return e[0] == 'TIME_OUT'
@@ -438,6 +484,7 @@ class StateMachine:
     def __init__(self, p1):
         self.p1 = p1
         self.cur_state = Idle
+        # if player_num == 1:
         self.transitions = {
             Idle: {right_down: Run, left_down: Run, right_up: Idle, left_up: Idle, run_state: Run,
                    up_down: Jump, jump_state: Jump, comma_down: Attack, slash_down: Skill_motion,
@@ -453,6 +500,22 @@ class StateMachine:
             Skill_motion: {stop: Idle, right_up: Skill_motion, left_up: Skill_motion,
                            right_down: Skill_motion, left_down: Skill_motion}
         }
+        # elif player_num == 2:
+        #     self.transitions = {
+        #         Idle: {d_down: Run, a_down: Run, d_up: Idle, a_up: Idle, run_state: Run,
+        #                w_down: Jump, jump_state: Jump, c_down: Attack, b_down: Skill_motion,
+        #                s_down: Idle, s_up: Idle},
+        #         Run: {d_up: Idle, a_up: Idle, d_down: Idle, a_down: Idle, w_down: Jump, stop: Idle
+        #             , v_down: Teleport},
+        #         Jump: {jump_end: Idle, jump_end_run: Run, w_down: Jump, w_up: Jump,
+        #                v_down: Teleport, b_down: Skill_motion,
+        #                d_down: Jump, a_down: Jump, d_up: Jump, a_up: Jump},
+        #         Teleport: {d_down: Teleport, a_down: Teleport, d_up: Teleport, a_up: Teleport,
+        #                    teleport: Idle},
+        #         Attack: {stop: Idle, d_down: Attack, a_down: Attack, d_up: Attack, a_up: Attack},
+        #         Skill_motion: {stop: Idle, d_up: Skill_motion, a_up: Skill_motion,
+        #                        d_down: Skill_motion, a_down: Skill_motion}
+        #     }
 
     def start(self):
         self.cur_state.enter(self.p1, ('NONE', 0))
@@ -479,7 +542,7 @@ class StateMachine:
 
 class P1:
     global skill_num
-    def __init__(self):
+    def __init__(self, p_num):
         self.up = None
         self.x, self.y = 400, ground_y
         self.frame = 0
@@ -507,7 +570,8 @@ class P1:
         self.attack_num = 1
         self.wait_time = 0
         self.skill_num = 1
-        # self.player_num = player_num
+        global player_num
+        player_num = p_num
 
     def skill(self):
         if self.skill_num == 1:

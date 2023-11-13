@@ -35,7 +35,7 @@ def init():
     map = Map()
     game_world.add_object(map, 1)
 
-    p1 = P1()
+    p1 = P1(1)
     game_world.add_object(p1, 1)
 
     p2 = P2()
