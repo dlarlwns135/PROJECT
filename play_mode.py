@@ -6,6 +6,7 @@ from p2 import P2
 from p3 import P3
 import game_framework
 import game_world
+import charactor_choose_mode
 def handle_events():
     global running
 
@@ -35,11 +36,26 @@ def init():
     map = Map()
     game_world.add_object(map, 1)
 
-    p1 = P1(2)
-    game_world.add_object(p1, 1)
+    if charactor_choose_mode.p1_choose_result() == 1:
+        p2 = P2(1)
+        game_world.add_object(p2, 1)
+    elif charactor_choose_mode.p1_choose_result() == 2:
+        p1 = P1(1)
+        game_world.add_object(p1, 1)
 
-    p2 = P2(1)
-    game_world.add_object(p2, 1)
+    if charactor_choose_mode.p2_choose_result() == 1:
+        p2 = P2(2)
+        game_world.add_object(p2, 1)
+    elif charactor_choose_mode.p2_choose_result() == 2:
+        p1 = P1(2)
+        game_world.add_object(p1, 1)
+
+
+    # p1 = P1(2)
+    # game_world.add_object(p1, 1)
+    #
+    # p2 = P2(1)
+    # game_world.add_object(p2, 1)
 
     p3 = P3()
     # game_world.add_object(p3, 1)
