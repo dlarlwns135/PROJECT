@@ -3,6 +3,7 @@ from pico2d import *
 from map import Map
 from p1 import P1
 from p2 import P2
+from p3 import P3
 import game_framework
 import game_world
 def handle_events():
@@ -17,6 +18,7 @@ def handle_events():
         else:
             p1.handle_event(event)
             p2.handle_event(event)
+            p3.handle_event(event)
 
 
 def init():
@@ -24,6 +26,7 @@ def init():
     global world
     global p1
     global p2
+    global p3
     global map
 
     running = True
@@ -37,6 +40,9 @@ def init():
 
     p2 = P2()
     game_world.add_object(p2, 1)
+
+    p3 = P3()
+    # game_world.add_object(p3, 1)
 
 def finish():
     pass
