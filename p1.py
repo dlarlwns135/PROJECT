@@ -280,7 +280,7 @@ class Teleport:
                     p1.x += tele_dis
                 elif p1.left:
                     p1.x -= tele_dis
-        p1.frame = 0
+        # p1.frame = 0
         pass
 
     @staticmethod
@@ -507,6 +507,7 @@ class P1:
         self.attack_num = 1
         self.wait_time = 0
         self.skill_num = 1
+        # self.player_num = player_num
 
     def skill(self):
         if self.skill_num == 1:
