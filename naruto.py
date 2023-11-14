@@ -349,14 +349,6 @@ class Attack:
                 p2.attack_num = 1
                 p2.frame = 0
                 p2.wait_time = get_time()
-        # if p2.attack_num == 5:
-        #     if p2.frame >= 5:
-        #         p2.state_machine.handle_event(('STOP', None))
-        #         p2.attack_num = 1
-        #         p2.frame = 0
-        #         p2.wait_time = get_time()
-        # pass
-
     @staticmethod
     def draw(p2):
         if p2.attack_num == 1:
@@ -379,11 +371,6 @@ class Attack:
                     p2.attack4.clip_composite_draw(int(p2.frame) * 40, 0, 40, 56, 0, 'h', p2.x, p2.y, 113, 158)
             elif p2.dir == 1:
                     p2.attack4.clip_composite_draw(int(p2.frame) * 40, 0, 40, 56, 0, '', p2.x, p2.y, 113, 158)
-        # elif p2.attack_num == 5:
-        #     if p2.dir == -1:
-        #         p2.attack5.clip_composite_draw(int(p2.frame) * 40, 0, 40, 48, 0, 'h', p2.x, p2.y-15, 113, 135)
-        #     elif p2.dir == 1:
-        #         p2.attack5.clip_composite_draw(int(p2.frame) * 40, 0, 40, 48, 0, '', p2.x, p2.y-15, 113, 135)
 
 class Run_Attack:
     @staticmethod
@@ -424,16 +411,16 @@ class Jump_Attack:
 
     @staticmethod
     def do(p2):
-        p2.frame = p2.frame + 5 * 3.5 * game_framework.frame_time
-        if p2.frame >= 4.9:
+        p2.frame = p2.frame + 4 * 3.5 * game_framework.frame_time
+        if p2.frame >= 3.9:
             p2.state_machine.handle_event(('STOP', None))
 
     @staticmethod
     def draw(p2):
         if p2.dir == -1:
-            p2.jump_attack.clip_composite_draw(int(p2.frame) * 56, 0, 56, 64, 0, 'h', p2.x, p2.y, 175, 200)
+            p2.jump_attack.clip_composite_draw(int(p2.frame) * 48, 0, 48, 52, 0, 'h', p2.x, p2.y, 135, 146)
         elif p2.dir == 1:
-            p2.jump_attack.clip_composite_draw(int(p2.frame) * 56, 0, 56, 64, 0, '', p2.x, p2.y, 175, 200)
+            p2.jump_attack.clip_composite_draw(int(p2.frame) * 48, 0, 48, 52, 0, '', p2.x, p2.y, 135, 146)
 
 class Skill_motion:
     @staticmethod
@@ -557,7 +544,7 @@ class NARUTO:
         self.skill1_jump = load_image('naruto_skill1_jump.png')
         self.skill2 = load_image('naruto_skill2.png')
         self.run_attack = load_image('naruto_run_attack.png')
-        # self.jump_attack = load_image('naruto_jump_attack.png')
+        self.jump_attack = load_image('naruto_jump_attack.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.jump_move = False

@@ -106,6 +106,11 @@ class Attack_range:
             self.attack_range_y = 50
             self.attack_x_dis = 30
             self.attack_y_dis = -20
+        elif self.attack_num == 'jump':
+            self.attack_range_x = 50
+            self.attack_range_y = 60
+            self.attack_x_dis = 30
+            self.attack_y_dis = 20
     def update(self):
         self.frame = self.frame + 7 * 3 * game_framework.frame_time
         if self.attack_num == 1:
@@ -127,6 +132,10 @@ class Attack_range:
         if self.attack_num == 'run':
             self.x += self.dir * RUN_SPEED_PPS * 1 * game_framework.frame_time
             if self.frame >= 6.5:
+                self.frame = 0
+                game_world.remove_object(self)
+        if self.attack_num == 'jump':
+            if self.frame >= 3:
                 self.frame = 0
                 game_world.remove_object(self)
 
