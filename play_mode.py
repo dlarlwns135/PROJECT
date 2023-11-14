@@ -1,7 +1,7 @@
 from pico2d import *
 
 from map import Map
-from p1 import P1
+from sasuke import SASUKE
 from p2 import P2
 from p3 import P3
 import game_framework
@@ -40,14 +40,14 @@ def init():
         p2 = P2(1)
         game_world.add_object(p2, 1)
     elif charactor_choose_mode.p1_choose_result() == 2:
-        p1 = P1(1)
+        p1 = SASUKE(1)
         game_world.add_object(p1, 1)
 
     if charactor_choose_mode.p2_choose_result() == 1:
         p2 = P2(2)
         game_world.add_object(p2, 1)
     elif charactor_choose_mode.p2_choose_result() == 2:
-        p1 = P1(2)
+        p1 = SASUKE(2)
         game_world.add_object(p1, 1)
 
 

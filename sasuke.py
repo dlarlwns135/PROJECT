@@ -512,7 +512,7 @@ class StateMachine:
 
 
 
-class P1:
+class SASUKE:
     global skill_num
     def __init__(self, p_num):
         self.x, self.y = 400, ground_y
