@@ -195,6 +195,10 @@ class Jump:
             p1.up_tele = True
         if up_up(e):
             p1.up_tele = False
+        if down_down(e):
+            p1.down_tele = True
+        if down_up(e):
+            p1.down_tele = False
         if p1.right and not p1.left:
             p1.dir = 1
             p1.jump_move = True
@@ -206,7 +210,6 @@ class Jump:
             p1.frame = 2
 
         p1.jump_state = True
-        pass
 
     @staticmethod
     def exit(p1, e):
@@ -263,7 +266,6 @@ class Teleport:
             p1.right = False
         elif left_up(e):
             p1.left = False
-        pass
 
     @staticmethod
     def exit(p1, e):
@@ -271,6 +273,11 @@ class Teleport:
             if p1.up_tele:
                 p1.y += tele_dis
                 p1.up_tele = False
+            elif p1.down_tele:
+                p1.y -= tele_dis
+                if p1.y <= ground_y:
+                    p1.y = ground_y
+                p1.down_tele = False
             else:
                 if p1.right and not p1.left:
                     p1.x += tele_dis
@@ -477,7 +484,7 @@ class StateMachine:
                    down_down: Idle, down_up: Idle},
             Run: {right_up: Idle, left_up: Idle, right_down: Idle, left_down: Idle, up_down: Jump, stop: Idle
                   , teleport_down: Teleport, attack_down: Run_Attack, skill_down: Skill_motion},
-            Jump: {jump_end: Idle, jump_end_run: Run, up_down: Jump, up_up: Jump,
+            Jump: {jump_end: Idle, jump_end_run: Run, up_down: Jump, up_up: Jump, down_down: Jump, down_up: Jump,
                    teleport_down: Teleport, skill_down: Skill_motion, attack_down: Jump_Attack,
                    right_down: Jump, left_down: Jump, right_up: Jump, left_up: Jump},
             Teleport: {right_down: Teleport, left_down: Teleport, right_up: Teleport, left_up: Teleport,
@@ -539,6 +546,7 @@ class SASUKE:
         self.right = False
         self.left = False
         self.up_tele = False
+        self.down_tele = False
         self.attack_num = 1
         self.wait_time = 0
         self.skill_num = 'shuriken'
