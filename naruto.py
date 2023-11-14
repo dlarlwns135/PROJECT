@@ -120,6 +120,7 @@ class Idle:
         if down_up(e):
             p2.skill_num = 'shuriken'
         if skill_down(e):
+            p2.frame = 0
             p2.skill()
         if right_down(e):
             p2.right = True
@@ -239,7 +240,6 @@ class Jump:
             p2.y = ground_y
             p2.frame = 0
             p2.state_machine.handle_event(('JUMP_END', None))
-            print("JUMP_END")
             p2.jump_state = False
             p2.jump_move = False
 
@@ -443,20 +443,18 @@ class Skill_motion:
         if p2.skill_num == 'special':
             p2.frame = (p2.frame + 11 * 1.0 * game_framework.frame_time) % 11
             if p2.frame >= 10:
-                p2.skill_num = 1
+                p2.skill_num = 'shuriken'
                 p2.frame = 0
                 p2.state_machine.handle_event(('STOP', None))
         elif p2.skill_num == 'shuriken':
             if p2.jump_state:
                 p2.frame = (p2.frame + 3 * 7 * game_framework.frame_time) % 3
                 if p2.frame >= 2:
-                    p2.skill_num = 1
                     p2.frame = 0
                     p2.state_machine.handle_event(('STOP', None))
             else:
                 p2.frame = (p2.frame + 5 * 4 * game_framework.frame_time) % 5
                 if p2.frame >= 4:
-                    p2.skill_num = 1
                     p2.frame = 0
                     p2.state_machine.handle_event(('STOP', None))
 
@@ -560,16 +558,28 @@ class NARUTO:
         player_num = p_num
 
     def skill(self):
-        if self.skill_num == 1:
+        if self.skill_num == 'shuriken':
             skill1 = Skill1(self.x, self.y + 10, self.dir)
             game_world.add_object(skill1, 2)
-        elif self.skill_num == 2:
+            if player_num == 1:
+                game_world.add_collision_pair('p2:p1_skill1', None, skill1)
+            elif player_num == 2:
+                game_world.add_collision_pair('p1:p2_skill1', None, skill1)
+        elif self.skill_num == 'special':
             skill2 = Skill2(self.x, self.y + 50, self.dir)
             game_world.add_object(skill2, 2)
+            if player_num == 1:
+                game_world.add_collision_pair('p2:p1_skill2', None, skill2)
+            elif player_num == 2:
+                game_world.add_collision_pair('p1:p2_skill2', None, skill2)
 
     def attack(self):
         attack_range = Attack_range(self.x, self.y, self.dir, self.attack_num)
         game_world.add_object(attack_range, 2)
+        if player_num == 1:
+            game_world.add_collision_pair('p2:p1_attack', None, attack_range)
+        elif player_num == 2:
+            game_world.add_collision_pair('p1:p2_attack', None, attack_range)
     def update(self):
         self.state_machine.update()
 
@@ -590,3 +600,25 @@ class NARUTO:
 
     def get_bb(self):
         return self.x - 30, self.y - 70, self.x + 30, self.y + 70
+
+    def handle_collision(self, group, other):
+        if player_num == 1:
+            if group == 'p1:p2_attack':
+                print(other.damage)
+                print("p2한테 맞음")
+            if group == 'p1:p2_skill1':
+                print(other.damage)
+                print("p2한테 표창 맞음")
+            if group == 'p1:p2_skill2':
+                print(other.damage)
+                print("p2한테 special 맞음")
+        elif player_num == 2:
+            if group == 'p2:p1_attack':
+                print(other.damage)
+                print("p1한테 맞음")
+            if group == 'p2:p1_skill1':
+                print(other.damage)
+                print("p1한테 표창 맞음")
+            if group == 'p2:p1_skill2':
+                print(other.damage)
+                print("p1한테 special 맞음")

@@ -17,6 +17,7 @@ class Skill1:
         self.frame = 0
         self.dir = dir
         self.count = 0
+        self.damage = 10
 
     def draw(self):
         self.shuriken.clip_composite_draw(int(self.frame) * 44, 0, 44, 35, 0, '', self.x, self.y, 44, 35)
@@ -31,6 +32,11 @@ class Skill1:
     def get_bb(self):
         return self.x - 22, self.y - 18, self.x + 22, self.y + 18
 
+    def handle_collision(self, group, other):
+        if group == 'p1:p2_skill1' or group == 'p2:p1_skill1':
+            # print("충돌")
+            game_world.remove_object(self)
+
 class Skill2:
     skill2_effect1 = None
     skill2_effect2 = None
@@ -43,6 +49,7 @@ class Skill2:
         self.frame = 0
         self.dir = dir
         self.count = 0
+        self.damage = 80
 
     def draw(self):
         if self.frame <= 7:
@@ -79,6 +86,10 @@ class Skill2:
         # return self.x - skill_range_x, self.y - skill_range_y, self.x + skill_range_x, self.y + skill_range_y
         return self.x - 130, self.y - 70, self.x + 130, self.y + 70
 
+    def handle_collision(self, group, other):
+        if group == 'p1:p2_skill2' or group == 'p2:p1_skill2':
+            print("치도리 맞음")
+
 class Attack_range:
     def __init__(self, x = 400, y = 300, dir = 1, attack_num = 0):
         self.x, self.y = x, y
@@ -89,41 +100,47 @@ class Attack_range:
         self.attack_num = attack_num
         self.attack_range_x = 0
         self.attack_range_y = 0
+        self.damage = 0
         if self.attack_num == 1:
             self.attack_range_x = 80
             self.attack_range_y = 30
             self.attack_x_dis = 60
             self.attack_y_dis = 0
-            pass
+            self.damage = 10
         elif self.attack_num == 2:
             self.attack_range_x = 90
             self.attack_range_y = 30
             self.attack_x_dis = 60
             self.attack_y_dis = 10
+            self.damage = 10
             pass
         elif self.attack_num == 3:
             self.attack_range_x = 105
             self.attack_range_y = 70
             self.attack_x_dis = 90
             self.attack_y_dis = 0
+            self.damage = 15
             pass
         elif self.attack_num == 4:
             self.attack_range_x = 105
             self.attack_range_y = 80
             self.attack_x_dis = 90
             self.attack_y_dis = 20
+            self.damage = 20
             pass
         elif self.attack_num == 'run':
             self.attack_range_x = 100
             self.attack_range_y = 30
             self.attack_x_dis = 60
             self.attack_y_dis = -20
+            self.damage = 30
             pass
         elif self.attack_num == 'jump':
             self.attack_range_x = 90
             self.attack_range_y = 50
             self.attack_x_dis = 10
             self.attack_y_dis = -10
+            self.damage = 30
     def update(self):
         self.frame = self.frame + 7 * 3 * game_framework.frame_time
         if self.attack_num == 1:
@@ -161,3 +178,9 @@ class Attack_range:
                 self.y - self.attack_range_y + self.attack_y_dis,
                 self.x + self.attack_range_x + self.dir * self.attack_x_dis,
                 self.y + self.attack_range_y + self.attack_y_dis)
+
+    def handle_collision(self, group, other):
+        if group == 'p1:p2_attack' or group == 'p2:p1_attack':
+            # print("충돌")
+            game_world.remove_object(self)
+        pass
