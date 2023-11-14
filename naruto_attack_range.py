@@ -101,8 +101,8 @@ class Attack_range:
             self.attack_x_dis = 0
             self.attack_y_dis = 0
             pass
-        elif self.attack_num == 5:
-            self.attack_range_x = 50
+        elif self.attack_num == 'run':
+            self.attack_range_x = 40
             self.attack_range_y = 50
             self.attack_x_dis = 30
             self.attack_y_dis = -20
@@ -124,11 +124,11 @@ class Attack_range:
             if self.frame >= 6.5:
                 self.frame = 0
                 game_world.remove_object(self)
-        if self.attack_num == 5:
+        if self.attack_num == 'run':
+            self.x += self.dir * RUN_SPEED_PPS * 1 * game_framework.frame_time
             if self.frame >= 6.5:
                 self.frame = 0
                 game_world.remove_object(self)
-        pass
 
     def draw(self):
         draw_rectangle(*self.get_bb())

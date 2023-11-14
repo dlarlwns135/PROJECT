@@ -220,8 +220,6 @@ class Jump:
             p1.skill()
         if teleport_down(e):
             p1.frame = 0
-        pass
-
     @staticmethod
     def do(p1):
         if not p1.right and not p1.left:
@@ -452,7 +450,6 @@ class Skill_motion:
                 p1.skill_num = 'shuriken'
                 p1.frame = 0
                 p1.state_machine.handle_event(('STOP', None))
-        pass
 
     @staticmethod
     def draw(p1):
