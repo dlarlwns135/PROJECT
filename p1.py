@@ -88,48 +88,6 @@ def slash_down(e):
     elif player_num == 2:
         return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_b
 
-def w_down(e):
-    return  e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_w
-
-def w_up(e):
-    return  e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_w
-
-def s_down(e):
-    return  e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_s
-
-def s_up(e):
-    return  e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_s
-
-def a_down(e):
-    return  e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_a
-
-def a_up(e):
-    return  e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_a
-
-def d_down(e):
-    return  e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_d
-
-def d_up(e):
-    return  e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_d
-
-def c_down(e):
-    return  e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_c
-
-def c_up(e):
-    return  e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_c
-
-def v_down(e):
-    return  e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_v
-
-def v_up(e):
-    return  e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_v
-
-def b_down(e):
-    return  e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_b
-
-def b_up(e):
-    return  e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_b
-
 def time_out(e):
     return e[0] == 'TIME_OUT'
 
@@ -155,17 +113,7 @@ class Idle:
 
     @staticmethod
     def enter(p1, e):
-        # print(p1.skill_num)
         p1.frame = 0
-        # if right_up(e):
-        #     p1.right = False
-        # elif left_up(e):
-        #     p1.left = False
-        # elif right_down(e):
-        #     p1.right = True
-        # elif left_down(e):
-        #     p1.left = True
-        #p1.wait_time = get_time() # pico2d import 필요
         pass
 
     @staticmethod
@@ -214,25 +162,15 @@ class Run:
     def enter(p1, e):
 
         p1.y -= 15
-        # if right_down(e):
-        #     p1.right = True
-        # elif left_down(e):
-        #     p1.left = True
-        # elif right_up(e):
-        #     p1.right = False
-        #     # p1.dir = -1
-        # elif left_up(e):
-        #     p1.left = False
-        #     # p1.dir = 1
 
         if p1.right and not p1.left:
             p1.dir = 1
         elif p1.left and not p1.right:
             p1.dir = -1
-        elif not p1.right and p1.left:
-            p1.dir = -1
-        elif not p1.left and p1.right:
-            p1.dir = 1
+        # elif not p1.right and p1.left:
+        #     p1.dir = -1
+        # elif not p1.left and p1.right:
+        #     p1.dir = 1
     @staticmethod
     def exit(p1, e):
         p1.y += 15
@@ -240,13 +178,8 @@ class Run:
 
     @staticmethod
     def do(p1):
-        # if p1.right and p1.left:
-        #     p1.state_machine.handle_event(('STOP', None))
-        # if not p1.right and not p1.left:
-        #     p1.state_machine.handle_event(('STOP', None))
         p1.frame = (p1.frame + 6 * 2 * game_framework.frame_time) % 6
         p1.x += p1.dir * RUN_SPEED_PPS * game_framework.frame_time
-        #delay(0.01)
 
     @staticmethod
     def draw(p1):
@@ -259,20 +192,30 @@ class Run:
 class Jump:
     @staticmethod
     def enter(p1, e):
-        if right_down(e):
+        if p1.right and not p1.left or right_down(e):
             p1.dir = 1
-            p1.right = True
             p1.jump_move = True
-            p1.up_tele = False
-        if left_down(e):
+        elif p1.left and not p1.right or left_down(e):
             p1.dir = -1
-            p1.left = True
             p1.jump_move = True
-            p1.up_tele = False
-        if right_up(e):
-            p1.right = False
-        if left_up(e):
-            p1.left = False
+        # elif not p1.right and p1.left:
+        #     p1.dir = -1
+        # elif not p1.left and p1.right:
+        #     p1.dir = 1
+        # if right_down(e):
+        #     p1.dir = 1
+        #     p1.right = True
+        #     p1.jump_move = True
+        #     p1.up_tele = False
+        # if left_down(e):
+        #     p1.dir = -1
+        #     p1.left = True
+        #     p1.jump_move = True
+        #     p1.up_tele = False
+        # if right_up(e):
+        #     p1.right = False
+        # if left_up(e):
+        #     p1.left = False
         if up_down(e):
             p1.up_tele = True
         if up_up(e):
@@ -427,8 +370,6 @@ class Attack:
                 p1.frame = 0
                 p1.wait_time = get_time()
 
-        pass
-
     @staticmethod
     def draw(p1):
         if p1.attack_num == 1:
@@ -452,6 +393,58 @@ class Attack:
             elif p1.dir == 1:
                     p1.attack4.clip_composite_draw(int(p1.frame) * 72, 0, 72, 66, 0, '', p1.x + 62, p1.y+3, 225, 206)
 
+class Run_Attack:
+    @staticmethod
+    def enter(p1, e):
+        p1.frame = 0
+        p1.attack_num = 'run'
+        p1.attack()
+
+    @staticmethod
+    def exit(p1, e):
+        p1.attack_num = 1
+        p1.frame = 0
+        pass
+
+    @staticmethod
+    def do(p1):
+        p1.frame = p1.frame + 6 * 3 * game_framework.frame_time
+        if p1.frame >= 5.9:
+            p1.state_machine.handle_event(('STOP', None))
+        p1.x += p1.dir * RUN_SPEED_PPS * 2.3 * game_framework.frame_time
+
+    @staticmethod
+    def draw(p1):
+        if p1.dir == -1:
+            p1.run_attack.clip_composite_draw(int(p1.frame) * 79, 0, 79, 64, 0, 'h', p1.x-35, p1.y, 247, 200)
+        elif p1.dir == 1:
+            p1.run_attack.clip_composite_draw(int(p1.frame) * 79, 0, 79, 64, 0, '', p1.x+35, p1.y, 247, 200)
+
+class Jump_Attack:
+    @staticmethod
+    def enter(p1, e):
+        p1.frame = 0
+        p1.attack_num = 'jump'
+        p1.attack()
+
+    @staticmethod
+    def exit(p1, e):
+        p1.attack_num = 1
+        p1.frame = 2
+        pass
+
+    @staticmethod
+    def do(p1):
+        p1.frame = p1.frame + 5 * 3 * game_framework.frame_time
+        if p1.frame >= 4.9:
+            p1.state_machine.handle_event(('STOP', None))
+
+    @staticmethod
+    def draw(p1):
+        if p1.dir == -1:
+            p1.jump_attack.clip_composite_draw(int(p1.frame) * 56, 0, 56, 64, 0, 'h', p1.x, p1.y, 175, 200)
+        elif p1.dir == 1:
+            p1.jump_attack.clip_composite_draw(int(p1.frame) * 56, 0, 56, 64, 0, '', p1.x, p1.y, 175, 200)
 
 class Skill_motion:
     @staticmethod
@@ -520,32 +513,18 @@ class StateMachine:
                    up_down: Jump, jump_state: Jump, comma_down: Attack, slash_down: Skill_motion,
                    down_down: Idle, down_up: Idle},
             Run: {right_up: Idle, left_up: Idle, right_down: Idle, left_down: Idle, up_down: Jump, stop: Idle
-                  , period_down: Teleport},
+                  , period_down: Teleport, comma_down: Run_Attack},
             Jump: {jump_end: Idle, jump_end_run: Run, up_down: Jump, up_up: Jump,
-                   period_down: Teleport, slash_down: Skill_motion,
+                   period_down: Teleport, slash_down: Skill_motion, comma_down: Jump_Attack,
                    right_down: Jump, left_down: Jump, right_up: Jump, left_up: Jump},
             Teleport: {right_down: Teleport, left_down: Teleport, right_up: Teleport, left_up: Teleport,
                        teleport: Idle},
             Attack: {stop: Idle, right_down: Attack, left_down: Attack, right_up: Attack, left_up: Attack},
+            Run_Attack: {stop: Idle},
+            Jump_Attack: {stop: Jump},
             Skill_motion: {stop: Idle, right_up: Skill_motion, left_up: Skill_motion,
                            right_down: Skill_motion, left_down: Skill_motion}
         }
-        # elif player_num == 2:
-        #     self.transitions = {
-        #         Idle: {d_down: Run, a_down: Run, d_up: Idle, a_up: Idle, run_state: Run,
-        #                w_down: Jump, jump_state: Jump, c_down: Attack, b_down: Skill_motion,
-        #                s_down: Idle, s_up: Idle},
-        #         Run: {d_up: Idle, a_up: Idle, d_down: Idle, a_down: Idle, w_down: Jump, stop: Idle
-        #             , v_down: Teleport},
-        #         Jump: {jump_end: Idle, jump_end_run: Run, w_down: Jump, w_up: Jump,
-        #                v_down: Teleport, b_down: Skill_motion,
-        #                d_down: Jump, a_down: Jump, d_up: Jump, a_up: Jump},
-        #         Teleport: {d_down: Teleport, a_down: Teleport, d_up: Teleport, a_up: Teleport,
-        #                    teleport: Idle},
-        #         Attack: {stop: Idle, d_down: Attack, a_down: Attack, d_up: Attack, a_up: Attack},
-        #         Skill_motion: {stop: Idle, d_up: Skill_motion, a_up: Skill_motion,
-        #                        d_down: Skill_motion, a_down: Skill_motion}
-        #     }
 
     def start(self):
         self.cur_state.enter(self.p1, ('NONE', 0))
@@ -589,6 +568,8 @@ class P1:
         self.skill1_stand = load_image('sasuke_skill1_stand.png')
         self.skill1_jump = load_image('sasuke_skill1_jump.png')
         self.skill2 = load_image('sasuke_skill2.png')
+        self.run_attack = load_image('sasuke_run_attack.png')
+        self.jump_attack = load_image('sasuke_jump_attack.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.jump_move = False
@@ -615,14 +596,6 @@ class P1:
     def attack(self):
         attack_range = Attack_range(self.x, self.y, self.dir, self.attack_num)
         game_world.add_object(attack_range, 2)
-        # if self.attack_num == 1:
-        #     pass
-        # elif self.attack_num == 2:
-        #     pass
-        # elif self.attack_num == 3:
-        #     pass
-        # elif self.attack_num == 4:
-        #     pass
         pass
     def update(self):
         self.state_machine.update()
