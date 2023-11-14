@@ -12,9 +12,6 @@ RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
-# state event check
-# ( state event type, event value )
-
 ground_y = 70
 tele_dis = 220
 player_num = 0
@@ -70,19 +67,19 @@ def left_up(e):
 def space_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE
 
-def period_down(e):
+def teleport_down(e):
     if player_num == 1:
         return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_PERIOD
     elif player_num == 2:
         return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_v
 
-def comma_down(e):
+def attack_down(e):
     if player_num == 1:
         return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_COMMA
     elif player_num == 2:
         return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_c
 
-def slash_down(e):
+def skill_down(e):
     if player_num == 1:
         return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SLASH
     elif player_num == 2:
@@ -113,18 +110,16 @@ class Idle:
 
     @staticmethod
     def enter(p1, e):
-        p1.frame = 0
         pass
 
     @staticmethod
     def exit(p1, e):
-        print(p1.skill_num)
         p1.frame = 0
         if down_down(e):
-            p1.skill_num = 2
+            p1.skill_num = 'special'
         if down_up(e):
-            p1.skill_num = 1
-        if slash_down(e):
+            p1.skill_num = 'shuriken'
+        if skill_down(e):
             p1.skill()
         if right_down(e):
             p1.right = True
@@ -143,10 +138,7 @@ class Idle:
             p1.state_machine.handle_event(('RUN_STATE', None))
         if not p1.right and p1.left:
             p1.state_machine.handle_event(('RUN_STATE', None))
-        # if not (p1.right and p1.left):
-        #     p1.state_machine.handle_event(('RUN_STATE', None))
         p1.frame = (p1.frame + 6 * 1 * game_framework.frame_time) % 6
-        #delay(0.1)
 
     @staticmethod
     def draw(p1):
@@ -167,14 +159,13 @@ class Run:
             p1.dir = 1
         elif p1.left and not p1.right:
             p1.dir = -1
-        # elif not p1.right and p1.left:
-        #     p1.dir = -1
-        # elif not p1.left and p1.right:
-        #     p1.dir = 1
+
     @staticmethod
     def exit(p1, e):
         p1.y += 15
         p1.frame = 0
+        if skill_down(e):
+            p1.skill()
 
     @staticmethod
     def do(p1):
@@ -192,38 +183,28 @@ class Run:
 class Jump:
     @staticmethod
     def enter(p1, e):
-        if p1.right and not p1.left or right_down(e):
-            p1.dir = 1
-            p1.jump_move = True
-        elif p1.left and not p1.right or left_down(e):
-            p1.dir = -1
-            p1.jump_move = True
-        # elif not p1.right and p1.left:
-        #     p1.dir = -1
-        # elif not p1.left and p1.right:
-        #     p1.dir = 1
-        # if right_down(e):
-        #     p1.dir = 1
-        #     p1.right = True
-        #     p1.jump_move = True
-        #     p1.up_tele = False
-        # if left_down(e):
-        #     p1.dir = -1
-        #     p1.left = True
-        #     p1.jump_move = True
-        #     p1.up_tele = False
-        # if right_up(e):
-        #     p1.right = False
-        # if left_up(e):
-        #     p1.left = False
+        if right_down(e):
+            p1.right = True
+        if left_down(e):
+            p1.left = True
+        if right_up(e):
+            p1.right = False
+        if left_up(e):
+            p1.left = False
         if up_down(e):
             p1.up_tele = True
         if up_up(e):
             p1.up_tele = False
+        if p1.right and not p1.left:
+            p1.dir = 1
+            p1.jump_move = True
+        elif p1.left and not p1.right:
+            p1.dir = -1
+            p1.jump_move = True
+
         if jump_state(e):
             p1.frame = 2
-        if p1.right or p1.left:
-            p1.jump_move = True
+
         p1.jump_state = True
         pass
 
@@ -231,15 +212,18 @@ class Jump:
     def exit(p1, e):
         if up_down(e):
             p1.frame = 0
-        if slash_down(e):
+        if skill_down(e):
+            p1.frame = 0
             p1.skill()
-        if period_down(e):
+        if teleport_down(e):
             p1.frame = 0
         pass
 
     @staticmethod
     def do(p1):
         if not p1.right and not p1.left:
+            p1.jump_move = False
+        if p1.right and p1.left:
             p1.jump_move = False
         if p1.frame >= 3:
             p1.frame = 3
@@ -254,16 +238,10 @@ class Jump:
         if p1.y <= ground_y:
             p1.y = ground_y
             p1.frame = 0
-            # if p1.jump_move:
-            #     pass
-            #     # p1.state_machine.handle_event(('JUMP_END_RUN', None))
-            #     # print("JUMP_END_RUN")
-            # else:
             p1.state_machine.handle_event(('JUMP_END', None))
             print("JUMP_END")
             p1.jump_state = False
             p1.jump_move = False
-        #delay(0.01)
 
     @staticmethod
     def draw(p1):
@@ -275,7 +253,6 @@ class Jump:
 class Teleport:
     @staticmethod
     def enter(p1, e):
-        # p1.frame = 0
         if right_down(e):
             p1.dir = 1
             p1.right = True
@@ -295,20 +272,16 @@ class Teleport:
                 p1.y += tele_dis
                 p1.up_tele = False
             else:
-                if p1.right:
+                if p1.right and not p1.left:
                     p1.x += tele_dis
-                elif p1.left:
+                elif p1.left and not p1.right:
                     p1.x -= tele_dis
-        # p1.frame = 0
-        pass
 
     @staticmethod
     def do(p1):
         p1.frame = p1.frame + 4 * 5 * game_framework.frame_time
         if p1.frame >= 3:
             p1.state_machine.handle_event(('TELEPORT', None))
-        #delay(0.01)
-        pass
 
     @staticmethod
     def draw(p1):
@@ -334,9 +307,6 @@ class Attack:
             p1.left = False
         else:
             p1.attack()
-
-
-        pass
 
     @staticmethod
     def exit(p1, e):
@@ -404,14 +374,12 @@ class Run_Attack:
     def exit(p1, e):
         p1.attack_num = 1
         p1.frame = 0
-        pass
-
     @staticmethod
     def do(p1):
         p1.frame = p1.frame + 6 * 3 * game_framework.frame_time
         if p1.frame >= 5.9:
             p1.state_machine.handle_event(('STOP', None))
-        p1.x += p1.dir * RUN_SPEED_PPS * 2.3 * game_framework.frame_time
+        p1.x += p1.dir * RUN_SPEED_PPS * 1 * game_framework.frame_time
 
     @staticmethod
     def draw(p1):
@@ -431,11 +399,10 @@ class Jump_Attack:
     def exit(p1, e):
         p1.attack_num = 1
         p1.frame = 2
-        pass
 
     @staticmethod
     def do(p1):
-        p1.frame = p1.frame + 5 * 3 * game_framework.frame_time
+        p1.frame = p1.frame + 5 * 3.5 * game_framework.frame_time
         if p1.frame >= 4.9:
             p1.state_machine.handle_event(('STOP', None))
 
@@ -457,40 +424,37 @@ class Skill_motion:
             p1.right = False
         elif left_up(e):
             p1.left = False
-        pass
 
     @staticmethod
     def exit(p1, e):
-
         pass
 
     @staticmethod
     def do(p1):
-        if p1.skill_num == 2:
+        if p1.skill_num == 'special':
             p1.frame = (p1.frame + 19 * 1.0 * game_framework.frame_time) % 19
             if p1.frame >= 8:
                 p1.x += p1.dir * RUN_SPEED_PPS * 2 * game_framework.frame_time
             if p1.frame >= 18:
-                p1.skill_num = 1
+                p1.skill_num = 'shuriken'
                 p1.frame = 0
                 p1.state_machine.handle_event(('STOP', None))
-        elif p1.skill_num == 1:
+        elif p1.skill_num == 'shuriken':
             p1.frame = (p1.frame + 4 * 4 * game_framework.frame_time) % 4
             if p1.frame >= 3:
-                p1.skill_num = 1
+                p1.skill_num = 'shuriken'
                 p1.frame = 0
                 p1.state_machine.handle_event(('STOP', None))
         pass
 
     @staticmethod
     def draw(p1):
-        # p1.attack4.clip_composite_draw(p1.frame * 72, 0, 72, 66, 0, 'h', p1.x - 62, p1.y - 3, 225, 206)
-        if p1.skill_num == 2:
+        if p1.skill_num == 'special':
             if p1.dir == -1:
                 p1.skill2.clip_composite_draw(int(p1.frame) * 104, 0, 104, 77, 0, 'h', p1.x, p1.y+41, 325, 241)
             elif p1.dir == 1:
                 p1.skill2.clip_composite_draw(int(p1.frame) * 104, 0, 104, 77, 0, '', p1.x, p1.y+41, 325, 241)
-        elif p1.skill_num == 1:
+        elif p1.skill_num == 'shuriken':
             if p1.jump_state:
                 if p1.dir == -1:
                     p1.skill1_jump.clip_composite_draw(int(p1.frame) * 40, 0, 40, 64, 0, 'h', p1.x, p1.y, 125, 200)
@@ -501,7 +465,6 @@ class Skill_motion:
                     p1.skill1_stand.clip_composite_draw(int(p1.frame) * 40, 0, 40, 64, 0, 'h', p1.x, p1.y, 125, 200)
                 elif p1.dir == 1:
                     p1.skill1_stand.clip_composite_draw(int(p1.frame) * 40, 0, 40, 64, 0, '', p1.x, p1.y, 125, 200)
-        pass
 
 class StateMachine:
     def __init__(self, p1):
@@ -510,12 +473,12 @@ class StateMachine:
         # if player_num == 1:
         self.transitions = {
             Idle: {right_down: Run, left_down: Run, right_up: Idle, left_up: Idle, run_state: Run,
-                   up_down: Jump, jump_state: Jump, comma_down: Attack, slash_down: Skill_motion,
+                   up_down: Jump, jump_state: Jump, attack_down: Attack, skill_down: Skill_motion,
                    down_down: Idle, down_up: Idle},
             Run: {right_up: Idle, left_up: Idle, right_down: Idle, left_down: Idle, up_down: Jump, stop: Idle
-                  , period_down: Teleport, comma_down: Run_Attack},
+                  , teleport_down: Teleport, attack_down: Run_Attack, skill_down: Skill_motion},
             Jump: {jump_end: Idle, jump_end_run: Run, up_down: Jump, up_up: Jump,
-                   period_down: Teleport, slash_down: Skill_motion, comma_down: Jump_Attack,
+                   teleport_down: Teleport, skill_down: Skill_motion, attack_down: Jump_Attack,
                    right_down: Jump, left_down: Jump, right_up: Jump, left_up: Jump},
             Teleport: {right_down: Teleport, left_down: Teleport, right_up: Teleport, left_up: Teleport,
                        teleport: Idle},
@@ -552,7 +515,6 @@ class StateMachine:
 class P1:
     global skill_num
     def __init__(self, p_num):
-        self.up = None
         self.x, self.y = 400, ground_y
         self.frame = 0
         self.dir = 1
@@ -574,29 +536,26 @@ class P1:
         self.state_machine.start()
         self.jump_move = False
         self.jump_state = False
-        self.run_check = 0
         self.right = False
         self.left = False
         self.up_tele = False
         self.attack_num = 1
         self.wait_time = 0
-        self.skill_num = 1
+        self.skill_num = 'shuriken'
         global player_num
         player_num = p_num
 
     def skill(self):
-        if self.skill_num == 1:
+        if self.skill_num == 'shuriken':
             skill1 = Skill1(self.x, self.y + 10, self.dir)
             game_world.add_object(skill1, 2)
-        elif self.skill_num == 2:
+        elif self.skill_num == 'special':
             skill2 = Skill2(self.x, self.y + 10, self.dir)
             game_world.add_object(skill2, 2)
-        pass
 
     def attack(self):
         attack_range = Attack_range(self.x, self.y, self.dir, self.attack_num)
         game_world.add_object(attack_range, 2)
-        pass
     def update(self):
         self.state_machine.update()
 
@@ -604,11 +563,11 @@ class P1:
         self.state_machine.handle_event(('INPUT', event))
         if right_up(('INPUT', event)):
             self.right = False
-        elif left_up(('INPUT', event)):
+        if left_up(('INPUT', event)):
             self.left = False
-        elif right_down(('INPUT', event)):
+        if right_down(('INPUT', event)):
             self.right = True
-        elif left_down(('INPUT', event)):
+        if left_down(('INPUT', event)):
             self.left = True
 
     def draw(self):

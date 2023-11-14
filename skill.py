@@ -143,7 +143,7 @@ class Attack_range:
                 self.frame = 0
                 game_world.remove_object(self)
         if self.attack_num == 'run':
-            self.x += self.dir * RUN_SPEED_PPS * 2.3 * game_framework.frame_time
+            self.x += self.dir * RUN_SPEED_PPS * 1 * game_framework.frame_time
             if self.frame >= 6.5:
                 self.frame = 0
                 game_world.remove_object(self)
