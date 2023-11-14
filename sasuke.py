@@ -4,7 +4,7 @@ from pico2d import *
 
 import game_framework
 import game_world
-from skill import Skill1, Skill2, Attack_range
+from sasuke_attack_range import Skill1, Skill2, Attack_range
 
 PIXEL_PER_METER = (10.0 / 0.3) # 10 pixel 30 cm
 RUN_SPEED_KMPH = 50.0 # Km / Hour
@@ -477,7 +477,6 @@ class StateMachine:
     def __init__(self, p1):
         self.p1 = p1
         self.cur_state = Idle
-        # if player_num == 1:
         self.transitions = {
             Idle: {right_down: Run, left_down: Run, right_up: Idle, left_up: Idle, run_state: Run,
                    up_down: Jump, jump_state: Jump, attack_down: Attack, skill_down: Skill_motion,
@@ -514,9 +513,6 @@ class StateMachine:
 
     def draw(self):
         self.cur_state.draw(self.p1)
-
-
-
 
 
 class SASUKE:

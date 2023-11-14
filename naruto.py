@@ -5,7 +5,7 @@ from pico2d import *
 import game_framework
 import game_world
 # from skill import Skill1, Skill2
-from P2_attack_range import Skill1, Skill2, Attack_range
+from naruto_attack_range import Skill1, Skill2, Attack_range
 
 PIXEL_PER_METER = (10.0 / 0.3) # 10 pixel 30 cm
 RUN_SPEED_KMPH = 50.0 # Km / Hour
@@ -626,7 +626,7 @@ class StateMachine:
 
 
 
-class P2:
+class NARUTO:
     global skill_num
     def __init__(self, p_num):
         self.up = None

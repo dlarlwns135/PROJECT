@@ -2,8 +2,7 @@ from pico2d import *
 
 from map import Map
 from sasuke import SASUKE
-from p2 import P2
-from p3 import P3
+from naruto import NARUTO
 import game_framework
 import game_world
 import charactor_choose_mode
@@ -19,7 +18,6 @@ def handle_events():
         else:
             p1.handle_event(event)
             p2.handle_event(event)
-            p3.handle_event(event)
 
 
 def init():
@@ -27,7 +25,6 @@ def init():
     global world
     global p1
     global p2
-    global p3
     global map
 
     running = True
@@ -37,18 +34,18 @@ def init():
     game_world.add_object(map, 1)
 
     if charactor_choose_mode.p1_choose_result() == 1:
-        p2 = P2(1)
-        game_world.add_object(p2, 1)
+        p1 = NARUTO(1)
+        game_world.add_object(p1, 1)
     elif charactor_choose_mode.p1_choose_result() == 2:
         p1 = SASUKE(1)
         game_world.add_object(p1, 1)
 
     if charactor_choose_mode.p2_choose_result() == 1:
-        p2 = P2(2)
+        p2 = NARUTO(2)
         game_world.add_object(p2, 1)
     elif charactor_choose_mode.p2_choose_result() == 2:
-        p1 = SASUKE(2)
-        game_world.add_object(p1, 1)
+        p2 = SASUKE(2)
+        game_world.add_object(p2, 1)
 
 
     # p1 = P1(2)
@@ -57,7 +54,7 @@ def init():
     # p2 = P2(1)
     # game_world.add_object(p2, 1)
 
-    p3 = P3()
+    # p3 = P3()
     # game_world.add_object(p3, 1)
 
 def finish():
@@ -68,6 +65,6 @@ def update():
 def draw():
     clear_canvas()
     game_world.render()
-    delay(0.01)
+   # delay(0.01)
     update_canvas()
 
