@@ -468,6 +468,37 @@ class Skill_motion:
                 elif p1.dir == 1:
                     p1.skill1_stand.clip_composite_draw(int(p1.frame) * 40, 0, 40, 64, 0, '', p1.x, p1.y, 125, 200)
 
+class Easy_hit:
+    @staticmethod
+    def enter(p1, e):
+        if right_down(e):
+            p1.right = True
+        elif left_down(e):
+            p1.left = True
+        elif right_up(e):
+            p1.right = False
+        elif left_up(e):
+            p1.left = False
+
+    @staticmethod
+    def exit(p1, e):
+        pass
+
+    @staticmethod
+    def do(p1):
+        p1.frame = p1.frame + 2 * 5 * game_framework.frame_time
+        if p1.frame >= 1.9:
+            p1.frame = 0
+            p1.state_machine.handle_event(('STOP', None))
+
+
+    @staticmethod
+    def draw(p1):
+        if p1.dir == -1:
+            p1.easy_hit.clip_composite_draw(int(p1.frame) * 40, 0, 40, 64, 0, 'h', p1.x, p1.y, 125, 200)
+        elif p1.dir == 1:
+            p1.easy_hit.clip_composite_draw(int(p1.frame) * 40, 0, 40, 64, 0, '', p1.x, p1.y, 125, 200)
+
 class StateMachine:
     def __init__(self, p1):
         self.p1 = p1
@@ -486,6 +517,7 @@ class StateMachine:
             Attack: {stop: Idle, right_down: Attack, left_down: Attack, right_up: Attack, left_up: Attack},
             Run_Attack: {stop: Idle},
             Jump_Attack: {stop: Jump},
+            Easy_hit: {stop: Idle},
             Skill_motion: {stop: Idle, right_up: Skill_motion, left_up: Skill_motion,
                            right_down: Skill_motion, left_down: Skill_motion}
         }
@@ -530,6 +562,7 @@ class SASUKE:
         self.skill2 = load_image('sasuke_skill2.png')
         self.run_attack = load_image('sasuke_run_attack.png')
         self.jump_attack = load_image('sasuke_jump_attack.png')
+        self.easy_hit = load_image('sasuke_easy_hit.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.jump_move = False
@@ -593,9 +626,13 @@ class SASUKE:
             if group == 'p1:p2_attack':
                 print(other.damage)
                 print("p2한테 맞음")
+                self.frame = 0
+                self.state_machine.cur_state = Easy_hit
             if group == 'p1:p2_skill1':
                 print(other.damage)
                 print("p2한테 표창 맞음")
+                self.frame = 0
+                self.state_machine.cur_state = Easy_hit
             if group == 'p1:p2_skill2':
                 print(other.damage)
                 print("p2한테 special 맞음")
@@ -603,9 +640,13 @@ class SASUKE:
             if group == 'p2:p1_attack':
                 print(other.damage)
                 print("p1한테 맞음")
+                self.frame = 0
+                self.state_machine.cur_state = Easy_hit
             if group == 'p2:p1_skill1':
                 print(other.damage)
                 print("p1한테 표창 맞음")
+                self.frame = 0
+                self.state_machine.cur_state = Easy_hit
             if group == 'p2:p1_skill2':
                 print(other.damage)
                 print("p1한테 special 맞음")
