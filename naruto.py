@@ -508,6 +508,51 @@ class Easy_hit:
         elif p2.dir == 1:
             p2.easy_hit.clip_composite_draw(int(p2.frame) * 40, 0, 40, 48, 0, '', p2.x, p2.y-15, 112, 135)
 
+class Hard_hit:
+    @staticmethod
+    def enter(p2, e):
+        if right_down(e):
+            p2.right = True
+        elif left_down(e):
+            p2.left = True
+        elif right_up(e):
+            p2.right = False
+        elif left_up(e):
+            p2.left = False
+
+    @staticmethod
+    def exit(p2, e):
+        pass
+
+    @staticmethod
+    def do(p2):
+        p2.frame = p2.frame + 4 * 2 * game_framework.frame_time
+        if p2.frame >= 18:
+            p2.invincible = False
+            p2.frame = 0
+            p2.state_machine.handle_event(('STOP', None))
+        if p2.frame < 3:
+            p2.x += -p2.dir * RUN_SPEED_PPS * 1 * game_framework.frame_time
+        if p2.y > ground_y and p2.frame >= 3:
+            p2.x += -p2.dir * RUN_SPEED_PPS * 0.7 * game_framework.frame_time
+            p2.y -= RUN_SPEED_PPS * game_framework.frame_time * (18 - p2.frame) // 18
+            if p2.y < ground_y:
+                p2.y = ground_y
+
+
+    @staticmethod
+    def draw(p2):
+        if p2.frame > 3:
+            if p2.dir == -1:
+                p2.hard_hit.clip_composite_draw(3 * 48, 0, 48, 40, 0, 'h', p2.x, p2.y - 15, 135, 112)
+            elif p2.dir == 1:
+                p2.hard_hit.clip_composite_draw(3 * 48, 0, 48, 40, 0, '', p2.x, p2.y - 15, 135, 112)
+        else:
+            if p2.dir == -1:
+                p2.hard_hit.clip_composite_draw(int(p2.frame) * 48, 0, 48, 40, 0, 'h', p2.x, p2.y-15, 135, 112)
+            elif p2.dir == 1:
+                p2.hard_hit.clip_composite_draw(int(p2.frame) * 48, 0, 48, 40, 0, '', p2.x, p2.y-15, 135, 112)
+
 class StateMachine:
     def __init__(self, p2):
         self.p2 = p2
@@ -526,7 +571,7 @@ class StateMachine:
             Attack: {stop: Idle, right_down: Attack, left_down: Attack, right_up: Attack, left_up: Attack},
             Run_Attack: {stop: Idle},
             Jump_Attack: {stop: Jump},
-            Easy_hit: {stop: Idle},
+            Easy_hit: {stop: Idle}, Hard_hit: {stop: Idle},
             Skill_motion: {stop: Idle, right_up: Skill_motion, left_up: Skill_motion,
                            right_down: Skill_motion, left_down: Skill_motion}
         }
@@ -576,6 +621,7 @@ class NARUTO:
         self.run_attack = load_image('naruto_run_attack.png')
         self.jump_attack = load_image('naruto_jump_attack.png')
         self.easy_hit = load_image('naruto_easy_hit.png')
+        self.hard_hit = load_image('naruto_hard_hit.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.jump_move = False
@@ -589,6 +635,7 @@ class NARUTO:
         self.skill_num = 'shuriken'
         global player_num
         player_num = p_num
+        self.invincible = False
 
     def skill(self):
         if self.skill_num == 'shuriken':
@@ -635,31 +682,40 @@ class NARUTO:
         return self.x - 30, self.y - 70, self.x + 30, self.y + 70
 
     def handle_collision(self, group, other):
-        if player_num == 1:
-            if group == 'p1:p2_attack':
-                print(other.damage)
-                print("p2한테 맞음")
-                self.frame = 0
-                self.state_machine.cur_state = Easy_hit
-            if group == 'p1:p2_skill1':
-                print(other.damage)
-                print("p2한테 표창 맞음")
-                self.frame = 0
-                self.state_machine.cur_state = Easy_hit
-            if group == 'p1:p2_skill2':
-                print(other.damage)
-                print("p2한테 special 맞음")
-        elif player_num == 2:
-            if group == 'p2:p1_attack':
-                print(other.damage)
-                print("p1한테 맞음")
-                self.frame = 0
-                self.state_machine.cur_state = Easy_hit
-            if group == 'p2:p1_skill1':
-                print(other.damage)
-                print("p1한테 표창 맞음")
-                self.frame = 0
-                self.state_machine.cur_state = Easy_hit
-            if group == 'p2:p1_skill2':
-                print(other.damage)
-                print("p1한테 special 맞음")
+        if not self.invincible:
+            if player_num == 1:
+                if group == 'p1:p2_attack':
+                    print(other.damage)
+                    print("p2한테 맞음")
+                    self.frame = 0
+                    self.state_machine.cur_state = Easy_hit
+                if group == 'p1:p2_skill1':
+                    print(other.damage)
+                    print("p2한테 표창 맞음")
+                    self.frame = 0
+                    self.state_machine.cur_state = Easy_hit
+                if group == 'p1:p2_skill2':
+                    self.invincible = True
+                    self.dir = -other.dir
+                    print(other.damage)
+                    print("p2한테 special 맞음")
+                    self.frame = 0
+                    self.state_machine.cur_state = Hard_hit
+            elif player_num == 2:
+                if group == 'p2:p1_attack':
+                    print(other.damage)
+                    print("p1한테 맞음")
+                    self.frame = 0
+                    self.state_machine.cur_state = Easy_hit
+                if group == 'p2:p1_skill1':
+                    print(other.damage)
+                    print("p1한테 표창 맞음")
+                    self.frame = 0
+                    self.state_machine.cur_state = Easy_hit
+                if group == 'p2:p1_skill2':
+                    self.invincible = True
+                    self.dir = -other.dir
+                    print(other.damage)
+                    print("p1한테 special 맞음")
+                    self.frame = 0
+                    self.state_machine.cur_state = Hard_hit

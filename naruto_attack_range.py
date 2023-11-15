@@ -35,7 +35,8 @@ class Skill1:
     def handle_collision(self, group, other):
         if group == 'p1:p2_skill1' or group == 'p2:p1_skill1':
             # print("충돌")
-            game_world.remove_object(self)
+            if not other.invincible:
+                game_world.remove_object(self)
 
 class Skill2:
     skill2_effect = None
@@ -75,8 +76,9 @@ class Skill2:
             return self.x - 220, self.y - 130, self.x + 80, self.y + 110
 
     def handle_collision(self, group, other):
-        if group == 'p1:p2_skill2' or group == 'p2:p1_skill2':
-            print("나선환 맞음")
+        if not other.invincible:
+            if group == 'p1:p2_skill2' or group == 'p2:p1_skill2':
+                print("나선환 맞음")
             # game_world.remove_object(self)
 
 
@@ -165,7 +167,8 @@ class Attack_range:
                 self.y + self.attack_range_y + self.attack_y_dis)
 
     def handle_collision(self, group, other):
-        if group == 'p1:p2_attack' or group == 'p2:p1_attack':
-            # print("충돌")
-            game_world.remove_object(self)
+        if not other.invincible:
+            if group == 'p1:p2_attack' or group == 'p2:p1_attack':
+                # print("충돌")
+                game_world.remove_object(self)
         pass
