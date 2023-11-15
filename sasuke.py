@@ -283,7 +283,7 @@ class Teleport:
 
     @staticmethod
     def do(p1):
-        p1.frame = p1.frame + 4 * 5 * game_framework.frame_time
+        p1.frame = p1.frame + 4 * 4 * game_framework.frame_time
         if p1.frame >= 3:
             p1.state_machine.handle_event(('TELEPORT', None))
 

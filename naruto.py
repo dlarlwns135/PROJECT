@@ -289,17 +289,17 @@ class Teleport:
 
     @staticmethod
     def do(p2):
-        p2.frame = p2.frame + 4 * 5 * game_framework.frame_time
+        p2.frame = p2.frame + 4 * 4 * game_framework.frame_time
         if p2.frame >= 3:
             p2.state_machine.handle_event(('TELEPORT', None))
 
     @staticmethod
     def draw(p2):
         if p2.dir == -1:
-            p2.teleport.clip_composite_draw(int(p2.frame) * 32, 0, 32, 64, 0, 'h', p2.x, p2.y, 100, 200)
+            p2.teleport.clip_composite_draw(int(p2.frame) * 32, 0, 32, 56, 0, 'h', p2.x, p2.y, 90, 158)
             p2.teleport_motion.clip_composite_draw(int(p2.frame) * 72, 0, 72, 75, 0, 'h', p2.x, p2.y, 150, 250)
         elif p2.dir == 1:
-            p2.teleport.clip_composite_draw(int(p2.frame) * 32, 0, 32, 64, 0, '', p2.x, p2.y, 100, 200)
+            p2.teleport.clip_composite_draw(int(p2.frame) * 32, 0, 32, 56, 0, '', p2.x, p2.y, 90, 158)
             p2.teleport_motion.clip_composite_draw(int(p2.frame) * 72, 0, 72, 75, 0, '', p2.x, p2.y, 150, 250)
 
 class Attack:
@@ -532,7 +532,7 @@ class NARUTO:
         self.idle = load_image('naruto_idle.png')
         self.run = load_image('naruto_run.png')
         self.jump = load_image('naruto_jump.png')
-        self.teleport = load_image('sasuke_teleport.png')
+        self.teleport = load_image('naruto_teleport.png')
         self.teleport_motion = load_image('teleport.png')
         self.attack1 = load_image('naruto_attack1.png')
         self.attack2 = load_image('naruto_attack2.png')
