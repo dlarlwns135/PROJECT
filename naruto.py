@@ -477,6 +477,37 @@ class Skill_motion:
                 elif p2.dir == 1:
                     p2.skill1_stand.clip_composite_draw(int(p2.frame) * 40, 0, 40, 48, 0, '', p2.x+10, p2.y-15, 112, 135)
 
+class Easy_hit:
+    @staticmethod
+    def enter(p2, e):
+        if right_down(e):
+            p2.right = True
+        elif left_down(e):
+            p2.left = True
+        elif right_up(e):
+            p2.right = False
+        elif left_up(e):
+            p2.left = False
+
+    @staticmethod
+    def exit(p2, e):
+        pass
+
+    @staticmethod
+    def do(p2):
+        p2.frame = p2.frame + 2 * 5 * game_framework.frame_time
+        if p2.frame >= 1.9:
+            p2.frame = 0
+            p2.state_machine.handle_event(('STOP', None))
+
+
+    @staticmethod
+    def draw(p2):
+        if p2.dir == -1:
+            p2.easy_hit.clip_composite_draw(int(p2.frame) * 40, 0, 40, 48, 0, 'h', p2.x, p2.y-15, 112, 135)
+        elif p2.dir == 1:
+            p2.easy_hit.clip_composite_draw(int(p2.frame) * 40, 0, 40, 48, 0, '', p2.x, p2.y-15, 112, 135)
+
 class StateMachine:
     def __init__(self, p2):
         self.p2 = p2
@@ -495,6 +526,7 @@ class StateMachine:
             Attack: {stop: Idle, right_down: Attack, left_down: Attack, right_up: Attack, left_up: Attack},
             Run_Attack: {stop: Idle},
             Jump_Attack: {stop: Jump},
+            Easy_hit: {stop: Idle},
             Skill_motion: {stop: Idle, right_up: Skill_motion, left_up: Skill_motion,
                            right_down: Skill_motion, left_down: Skill_motion}
         }
@@ -543,6 +575,7 @@ class NARUTO:
         self.skill2 = load_image('naruto_skill2.png')
         self.run_attack = load_image('naruto_run_attack.png')
         self.jump_attack = load_image('naruto_jump_attack.png')
+        self.easy_hit = load_image('naruto_easy_hit.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.jump_move = False
@@ -606,9 +639,13 @@ class NARUTO:
             if group == 'p1:p2_attack':
                 print(other.damage)
                 print("p2한테 맞음")
+                self.frame = 0
+                self.state_machine.cur_state = Easy_hit
             if group == 'p1:p2_skill1':
                 print(other.damage)
                 print("p2한테 표창 맞음")
+                self.frame = 0
+                self.state_machine.cur_state = Easy_hit
             if group == 'p1:p2_skill2':
                 print(other.damage)
                 print("p2한테 special 맞음")
@@ -616,9 +653,13 @@ class NARUTO:
             if group == 'p2:p1_attack':
                 print(other.damage)
                 print("p1한테 맞음")
+                self.frame = 0
+                self.state_machine.cur_state = Easy_hit
             if group == 'p2:p1_skill1':
                 print(other.damage)
                 print("p1한테 표창 맞음")
+                self.frame = 0
+                self.state_machine.cur_state = Easy_hit
             if group == 'p2:p1_skill2':
                 print(other.damage)
                 print("p1한테 special 맞음")
