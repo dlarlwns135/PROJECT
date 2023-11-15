@@ -527,7 +527,7 @@ class Hard_hit:
     @staticmethod
     def do(p2):
         p2.frame = p2.frame + 4 * 2 * game_framework.frame_time
-        if p2.frame >= 18:
+        if p2.frame >= 15:
             p2.invincible = False
             p2.frame = 0
             p2.state_machine.handle_event(('STOP', None))
@@ -535,7 +535,7 @@ class Hard_hit:
             p2.x += -p2.dir * RUN_SPEED_PPS * 1 * game_framework.frame_time
         if p2.y > ground_y and p2.frame >= 3:
             p2.x += -p2.dir * RUN_SPEED_PPS * 0.7 * game_framework.frame_time
-            p2.y -= RUN_SPEED_PPS * game_framework.frame_time * (18 - p2.frame) // 18
+            p2.y -= RUN_SPEED_PPS * game_framework.frame_time * (15 - p2.frame) // 15
             if p2.y < ground_y:
                 p2.y = ground_y
 
