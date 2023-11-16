@@ -522,9 +522,9 @@ class Hard_hit:
             p1.invincible = False
             p1.frame = 0
             p1.state_machine.handle_event(('STOP', None))
-        if p1.frame < 3:
+        if p1.frame < 2.8:
             p1.x += -p1.dir * RUN_SPEED_PPS * 1 * game_framework.frame_time
-        if p1.y > ground_y and p1.frame >= 3:
+        if p1.y > ground_y and p1.frame >= 2.8:
             p1.x += -p1.dir * RUN_SPEED_PPS * 0.7 * game_framework.frame_time
             p1.y -= RUN_SPEED_PPS * game_framework.frame_time * (15 - p1.frame) // 15
             if p1.y < ground_y:
@@ -663,7 +663,7 @@ class SASUKE:
 
     def draw(self):
         self.state_machine.draw()
-        draw_rectangle(*self.get_bb())
+        # draw_rectangle(*self.get_bb())
 
     def get_bb(self):
         return self.x - 30, self.y - 70, self.x + 30, self.y + 70

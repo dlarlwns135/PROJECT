@@ -531,9 +531,9 @@ class Hard_hit:
             p2.invincible = False
             p2.frame = 0
             p2.state_machine.handle_event(('STOP', None))
-        if p2.frame < 3:
+        if p2.frame < 2.8:
             p2.x += -p2.dir * RUN_SPEED_PPS * 1 * game_framework.frame_time
-        if p2.y > ground_y and p2.frame >= 3:
+        if p2.y > ground_y and p2.frame >= 2.8:
             p2.x += -p2.dir * RUN_SPEED_PPS * 0.7 * game_framework.frame_time
             p2.y -= RUN_SPEED_PPS * game_framework.frame_time * (15 - p2.frame) // 15
             if p2.y < ground_y:
