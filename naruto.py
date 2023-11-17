@@ -4,7 +4,7 @@ from pico2d import *
 
 import game_framework
 import game_world
-from naruto_attack_range import Skill1, Skill2, Attack_range
+from naruto_attack_range import Shuriken, Skill2, Attack_range
 
 PIXEL_PER_METER = (10.0 / 0.3) # 10 pixel 30 cm
 RUN_SPEED_KMPH = 50.0 # Km / Hour
@@ -79,11 +79,23 @@ def attack_down(e):
     elif player_num == 2:
         return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_c
 
-def skill_down(e):
+def shuriken_down(e):
     if player_num == 1:
         return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SLASH
     elif player_num == 2:
         return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_b
+
+def skill1_down(e):
+    if player_num == 1:
+        return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_l
+    elif player_num == 2:
+        return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_f
+
+def skill2_down(e):
+    if player_num == 1:
+        return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SEMICOLON
+    elif player_num == 2:
+        return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_g
 
 def time_out(e):
     return e[0] == 'TIME_OUT'
@@ -115,13 +127,17 @@ class Idle:
     @staticmethod
     def exit(p2, e):
         p2.frame = 0
-        if down_down(e):
-            p2.skill_num = 'special'
-        if down_up(e):
+
+        if shuriken_down(e):
             p2.skill_num = 'shuriken'
-        if skill_down(e):
-            p2.frame = 0
             p2.skill()
+        if skill1_down(e):
+            p2.skill_num = 'skill1'
+            p2.skill()
+        if skill2_down(e):
+            p2.skill_num = 'skill2'
+            p2.skill()
+
         if right_down(e):
             p2.right = True
         elif left_down(e):
@@ -164,7 +180,8 @@ class Run:
     def exit(p2, e):
         p2.y += 15
         p2.frame = 0
-        if skill_down(e):
+        if shuriken_down(e):
+            p2.skill_num = 'shuriken'
             p2.skill()
 
     @staticmethod
@@ -214,7 +231,8 @@ class Jump:
     def exit(p2, e):
         if up_down(e):
             p2.frame = 0
-        if skill_down(e):
+        if shuriken_down(e):
+            p2.skill_num = 'shuriken'
             p2.frame = 0
             p2.skill()
         if teleport_down(e):
@@ -440,10 +458,9 @@ class Skill_motion:
 
     @staticmethod
     def do(p2):
-        if p2.skill_num == 'special':
+        if p2.skill_num == 'skill2':
             p2.frame = (p2.frame + 11 * 1.0 * game_framework.frame_time) % 11
             if p2.frame >= 10:
-                p2.skill_num = 'shuriken'
                 p2.frame = 0
                 p2.state_machine.handle_event(('STOP', None))
         elif p2.skill_num == 'shuriken':
@@ -460,7 +477,7 @@ class Skill_motion:
 
     @staticmethod
     def draw(p2):
-        if p2.skill_num == 'special':
+        if p2.skill_num == 'skill2':
             if p2.dir == -1:
                 p2.skill2.clip_composite_draw(int(p2.frame) * 83, 0, 83, 50, 0, 'h', p2.x-20, p2.y-15, 233, 140)
             elif p2.dir == 1:
@@ -468,14 +485,14 @@ class Skill_motion:
         elif p2.skill_num == 'shuriken':
             if p2.jump_state:
                 if p2.dir == -1:
-                    p2.skill1_jump.clip_composite_draw(int(p2.frame) * 40, 0, 40, 64, 0, 'h', p2.x, p2.y-30, 112, 180)
+                    p2.shuriken_jump.clip_composite_draw(int(p2.frame) * 40, 0, 40, 64, 0, 'h', p2.x, p2.y-30, 112, 180)
                 elif p2.dir == 1:
-                    p2.skill1_jump.clip_composite_draw(int(p2.frame) * 40, 0, 40, 64, 0, '', p2.x, p2.y-30, 112, 180)
+                    p2.shuriken_jump.clip_composite_draw(int(p2.frame) * 40, 0, 40, 64, 0, '', p2.x, p2.y-30, 112, 180)
             else:
                 if p2.dir == -1:
-                    p2.skill1_stand.clip_composite_draw(int(p2.frame) * 40, 0, 40, 48, 0, 'h', p2.x-10, p2.y-15, 112, 135)
+                    p2.shuriken_stand.clip_composite_draw(int(p2.frame) * 40, 0, 40, 48, 0, 'h', p2.x-10, p2.y-15, 112, 135)
                 elif p2.dir == 1:
-                    p2.skill1_stand.clip_composite_draw(int(p2.frame) * 40, 0, 40, 48, 0, '', p2.x+10, p2.y-15, 112, 135)
+                    p2.shuriken_stand.clip_composite_draw(int(p2.frame) * 40, 0, 40, 48, 0, '', p2.x+10, p2.y-15, 112, 135)
 
 class Easy_hit:
     @staticmethod
@@ -559,12 +576,12 @@ class StateMachine:
         self.cur_state = Idle
         self.transitions = {
             Idle: {right_down: Run, left_down: Run, right_up: Idle, left_up: Idle, run_state: Run,
-                   up_down: Jump, jump_state: Jump, attack_down: Attack, skill_down: Skill_motion,
-                   down_down: Idle, down_up: Idle},
+                   up_down: Jump, jump_state: Jump, attack_down: Attack, shuriken_down: Skill_motion,
+                   skill1_down: Skill_motion, skill2_down: Skill_motion},
             Run: {right_up: Idle, left_up: Idle, right_down: Idle, left_down: Idle, up_down: Jump, stop: Idle
-                , teleport_down: Teleport, attack_down: Run_Attack, skill_down: Skill_motion},
+                , teleport_down: Teleport, attack_down: Run_Attack, shuriken_down: Skill_motion},
             Jump: {jump_end: Idle, jump_end_run: Run, up_down: Jump, up_up: Jump, down_down: Jump, down_up: Jump,
-                   teleport_down: Teleport, skill_down: Skill_motion, attack_down: Jump_Attack,
+                   teleport_down: Teleport, shuriken_down: Skill_motion, attack_down: Jump_Attack,
                    right_down: Jump, left_down: Jump, right_up: Jump, left_up: Jump},
             Teleport: {right_down: Teleport, left_down: Teleport, right_up: Teleport, left_up: Teleport,
                        teleport: Idle},
@@ -615,8 +632,8 @@ class NARUTO:
         self.attack2 = load_image('naruto_attack2.png')
         self.attack3 = load_image('naruto_attack3.png')
         self.attack4 = load_image('naruto_attack4.png')
-        self.skill1_stand = load_image('naruto_skill1_stand.png')
-        self.skill1_jump = load_image('naruto_skill1_jump.png')
+        self.shuriken_stand = load_image('naruto_shuriken_stand.png')
+        self.shuriken_jump = load_image('naruto_shuriken_jump.png')
         self.skill2 = load_image('naruto_skill2.png')
         self.run_attack = load_image('naruto_run_attack.png')
         self.jump_attack = load_image('naruto_jump_attack.png')
@@ -639,13 +656,13 @@ class NARUTO:
 
     def skill(self):
         if self.skill_num == 'shuriken':
-            skill1 = Skill1(self.x, self.y + 10, self.dir)
-            game_world.add_object(skill1, 2)
+            shuriken = Shuriken(self.x, self.y + 10, self.dir)
+            game_world.add_object(shuriken, 2)
             if player_num == 1:
-                game_world.add_collision_pair('p2:p1_skill1', None, skill1)
+                game_world.add_collision_pair('p2:p1_shuriken', None, shuriken)
             elif player_num == 2:
-                game_world.add_collision_pair('p1:p2_skill1', None, skill1)
-        elif self.skill_num == 'special':
+                game_world.add_collision_pair('p1:p2_shuriken', None, shuriken)
+        elif self.skill_num == 'skill2':
             skill2 = Skill2(self.x, self.y + 50, self.dir)
             game_world.add_object(skill2, 2)
             if player_num == 1:
@@ -689,16 +706,23 @@ class NARUTO:
                     print("p2한테 맞음")
                     self.frame = 0
                     self.state_machine.cur_state = Easy_hit
-                if group == 'p1:p2_skill1':
+                if group == 'p1:p2_shuriken':
                     print(other.damage)
                     print("p2한테 표창 맞음")
                     self.frame = 0
                     self.state_machine.cur_state = Easy_hit
+                if group == 'p1:p2_skill1':
+                    self.invincible = True
+                    self.dir = -other.dir
+                    print(other.damage)
+                    print("p2한테 skill1 맞음")
+                    self.frame = 0
+                    self.state_machine.cur_state = Hard_hit
                 if group == 'p1:p2_skill2':
                     self.invincible = True
                     self.dir = -other.dir
                     print(other.damage)
-                    print("p2한테 special 맞음")
+                    print("p2한테 skill2 맞음")
                     self.frame = 0
                     self.state_machine.cur_state = Hard_hit
             elif player_num == 2:
@@ -707,7 +731,7 @@ class NARUTO:
                     print("p1한테 맞음")
                     self.frame = 0
                     self.state_machine.cur_state = Easy_hit
-                if group == 'p2:p1_skill1':
+                if group == 'p2:p1_shuriken':
                     print(other.damage)
                     print("p1한테 표창 맞음")
                     self.frame = 0

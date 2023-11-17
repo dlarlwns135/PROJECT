@@ -8,11 +8,11 @@ RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
-class Skill1:
+class Shuriken:
     shuriken = None
     def __init__(self, x = 400, y = 300, dir = 1):
-        if Skill1.shuriken == None:
-            Skill1.shuriken = load_image('shuriken1.png')
+        if Shuriken.shuriken == None:
+            Shuriken.shuriken = load_image('shuriken1.png')
         self.x, self.y = x, y,
         self.frame = 0
         self.dir = dir
@@ -33,7 +33,7 @@ class Skill1:
         return self.x - 22, self.y - 18, self.x + 22, self.y + 18
 
     def handle_collision(self, group, other):
-        if group == 'p1:p2_skill1' or group == 'p2:p1_skill1':
+        if group == 'p1:p2_shuriken' or group == 'p2:p1_shuriken':
             # print("충돌")
             if not other.invincible:
                 game_world.remove_object(self)

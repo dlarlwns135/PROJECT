@@ -8,11 +8,11 @@ RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
-class Skill1:
+class Shuriken:
     shuriken = None
     def __init__(self, x = 400, y = 300, dir = 1):
-        if Skill1.shuriken == None:
-            Skill1.shuriken = load_image('shuriken1.png')
+        if Shuriken.shuriken == None:
+            Shuriken.shuriken = load_image('shuriken1.png')
         self.x, self.y = x, y,
         self.frame = 0
         self.dir = dir
@@ -27,17 +27,56 @@ class Skill1:
         self.frame = (self.frame + 4 * 4 * game_framework.frame_time) % 4
         self.x += self.dir * RUN_SPEED_PPS * 3 * game_framework.frame_time
         if self.x < 0 or self.x > 1200:
+            print("표창 사라짐")
             game_world.remove_object(self)
 
     def get_bb(self):
         return self.x - 22, self.y - 18, self.x + 22, self.y + 18
 
     def handle_collision(self, group, other):
-        if group == 'p1:p2_skill1' or group == 'p2:p1_skill1':
-            # print("충돌")
+        if group == 'p1:p2_shuriken' or group == 'p2:p1_shuriken':
+            print("충돌")
             if not other.invincible:
                 game_world.remove_object(self)
 
+class Skill1:
+    skill1_effect = None
+    def __init__(self, x = 400, y = 300, dir = 1):
+        if Skill1.skill1_effect == None:
+            Skill1.skill1_effect = load_image('sasuke_skill1_effect.png')
+        self.x, self.y = x + dir * 150, y
+        self.frame = 0
+        self.dir = dir
+        self.count = 0
+        self.damage = 60
+
+    def draw(self):
+        if self.dir == 1:
+            self.skill1_effect.clip_composite_draw(int(self.frame) * 97, 0, 97, 80, 0, '',
+                                                    self.x, self.y + 90, 325, 241)
+        elif self.dir == -1:
+            self.skill1_effect.clip_composite_draw(int(self.frame) * 97, 0, 97, 80, 0, 'h',
+                                                    self.x, self.y + 90, 325, 241)
+        draw_rectangle(*self.get_bb())
+
+    def update(self):
+        self.frame = (self.frame + 10 * 2 * game_framework.frame_time) % 10
+        if self.frame >= 8.9:
+            self.frame = 5
+        # if self.frame >= 9:
+        self.x += self.dir * RUN_SPEED_PPS * 0.7 * game_framework.frame_time
+        if self.x < 0 - 200 or self.x > 1200 + 200:
+            print("화둔 없어짐")
+            game_world.remove_object(self)
+
+    def get_bb(self):
+        # return self.x - skill_range_x, self.y - skill_range_y, self.x + skill_range_x, self.y + skill_range_y
+        return self.x - 140, self.y - 40, self.x + 140, self.y + 150
+
+    def handle_collision(self, group, other):
+        if not other.invincible:
+            if group == 'p1:p2_skill1' or group == 'p2:p1_skill1':
+                print("화둔 맞음")
 class Skill2:
     skill2_effect1 = None
     skill2_effect2 = None
