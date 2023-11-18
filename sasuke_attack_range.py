@@ -61,7 +61,7 @@ class Skill1:
 
     def update(self):
         self.frame = (self.frame + 10 * 2 * game_framework.frame_time) % 10
-        if self.frame >= 8.9:
+        if self.frame >= 8:
             self.frame = 5
         # if self.frame >= 9:
         self.x += self.dir * RUN_SPEED_PPS * 0.7 * game_framework.frame_time

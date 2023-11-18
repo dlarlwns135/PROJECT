@@ -54,7 +54,7 @@ def init():
 
     game_world.add_collision_pair('p2:p1_attack', p2, None)
     game_world.add_collision_pair('p2:p1_shuriken', p2, None)
-    game_world.add_collision_pair('p1:p2_skill1', p2, None)
+    game_world.add_collision_pair('p2:p1_skill1', p2, None)
     game_world.add_collision_pair('p2:p1_skill2', p2, None)
     # p1 = P1(2)
     # game_world.add_object(p1, 1)

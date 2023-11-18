@@ -4,7 +4,7 @@ from pico2d import *
 
 import game_framework
 import game_world
-from naruto_attack_range import Shuriken, Skill2, Attack_range
+from naruto_attack_range import Shuriken, Skill1, Skill2, Attack_range
 
 PIXEL_PER_METER = (10.0 / 0.3) # 10 pixel 30 cm
 RUN_SPEED_KMPH = 50.0 # Km / Hour
@@ -458,7 +458,12 @@ class Skill_motion:
 
     @staticmethod
     def do(p2):
-        if p2.skill_num == 'skill2':
+        if p2.skill_num == 'skill1':
+            p2.frame = (p2.frame + 6 * 1.2 * game_framework.frame_time) % 6
+            if p2.frame >= 5:
+                p2.frame = 0
+                p2.state_machine.handle_event(('STOP', None))
+        elif p2.skill_num == 'skill2':
             p2.frame = (p2.frame + 11 * 1.0 * game_framework.frame_time) % 11
             if p2.frame >= 10:
                 p2.frame = 0
@@ -477,7 +482,12 @@ class Skill_motion:
 
     @staticmethod
     def draw(p2):
-        if p2.skill_num == 'skill2':
+        if p2.skill_num == 'skill1':
+            if p2.dir == -1:
+                p2.skill1.clip_composite_draw(int(p2.frame) * 193, 0, 193, 136, 0, 'h', p2.x-60, p2.y+70, 543, 382)
+            elif p2.dir == 1:
+                p2.skill1.clip_composite_draw(int(p2.frame) * 193, 0, 193, 136, 0, '', p2.x+60, p2.y+70, 543, 382)
+        elif p2.skill_num == 'skill2':
             if p2.dir == -1:
                 p2.skill2.clip_composite_draw(int(p2.frame) * 83, 0, 83, 50, 0, 'h', p2.x-20, p2.y-15, 233, 140)
             elif p2.dir == 1:
@@ -634,6 +644,7 @@ class NARUTO:
         self.attack4 = load_image('naruto_attack4.png')
         self.shuriken_stand = load_image('naruto_shuriken_stand.png')
         self.shuriken_jump = load_image('naruto_shuriken_jump.png')
+        self.skill1 = load_image('naruto_skill1.png')
         self.skill2 = load_image('naruto_skill2.png')
         self.run_attack = load_image('naruto_run_attack.png')
         self.jump_attack = load_image('naruto_jump_attack.png')
@@ -662,6 +673,14 @@ class NARUTO:
                 game_world.add_collision_pair('p2:p1_shuriken', None, shuriken)
             elif player_num == 2:
                 game_world.add_collision_pair('p1:p2_shuriken', None, shuriken)
+        elif self.skill_num == 'skill1':
+            skill1 = Skill1(self.x, self.y + 50, self.dir)
+            game_world.add_object(skill1, 2)
+            if player_num == 1:
+                game_world.add_collision_pair('p2:p1_skill1', None, skill1)
+                print("오브젝트 연결")
+            elif player_num == 2:
+                game_world.add_collision_pair('p1:p2_skill1', None, skill1)
         elif self.skill_num == 'skill2':
             skill2 = Skill2(self.x, self.y + 50, self.dir)
             game_world.add_object(skill2, 2)
@@ -736,6 +755,13 @@ class NARUTO:
                     print("p1한테 표창 맞음")
                     self.frame = 0
                     self.state_machine.cur_state = Easy_hit
+                if group == 'p2:p1_skill1':
+                    self.invincible = True
+                    self.dir = -other.dir
+                    print(other.damage)
+                    print("p1한테 skill1 맞음")
+                    self.frame = 0
+                    self.state_machine.cur_state = Hard_hit
                 if group == 'p2:p1_skill2':
                     self.invincible = True
                     self.dir = -other.dir

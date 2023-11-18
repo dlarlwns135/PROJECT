@@ -38,6 +38,43 @@ class Shuriken:
             if not other.invincible:
                 game_world.remove_object(self)
 
+class Skill1:
+    skill1_effect = None
+    def __init__(self, x = 400, y = 300, dir = 1):
+        if Skill1.skill1_effect == None:
+            Skill1.skill1_effect = load_image('naruto_skill1_effect.png')
+        self.x, self.y = x, y
+        self.frame = 0
+        self.dir = dir
+        self.count = 0
+        self.damage = 60
+
+    def draw(self):
+        if self.dir == 1:
+            self.skill1_effect.clip_composite_draw(int(self.frame) * 193, 0, 193, 136, 0, '',
+                                                   self.x, self.y+20, 543, 382)
+        elif self.dir == -1:
+            self.skill1_effect.clip_composite_draw(int(self.frame) * 193, 0, 193, 136, 0, 'h',
+                                                   self.x, self.y+20, 543, 382)
+        draw_rectangle(*self.get_bb())
+
+    def update(self):
+        self.frame = (self.frame + 10 * 2 * game_framework.frame_time) % 10
+        if self.frame >= 9.5:
+            game_world.remove_object(self)
+
+    def get_bb(self):
+        if self.dir == 1:
+            return self.x - 200, self.y - 130, self.x + 270, self.y + 180
+        elif self.dir == -1:
+            return self.x - 270, self.y - 130, self.x + 200, self.y + 180
+
+    def handle_collision(self, group, other):
+        if not other.invincible:
+            if group == 'p1:p2_skill1' or group == 'p2:p1_skill1':
+                print("skill1 맞음")
+            # game_world.remove_object(self)
+
 class Skill2:
     skill2_effect = None
     def __init__(self, x = 400, y = 300, dir = 1):
