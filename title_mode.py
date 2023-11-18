@@ -6,18 +6,22 @@ import play_mode
 
 def init():
     global image1, image2, naruto, sasuke, title_frame, sasuke_x, naruto_x
-    global mode_num, logo_frame
+    global mode_num, logo_frame, press_space, space_on, space_frame, space_up
     image1 = load_image('title_main.png')
     image2 = load_image('naruto_logo.png')
     naruto = load_image('title_naruto.png')
     sasuke = load_image('title_sasuke.png')
+    press_space = load_image('press_space.png')
     title_frame = 0
-    naruto_x, sasuke_x = 1200, 0
+    naruto_x, sasuke_x = 1250, 0
     mode_num = 1
     logo_frame = 0
+    space_on = False
+    space_frame = 0
+    space_up = True
 def finish():
-    global image1, image2, naruto, sasuke
-    del image1, image2, naruto, sasuke
+    global image1, image2, naruto, sasuke, press_space
+    del image1, image2, naruto, sasuke, press_space
 def handle_events():
     events = get_events()
     for event in events:
@@ -37,17 +41,31 @@ def draw():
     naruto.clip_composite_draw(0, 0, 216, 192, 0, '', naruto_x - title_frame, 300, 430, 380)
     # image2.draw(600, 300)
     image2.clip_composite_draw(0, 0, 300, 144, 0, '', 600, 800 - logo_frame, 500, 230)
+    if space_on:
+        if space_up:
+            press_space.clip_composite_draw(0, 0, 1920, 1080, 0, '', 600, 60 + space_frame, 900, 500)
+        else:
+            press_space.clip_composite_draw(0, 0, 1920, 1080, 0, '', 600, 70 - space_frame, 900, 500)
     update_canvas()
 
 def update():
-    global title_frame, mode_num, logo_frame
+    global title_frame, mode_num, logo_frame, space_on, space_frame, space_up
     if mode_num == 1:
-        title_frame = title_frame + 300 * game_framework.frame_time
+        title_frame = title_frame + 600 * game_framework.frame_time
         if title_frame >= 800:
             mode_num = 2
     elif mode_num == 2:
         logo_frame = logo_frame + 300 * game_framework.frame_time
         if logo_frame >= 500:
             mode_num = 3
+            space_on = True
+    elif mode_num == 3:
+        space_frame = space_frame + 10 * game_framework.frame_time
+        if space_frame >= 9:
+            if space_up:
+                space_up = False
+            else:
+                space_up = True
+            space_frame = 0
 
 
