@@ -7,6 +7,7 @@ character_count = 2
 def init():
     global image1, naruto, sasuke
     global p1_x, p1_y, p2_x, p2_y, p1_choose, p2_choose, p1_image, p2_image, character_back
+    global vs
     global naruto_frame, sasuke_frame
     image1 = load_image('title_main.png')
     naruto = load_image('naruto_idle.png')
@@ -14,6 +15,7 @@ def init():
     p1_image = load_image('p1_image.png')
     p2_image = load_image('p2_image.png')
     character_back = load_image('charactor_back.png')
+    vs = load_image('vs.png')
     p1_x = 900
     p1_y = 360
     p2_x = 300
@@ -22,8 +24,8 @@ def init():
     p2_choose = 2
     naruto_frame, sasuke_frame = 0, 0
 def finish():
-    global image1, naruto, sasuke, p1_image, p2_image, character_back
-    del image1, naruto, sasuke, p1_image, p2_image, character_back
+    global image1, naruto, sasuke, p1_image, p2_image, character_back, vs
+    del image1, naruto, sasuke, p1_image, p2_image, character_back, vs
 def handle_events():
     events = get_events()
     global p1_choose, p2_choose, character_count
@@ -57,6 +59,7 @@ def running():
 def draw():
     clear_canvas()
     image1.clip_composite_draw(0, 0, 900, 507, 0, '', 600, 300, 1200, 600)
+    vs.clip_composite_draw(0, 0, 2500, 2500, 0, '', 600, 300, 200, 200)
     character_back.clip_composite_draw(0, 0, 64, 76, 0, '', 300, 300, 340, 430)
     character_back.clip_composite_draw(0, 0, 64, 76, 0, '', 900, 300, 340, 430)
     p1_image.clip_composite_draw(0, 0, 64, 32, 0, '', 900, 500, 120, 60)
