@@ -6,21 +6,23 @@ character_count = 2
 
 def init():
     global image1, naruto, sasuke
-    global p1_x, p1_y, p2_x, p2_y, p1_choose, p2_choose
+    global p1_x, p1_y, p2_x, p2_y, p1_choose, p2_choose, p1_image, p2_image
     global naruto_frame, sasuke_frame
     image1 = load_image('title_main.png')
     naruto = load_image('naruto_idle.png')
     sasuke = load_image('sasuke_idle.png')
-    p1_x = 300
-    p1_y = 400
-    p2_x = 900
-    p2_y = 400
+    p1_image = load_image('p1_image.png')
+    p2_image = load_image('p2_image.png')
+    p1_x = 900
+    p1_y = 360
+    p2_x = 300
+    p2_y = 360
     p1_choose = 1
     p2_choose = 2
     naruto_frame, sasuke_frame = 0, 0
 def finish():
-    global image1, naruto, sasuke
-    del image1, naruto, sasuke
+    global image1, naruto, sasuke, p1_image, p2_image
+    del image1, naruto, sasuke, p1_image, p2_image
 def handle_events():
     events = get_events()
     global p1_choose, p2_choose, character_count
@@ -54,6 +56,8 @@ def running():
 def draw():
     clear_canvas()
     image1.clip_composite_draw(0, 0, 900, 507, 0, '', 600, 300, 1200, 600)
+    p1_image.clip_composite_draw(0, 0, 64, 32, 0, '', 300, 500, 120, 60)
+    p2_image.clip_composite_draw(0, 0, 64, 32, 0, '', 900, 500, 120, 60)
     if p1_choose == 1:
         naruto.clip_composite_draw(int(naruto_frame)*32, 0, 32, 48, 0, '', p1_x, p1_y, 100, 150)
     elif p1_choose == 2:
