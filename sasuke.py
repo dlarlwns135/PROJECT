@@ -714,6 +714,7 @@ class SASUKE:
                     self.frame = 0
                     self.state_machine.cur_state = Easy_hit
                 if group == 'p1:p2_shuriken':
+                    self.dir = -other.dir
                     print(other.damage)
                     print("p2한테 표창 맞음")
                     self.frame = 0
@@ -739,6 +740,7 @@ class SASUKE:
                     self.frame = 0
                     self.state_machine.cur_state = Easy_hit
                 if group == 'p2:p1_shuriken':
+                    self.dir = -other.dir
                     print(other.damage)
                     print("p1한테 표창 맞음")
                     self.frame = 0
