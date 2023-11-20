@@ -51,11 +51,11 @@ def draw():
 def update():
     global title_frame, mode_num, logo_frame, space_on, space_frame, space_up
     if mode_num == 1:
-        title_frame = title_frame + 600 * game_framework.frame_time
+        title_frame = title_frame + 1000 * game_framework.frame_time
         if title_frame >= 800:
             mode_num = 2
     elif mode_num == 2:
-        logo_frame = logo_frame + 300 * game_framework.frame_time
+        logo_frame = logo_frame + 600 * game_framework.frame_time
         if logo_frame >= 500:
             mode_num = 3
             space_on = True

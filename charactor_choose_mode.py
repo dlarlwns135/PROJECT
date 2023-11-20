@@ -9,6 +9,7 @@ def init():
     global p1_x, p1_y, p2_x, p2_y, p1_choose, p2_choose, p1_image, p2_image, character_back
     global vs, press_space
     global naruto_frame, sasuke_frame, space_frame, space_up
+    global duplicate, dup_on, dup_wait_time
     image1 = load_image('title_main.png')
     naruto = load_image('naruto_idle.png')
     sasuke = load_image('sasuke_idle.png')
@@ -17,6 +18,7 @@ def init():
     character_back = load_image('charactor_back.png')
     vs = load_image('vs.png')
     press_space = load_image('press_space.png')
+    duplicate = load_image('duplicate.png')
     p1_x = 900
     p1_y = 360
     p2_x = 300
@@ -26,12 +28,14 @@ def init():
     naruto_frame, sasuke_frame = 0, 0
     space_frame = 0
     space_up = True
+    dup_on = False
+    dup_wait_time = 0
 def finish():
-    global image1, naruto, sasuke, p1_image, p2_image, character_back, vs, press_space
-    del image1, naruto, sasuke, p1_image, p2_image, character_back, vs, press_space
+    global image1, naruto, sasuke, p1_image, p2_image, character_back, vs, press_space, duplicate
+    del image1, naruto, sasuke, p1_image, p2_image, character_back, vs, press_space, duplicate
 def handle_events():
     events = get_events()
-    global p1_choose, p2_choose, character_count
+    global p1_choose, p2_choose, character_count, dup_on, dup_wait_time
     for event in events:
         if event.type == SDL_QUIT:
             game_framework.quit()
@@ -40,6 +44,9 @@ def handle_events():
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_SPACE):
             if p1_choose != p2_choose:
                 game_framework.change_mode(play_mode)
+            else:
+                dup_on = True
+                dup_wait_time = get_time()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_a:
             p2_choose = (p2_choose - 1) % character_count
             if p2_choose == 0:
@@ -81,10 +88,13 @@ def draw():
         press_space.clip_composite_draw(0, 0, 1920, 1080, 0, '', 600, 60 + space_frame, 900, 500)
     else:
         press_space.clip_composite_draw(0, 0, 1920, 1080, 0, '', 600, 70 - space_frame, 900, 500)
+
+    if dup_on:
+        duplicate.clip_composite_draw(0, 0, 5906, 4135, 0, '', 600, 300, 600, 300)
     update_canvas()
 
 def update():
-    global naruto_frame, sasuke_frame, space_frame, space_up
+    global naruto_frame, sasuke_frame, space_frame, space_up, dup_wait_time, dup_on
     naruto_frame = (naruto_frame + 6 * game_framework.frame_time) % 6
     sasuke_frame = (sasuke_frame + 6 * game_framework.frame_time) % 6
     space_frame = space_frame + 10 * game_framework.frame_time
@@ -94,6 +104,13 @@ def update():
         else:
             space_up = True
         space_frame = 0
+
+    # if p1_choose == p2_choose:
+    #     dup_wait_time = get_time()
+    #     dup_on = True
+
+    if get_time() - dup_wait_time > 1:
+        dup_on = False
 
 
 def p1_choose_result():
