@@ -133,10 +133,20 @@ class Idle:
             p2.skill()
         if skill1_down(e):
             p2.skill_num = 'skill1'
-            p2.skill()
+            if p2.chakra >= 30:
+                p2.chakra -= 30
+                p2.chakra_lack = False
+                p2.skill()
+            else:
+                p2.chakra_lack = True
         if skill2_down(e):
             p2.skill_num = 'skill2'
-            p2.skill()
+            if p2.chakra >= 30:
+                p2.chakra -= 30
+                p2.chakra_lack = False
+                p2.skill()
+            else:
+                p2.chakra_lack = True
 
         if right_down(e):
             p2.right = True
@@ -452,6 +462,9 @@ class Skill_motion:
         elif left_up(e):
             p2.left = False
 
+        if p2.chakra_lack:
+            p2.state_machine.cur_state = Idle
+
     @staticmethod
     def exit(p2, e):
         pass
@@ -665,6 +678,8 @@ class NARUTO:
         player_num = p_num
         self.invincible = False
         self.hp = 400
+        self.chakra = 0
+        self.chakra_lack = False
 
     def skill(self):
         if self.skill_num == 'shuriken':
@@ -699,6 +714,9 @@ class NARUTO:
             game_world.add_collision_pair('p1:p2_attack', None, attack_range)
     def update(self):
         self.state_machine.update()
+        if self.chakra <= 100:
+            self.chakra += 8 * game_framework.frame_time
+
 
     def handle_event(self, event):
         self.state_machine.handle_event(('INPUT', event))

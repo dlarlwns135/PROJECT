@@ -134,9 +134,20 @@ class Idle:
         if skill1_down(e):
             p1.skill_num = 'skill1'
             # p1.skill()
+            if p1.chakra >= 30:
+                p1.chakra -= 30
+                p1.chakra_lack = False
+                # p1.skill()
+            else:
+                p1.chakra_lack = True
         if skill2_down(e):
             p1.skill_num = 'skill2'
-            p1.skill()
+            if p1.chakra >= 30:
+                p1.chakra -= 30
+                p1.chakra_lack = False
+                p1.skill()
+            else:
+                p1.chakra_lack = True
 
         if right_down(e):
             p1.right = True
@@ -448,6 +459,9 @@ class Skill_motion:
         elif left_up(e):
             p1.left = False
 
+        if p1.chakra_lack:
+            p1.state_machine.cur_state = Idle
+
     @staticmethod
     def exit(p1, e):
         pass
@@ -654,6 +668,8 @@ class SASUKE:
         player_num = p_num
         self.invincible = False
         self.hp = 400
+        self.chakra = 0
+        self.chakra_lack = False
 
     def skill(self):
         if self.skill_num == 'shuriken':
@@ -687,6 +703,8 @@ class SASUKE:
             game_world.add_collision_pair('p1:p2_attack', None, attack_range)
     def update(self):
         self.state_machine.update()
+        if self.chakra <= 100:
+            self.chakra += 8 * game_framework.frame_time
 
     def handle_event(self, event):
         self.state_machine.handle_event(('INPUT', event))
