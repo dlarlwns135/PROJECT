@@ -14,7 +14,9 @@ def handle_events():
         if event.type == SDL_QUIT:
             running = False
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
-            running = False
+            exit(1)
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_SPACE and (p1.win or p2.win):
+            exit(1)
         else:
             p1.handle_event(event)
             p2.handle_event(event)
