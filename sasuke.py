@@ -181,8 +181,6 @@ class Run:
     @staticmethod
     def enter(p1, e):
 
-        p1.y -= 15
-
         if p1.right and not p1.left:
             p1.dir = 1
         elif p1.left and not p1.right:
@@ -190,7 +188,6 @@ class Run:
 
     @staticmethod
     def exit(p1, e):
-        p1.y += 15
         p1.frame = 0
         if shuriken_down(e):
             p1.skill_num = 'shuriken'
@@ -204,9 +201,9 @@ class Run:
     @staticmethod
     def draw(p1):
         if p1.dir == -1:
-            p1.run.clip_composite_draw(int(p1.frame) * 64, 0, 64, 32, 0, 'h', p1.x, p1.y, 200, 100)
+            p1.run.clip_composite_draw(int(p1.frame) * 64, 0, 64, 32, 0, 'h', p1.x, p1.y-15, 200, 100)
         elif p1.dir == 1:
-            p1.run.clip_composite_draw(int(p1.frame) * 64, 0, 64, 32, 0, '', p1.x, p1.y, 200, 100)
+            p1.run.clip_composite_draw(int(p1.frame) * 64, 0, 64, 32, 0, '', p1.x, p1.y-15, 200, 100)
 
 
 class Jump:
@@ -459,11 +456,17 @@ class Skill_motion:
         elif left_up(e):
             p1.left = False
 
+        p1.invincible = True
+
         if p1.chakra_lack:
+            p1.invincible = False
             p1.state_machine.cur_state = Idle
+
+
 
     @staticmethod
     def exit(p1, e):
+        p1.invincible = False
         pass
 
     @staticmethod
@@ -705,6 +708,7 @@ class SASUKE:
         self.state_machine.update()
         if self.chakra <= 100:
             self.chakra += 8 * game_framework.frame_time
+            pass
 
     def handle_event(self, event):
         self.state_machine.handle_event(('INPUT', event))

@@ -179,16 +179,12 @@ class Run:
 
     @staticmethod
     def enter(p2, e):
-
-        p2.y -= 15
-
         if p2.right and not p2.left:
             p2.dir = 1
         elif p2.left and not p2.right:
             p2.dir = -1
     @staticmethod
     def exit(p2, e):
-        p2.y += 15
         p2.frame = 0
         if shuriken_down(e):
             p2.skill_num = 'shuriken'
@@ -201,9 +197,9 @@ class Run:
     @staticmethod
     def draw(p2):
         if p2.dir == -1:
-            p2.run.clip_composite_draw(int(p2.frame) * 48, 0, 48, 48, 0, 'h', p2.x, p2.y, 135, 135)
+            p2.run.clip_composite_draw(int(p2.frame) * 48, 0, 48, 48, 0, 'h', p2.x, p2.y-15, 135, 135)
         elif p2.dir == 1:
-            p2.run.clip_composite_draw(int(p2.frame) * 48, 0, 48, 48, 0, '', p2.x, p2.y, 135, 135)
+            p2.run.clip_composite_draw(int(p2.frame) * 48, 0, 48, 48, 0, '', p2.x, p2.y-15, 135, 135)
 
 
 class Jump:
@@ -462,11 +458,17 @@ class Skill_motion:
         elif left_up(e):
             p2.left = False
 
+        p2.invincible = True
+
         if p2.chakra_lack:
+            p2.invincible = False
             p2.state_machine.cur_state = Idle
+
+
 
     @staticmethod
     def exit(p2, e):
+        p2.invincible = False
         pass
 
     @staticmethod
