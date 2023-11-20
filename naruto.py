@@ -161,6 +161,8 @@ class Idle:
     def do(p2):
         if p2.win:
             p2.state_machine.cur_state = Win
+        if p2.hp <= 0:
+            p2.state_machine.cur_state = Lose
 
         if p2.y > ground_y:
             p2.state_machine.handle_event(('JUMP_STATE', None))
@@ -616,6 +618,28 @@ class Win:
     def draw(p2):
         p2.win_image.clip_composite_draw(int(p2.frame) * 50, 0, 50, 64, 0, '', p2.x, p2.y, 140, 180)
 
+class Lose:
+    @staticmethod
+    def enter(p2, e):
+        p2.frame = 0
+        pass
+
+    @staticmethod
+    def exit(p2, e):
+        pass
+
+    @staticmethod
+    def do(p2):
+        if p2.frame <= 3:
+            p2.frame = p2.frame + 4 * 0.5 * game_framework.frame_time
+
+    @staticmethod
+    def draw(p2):
+        if p2.dir == -1:
+            p2.hard_hit.clip_composite_draw(int(p2.frame) * 48, 0, 48, 40, 0, 'h', p2.x, p2.y - 15, 135, 112)
+        elif p2.dir == 1:
+            p2.hard_hit.clip_composite_draw(int(p2.frame) * 48, 0, 48, 40, 0, '', p2.x, p2.y - 15, 135, 112)
+
 class StateMachine:
     def __init__(self, p2):
         self.p2 = p2
@@ -637,7 +661,7 @@ class StateMachine:
             Easy_hit: {stop: Idle}, Hard_hit: {stop: Idle},
             Skill_motion: {stop: Idle, right_up: Skill_motion, left_up: Skill_motion,
                            right_down: Skill_motion, left_down: Skill_motion},
-            Win: {stop: Idle}
+            Win: {stop: Idle}, Lose: {stop: Idle}
         }
 
     def start(self):

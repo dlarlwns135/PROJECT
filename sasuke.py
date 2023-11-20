@@ -160,6 +160,11 @@ class Idle:
 
     @staticmethod
     def do(p1):
+        if p1.win:
+            p1.state_machine.cur_state = Win
+        if p1.hp <= 0:
+            p1.state_machine.cur_state = Lose
+
         if p1.y > ground_y:
             p1.state_machine.handle_event(('JUMP_STATE', None))
         if p1.right and not p1.left:
@@ -593,6 +598,7 @@ class Hard_hit:
 class Win:
     @staticmethod
     def enter(p1, e):
+        p1.frame = 0
         pass
 
     @staticmethod
@@ -601,23 +607,36 @@ class Win:
 
     @staticmethod
     def do(p1):
-        p1.frame = (p1.frame + 4 * 2 * game_framework.frame_time) % 4
-
-
+        p1.frame = (p1.frame + 12 * 1 * game_framework.frame_time) % 12
 
     @staticmethod
     def draw(p1):
-        # if p1.frame > 3:
-        #     if p1.dir == -1:
-        #         p1.hard_hit.clip_composite_draw(3 * 64, 0, 64, 40, 0, 'h', p1.x, p1.y - 15, 200, 125)
-        #     elif p1.dir == 1:
-        #         p1.hard_hit.clip_composite_draw(3 * 64, 0, 64, 40, 0, '', p1.x, p1.y - 15, 200, 125)
-        # else:
-        #     if p1.dir == -1:
-        #         p1.hard_hit.clip_composite_draw(int(p1.frame) * 64, 0, 64, 40, 0, 'h', p1.x, p1.y-15, 200, 125)
-        #     elif p1.dir == 1:
-        #         p1.hard_hit.clip_composite_draw(int(p1.frame) * 64, 0, 64, 40, 0, '', p1.x, p1.y-15, 200, 125)
+        if p1.dir == 1:
+            p1.win_image.clip_composite_draw(int(p1.frame) * 34, 0, 34, 64, 0, '', p1.x-10, p1.y-6, 103, 200)
+        elif p1.dir == -1:
+            p1.win_image.clip_composite_draw(int(p1.frame) * 34, 0, 34, 64, 0, 'h', p1.x + 10, p1.y - 6, 103, 200)
+
+class Lose:
+    @staticmethod
+    def enter(p1, e):
+        p1.frame = 0
         pass
+
+    @staticmethod
+    def exit(p1, e):
+        pass
+
+    @staticmethod
+    def do(p1):
+        if p1.frame <= 3:
+            p1.frame = p1.frame + 4 * 0.5 * game_framework.frame_time
+
+    @staticmethod
+    def draw(p1):
+        if p1.dir == -1:
+            p1.hard_hit.clip_composite_draw(int(p1.frame) * 64, 0, 64, 40, 0, 'h', p1.x, p1.y - 15, 200, 125)
+        elif p1.dir == 1:
+            p1.hard_hit.clip_composite_draw(int(p1.frame) * 64, 0, 64, 40, 0, '', p1.x, p1.y - 15, 200, 125)
 
 class StateMachine:
     def __init__(self, p1):
@@ -639,7 +658,8 @@ class StateMachine:
             Jump_Attack: {stop: Jump},
             Easy_hit: {stop: Idle}, Hard_hit: {stop: Idle},
             Skill_motion: {stop: Idle, right_up: Skill_motion, left_up: Skill_motion,
-                           right_down: Skill_motion, left_down: Skill_motion}
+                           right_down: Skill_motion, left_down: Skill_motion},
+            Win: {stop: Idle}, Lose: {stop: Idle}
         }
 
     def start(self):
@@ -685,6 +705,7 @@ class SASUKE:
         self.jump_attack = load_image('sasuke_jump_attack.png')
         self.easy_hit = load_image('sasuke_easy_hit.png')
         self.hard_hit = load_image('sasuke_hard_hit.png')
+        self.win_image = load_image('sasuke_win.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.jump_move = False

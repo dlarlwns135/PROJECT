@@ -17,7 +17,7 @@ class Shuriken:
         self.frame = 0
         self.dir = dir
         self.count = 0
-        self.damage = 10
+        self.damage = 200
 
     def draw(self):
         self.shuriken.clip_composite_draw(int(self.frame) * 44, 0, 44, 35, 0, '', self.x, self.y, 44, 35)
