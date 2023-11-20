@@ -653,6 +653,7 @@ class SASUKE:
         global player_num
         player_num = p_num
         self.invincible = False
+        self.hp = 400
 
     def skill(self):
         if self.skill_num == 'shuriken':
@@ -711,12 +712,14 @@ class SASUKE:
                 if group == 'p1:p2_attack':
                     self.dir = -other.dir
                     print(other.damage)
+                    self.hp -= other.damage
                     print("p2한테 맞음")
                     self.frame = 0
                     self.state_machine.cur_state = Easy_hit
                 if group == 'p1:p2_shuriken':
                     self.dir = -other.dir
                     print(other.damage)
+                    self.hp -= other.damage
                     print("p2한테 표창 맞음")
                     self.frame = 0
                     self.state_machine.cur_state = Easy_hit
@@ -724,6 +727,7 @@ class SASUKE:
                     self.invincible = True
                     self.dir = -other.dir
                     print(other.damage)
+                    self.hp -= other.damage
                     print("p2한테 skill1 맞음")
                     self.frame = 0
                     self.state_machine.cur_state = Hard_hit
@@ -731,6 +735,7 @@ class SASUKE:
                     self.invincible = True
                     self.dir = -other.dir
                     print(other.damage)
+                    self.hp -= other.damage
                     print("p2한테 special 맞음")
                     self.frame = 0
                     self.state_machine.cur_state = Hard_hit
@@ -738,12 +743,14 @@ class SASUKE:
                 if group == 'p2:p1_attack':
                     self.dir = -other.dir
                     print(other.damage)
+                    self.hp -= other.damage
                     print("p1한테 맞음")
                     self.frame = 0
                     self.state_machine.cur_state = Easy_hit
                 if group == 'p2:p1_shuriken':
                     self.dir = -other.dir
                     print(other.damage)
+                    self.hp -= other.damage
                     print("p1한테 표창 맞음")
                     self.frame = 0
                     self.state_machine.cur_state = Easy_hit
@@ -751,6 +758,7 @@ class SASUKE:
                     self.invincible = True
                     self.dir = -other.dir
                     print(other.damage)
+                    self.hp -= other.damage
                     print("p2한테 skill1 맞음")
                     self.frame = 0
                     self.state_machine.cur_state = Hard_hit
@@ -758,6 +766,7 @@ class SASUKE:
                     self.invincible = True
                     self.dir = -other.dir
                     print(other.damage)
+                    self.hp -= other.damage
                     print("p1한테 special 맞음")
                     self.frame = 0
                     self.state_machine.cur_state = Hard_hit

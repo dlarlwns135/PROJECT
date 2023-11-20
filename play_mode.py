@@ -82,8 +82,8 @@ def draw():
     game_world.render()
     health_bar.clip_composite_draw(0, 0, 402, 22, 0, '', 300, 570, 402, 30)
     health_bar.clip_composite_draw(0, 0, 402, 22, 0, '', 900, 570, 402, 30)
-    health_hp.clip_composite_draw(0, 0, 8, 9, 0, '', 300-30, 570, 400-60, 28)
-    health_hp.clip_composite_draw(0, 0, 8, 9, 0, '', 900, 570, 400, 28)
+    health_hp.clip_composite_draw(0, 0, 8, 9, 0, '', 300-(400-p2.hp)//2, 570, p2.hp, 28)
+    health_hp.clip_composite_draw(0, 0, 8, 9, 0, '', 900-(400-p1.hp)//2, 570, p1.hp, 28)
 
     if charactor_choose_mode.p1_choose_result() == 1:
         naruto_mug.clip_composite_draw(0, 0, 104, 112, 0, '', 1150, 550, 80, 80)
