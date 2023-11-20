@@ -84,6 +84,10 @@ def update():
     game_world.update()
     game_world.handle_collisions()
     chakra_frame = (chakra_frame + 4 * game_framework.frame_time) % 4
+    if p1.hp <= 0:
+        p2.win = True
+    if p2.hp <= 0:
+        p1.win = True
 
 def draw():
     clear_canvas()

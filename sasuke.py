@@ -590,6 +590,35 @@ class Hard_hit:
             elif p1.dir == 1:
                 p1.hard_hit.clip_composite_draw(int(p1.frame) * 64, 0, 64, 40, 0, '', p1.x, p1.y-15, 200, 125)
 
+class Win:
+    @staticmethod
+    def enter(p1, e):
+        pass
+
+    @staticmethod
+    def exit(p1, e):
+        pass
+
+    @staticmethod
+    def do(p1):
+        p1.frame = (p1.frame + 4 * 2 * game_framework.frame_time) % 4
+
+
+
+    @staticmethod
+    def draw(p1):
+        # if p1.frame > 3:
+        #     if p1.dir == -1:
+        #         p1.hard_hit.clip_composite_draw(3 * 64, 0, 64, 40, 0, 'h', p1.x, p1.y - 15, 200, 125)
+        #     elif p1.dir == 1:
+        #         p1.hard_hit.clip_composite_draw(3 * 64, 0, 64, 40, 0, '', p1.x, p1.y - 15, 200, 125)
+        # else:
+        #     if p1.dir == -1:
+        #         p1.hard_hit.clip_composite_draw(int(p1.frame) * 64, 0, 64, 40, 0, 'h', p1.x, p1.y-15, 200, 125)
+        #     elif p1.dir == 1:
+        #         p1.hard_hit.clip_composite_draw(int(p1.frame) * 64, 0, 64, 40, 0, '', p1.x, p1.y-15, 200, 125)
+        pass
+
 class StateMachine:
     def __init__(self, p1):
         self.p1 = p1
@@ -673,6 +702,7 @@ class SASUKE:
         self.hp = 400
         self.chakra = 0
         self.chakra_lack = False
+        self.win = False
 
     def skill(self):
         if self.skill_num == 'shuriken':

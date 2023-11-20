@@ -159,6 +159,9 @@ class Idle:
 
     @staticmethod
     def do(p2):
+        if p2.win:
+            p2.state_machine.cur_state = Win
+
         if p2.y > ground_y:
             p2.state_machine.handle_event(('JUMP_STATE', None))
         if p2.right and not p2.left:
@@ -595,6 +598,24 @@ class Hard_hit:
             elif p2.dir == 1:
                 p2.hard_hit.clip_composite_draw(int(p2.frame) * 48, 0, 48, 40, 0, '', p2.x, p2.y-15, 135, 112)
 
+class Win:
+    @staticmethod
+    def enter(p2, e):
+        p2.frame = 0
+        pass
+
+    @staticmethod
+    def exit(p2, e):
+        pass
+
+    @staticmethod
+    def do(p2):
+        p2.frame = (p2.frame + 8 * 1 * game_framework.frame_time) % 8
+
+    @staticmethod
+    def draw(p2):
+        p2.win_image.clip_composite_draw(int(p2.frame) * 50, 0, 50, 64, 0, '', p2.x, p2.y, 140, 180)
+
 class StateMachine:
     def __init__(self, p2):
         self.p2 = p2
@@ -615,7 +636,8 @@ class StateMachine:
             Jump_Attack: {stop: Jump},
             Easy_hit: {stop: Idle}, Hard_hit: {stop: Idle},
             Skill_motion: {stop: Idle, right_up: Skill_motion, left_up: Skill_motion,
-                           right_down: Skill_motion, left_down: Skill_motion}
+                           right_down: Skill_motion, left_down: Skill_motion},
+            Win: {stop: Idle}
         }
 
     def start(self):
@@ -665,6 +687,7 @@ class NARUTO:
         self.jump_attack = load_image('naruto_jump_attack.png')
         self.easy_hit = load_image('naruto_easy_hit.png')
         self.hard_hit = load_image('naruto_hard_hit.png')
+        self.win_image = load_image('naruto_win.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.jump_move = False
@@ -682,6 +705,7 @@ class NARUTO:
         self.hp = 400
         self.chakra = 0
         self.chakra_lack = False
+        self.win = False
 
     def skill(self):
         if self.skill_num == 'shuriken':
