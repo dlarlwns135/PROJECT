@@ -27,6 +27,7 @@ def init():
     global p2
     global map
     global health_bar, health_hp, naruto_mug, sasuke_mug, chakra_image, chakra_frame
+    global ko, fight, fight_frame
 
     health_bar = load_image('health_bar.png')
     health_hp = load_image('health_hp.png')
@@ -34,6 +35,9 @@ def init():
     sasuke_mug = load_image('sasuke_mugshot.png')
     chakra_image = load_image('chakra.png')
     chakra_frame = 0
+    ko = load_image('ko.png')
+    fight = load_image('fight.png')
+    fight_frame = 0
 
     running = True
     world = []
@@ -80,10 +84,12 @@ def init():
 def finish():
     pass
 def update():
-    global chakra_frame
+    global chakra_frame, fight_frame
     game_world.update()
     game_world.handle_collisions()
     chakra_frame = (chakra_frame + 4 * game_framework.frame_time) % 4
+    if fight_frame <= 1500:
+        fight_frame += game_framework.frame_time * 400
     if p1.hp <= 0:
         p2.win = True
     if p2.hp <= 0:
@@ -119,5 +125,15 @@ def draw():
         naruto_mug.clip_composite_draw(0, 0, 104, 112, 0, '', 50, 550, 80, 80)
     elif charactor_choose_mode.p2_choose_result() == 2:
         sasuke_mug.clip_composite_draw(0, 0, 96, 104, 0, '', 50, 550, 80, 80)
+
+    if fight_frame <= 600:
+        fight.clip_composite_draw(0, 0, 1601, 786, 0, '', 600, 900-int(fight_frame), 473, 228)
+    elif 600 < fight_frame <= 900:
+        fight.clip_composite_draw(0, 0, 1601, 786, 0, '', 600, 300, 473, 228)
+    elif 900 < fight_frame <= 1500:
+        fight.clip_composite_draw(0, 0, 1601, 786, 0, '', 600, int(fight_frame)-600, 473, 228)
+
+    if p1.win or p2.win:
+        ko.clip_composite_draw(0, 0, 473, 228, 0, '', 600, 300, 473, 228)
     update_canvas()
 
