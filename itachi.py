@@ -330,10 +330,10 @@ class Teleport:
     @staticmethod
     def draw(p3):
         if p3.dir == -1:
-            p3.teleport.clip_composite_draw(int(p3.frame) * 32, 0, 32, 64, 0, 'h', p3.x, p3.y, 100, 200)
+            p3.teleport.clip_composite_draw(int(p3.frame) * 40, 0, 40, 66, 0, 'h', p3.x, p3.y, 125, 202)
             p3.teleport_motion.clip_composite_draw(int(p3.frame) * 72, 0, 72, 75, 0, 'h', p3.x, p3.y, 150, 250)
         elif p3.dir == 1:
-            p3.teleport.clip_composite_draw(int(p3.frame) * 32, 0, 32, 64, 0, '', p3.x, p3.y, 100, 200)
+            p3.teleport.clip_composite_draw(int(p3.frame) * 40, 0, 40, 66, 0, '', p3.x, p3.y, 125, 202)
             p3.teleport_motion.clip_composite_draw(int(p3.frame) * 72, 0, 72, 75, 0, '', p3.x, p3.y, 150, 250)
 
 class Attack:
@@ -366,19 +366,19 @@ class Attack:
                 p3.frame = 0
                 p3.wait_time = get_time()
         if p3.attack_num == 2:
-            if p3.frame >= 5:
+            if p3.frame >= 4:
                 p3.state_machine.handle_event(('STOP', None))
                 p3.attack_num = 3
                 p3.frame = 0
                 p3.wait_time = get_time()
         if p3.attack_num == 3:
-            if p3.frame >= 7:
+            if p3.frame >= 5:
                 p3.state_machine.handle_event(('STOP', None))
                 p3.attack_num = 4
                 p3.frame = 0
                 p3.wait_time = get_time()
         if p3.attack_num == 4:
-            if p3.frame >= 6.5:
+            if p3.frame >= 6:
                 p3.state_machine.handle_event(('STOP', None))
                 p3.attack_num = 1
                 p3.frame = 0
@@ -388,24 +388,24 @@ class Attack:
     def draw(p3):
         if p3.attack_num == 1:
             if p3.dir == -1:
-                p3.attack1.clip_composite_draw(int(p3.frame) * 61, 0, 61, 64, 0, 'h', p3.x-35, p3.y, 191, 200)
+                p3.attack1.clip_composite_draw(int(p3.frame) * 42, 0, 42, 64, 0, 'h', p3.x, p3.y-15, 131, 200)
             elif p3.dir == 1:
-                p3.attack1.clip_composite_draw(int(p3.frame) * 61, 0, 61, 64, 0, '', p3.x+35, p3.y, 191, 200)
+                p3.attack1.clip_composite_draw(int(p3.frame) * 42, 0, 42, 64, 0, '', p3.x, p3.y-15, 131, 200)
         elif p3.attack_num == 2:
             if p3.dir == -1:
-                p3.attack2.clip_composite_draw(int(p3.frame) * 64, 0, 64, 64, 0, 'h', p3.x-40, p3.y, 200, 200)
+                p3.attack2.clip_composite_draw(int(p3.frame) * 58, 0, 58, 72, 0, 'h', p3.x-40, p3.y, 181, 225)
             elif p3.dir == 1:
-                p3.attack2.clip_composite_draw(int(p3.frame) * 64, 0, 64, 64, 0, '', p3.x+40, p3.y, 200, 200)
+                p3.attack2.clip_composite_draw(int(p3.frame) * 58, 0, 58, 72, 0, '', p3.x+40, p3.y, 181, 225)
         elif p3.attack_num == 3:
             if p3.dir == -1:
-                    p3.attack3.clip_composite_draw(int(p3.frame) * 77, 0, 77, 64, 0, 'h', p3.x - 70, p3.y, 241, 200)
+                    p3.attack3.clip_composite_draw(int(p3.frame) * 74, 0, 74, 72, 0, 'h', p3.x - 40, p3.y, 227, 225)
             elif p3.dir == 1:
-                    p3.attack3.clip_composite_draw(int(p3.frame) * 77, 0, 77, 64, 0, '', p3.x + 70, p3.y, 241, 200)
+                    p3.attack3.clip_composite_draw(int(p3.frame) * 74, 0, 74, 72, 0, '', p3.x + 40, p3.y, 227, 225)
         elif p3.attack_num == 4:
             if p3.dir == -1:
-                    p3.attack4.clip_composite_draw(int(p3.frame) * 72, 0, 72, 66, 0, 'h', p3.x - 62, p3.y+3, 225, 206)
+                    p3.attack4.clip_composite_draw(int(p3.frame) * 42, 0, 42, 72, 0, 'h', p3.x - 20, p3.y+15, 131, 225)
             elif p3.dir == 1:
-                    p3.attack4.clip_composite_draw(int(p3.frame) * 72, 0, 72, 66, 0, '', p3.x + 62, p3.y+3, 225, 206)
+                    p3.attack4.clip_composite_draw(int(p3.frame) * 42, 0, 42, 72, 0, '', p3.x + 20, p3.y+15, 131, 225)
 
 class Run_Attack:
     @staticmethod
@@ -699,12 +699,12 @@ class ITACHI:
         self.idle = load_image('resource/itachi_idle.png')
         self.run = load_image('resource/itachi_run.png')
         self.jump = load_image('resource/itachi_jump.png')
-        self.teleport = load_image('resource/sasuke_teleport.png')
+        self.teleport = load_image('resource/itachi_teleport.png')
         self.teleport_motion = load_image('resource/teleport.png')
-        self.attack1 = load_image('resource/sasuke_attack1.png')
-        self.attack2 = load_image('resource/sasuke_attack2.png')
-        self.attack3 = load_image('resource/sasuke_attack3.png')
-        self.attack4 = load_image('resource/sasuke_attack4.png')
+        self.attack1 = load_image('resource/itachi_attack1.png')
+        self.attack2 = load_image('resource/itachi_attack2.png')
+        self.attack3 = load_image('resource/itachi_attack3.png')
+        self.attack4 = load_image('resource/itachi_attack4.png')
         self.shuriken_stand = load_image('resource/sasuke_shuriken_stand.png')
         self.shuriken_jump = load_image('resource/sasuke_shuriken_jump.png')
         self.skill1 = load_image('resource/sasuke_skill1.png')
