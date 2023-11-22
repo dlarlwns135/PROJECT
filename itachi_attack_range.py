@@ -170,17 +170,17 @@ class Attack_range:
             self.damage = 20
             pass
         elif self.attack_num == 'run':
-            self.attack_range_x = 100
-            self.attack_range_y = 30
-            self.attack_x_dis = 60
-            self.attack_y_dis = -20
+            self.attack_range_x = 70
+            self.attack_range_y = 50
+            self.attack_x_dis = 50
+            self.attack_y_dis = 0
             self.damage = 30
             pass
         elif self.attack_num == 'jump':
-            self.attack_range_x = 90
-            self.attack_range_y = 50
+            self.attack_range_x = 80
+            self.attack_range_y = 40
             self.attack_x_dis = 10
-            self.attack_y_dis = -10
+            self.attack_y_dis = 0
             self.damage = 30
     def update(self):
         self.frame = self.frame + 7 * 3 * game_framework.frame_time

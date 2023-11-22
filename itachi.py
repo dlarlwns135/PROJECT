@@ -420,17 +420,17 @@ class Run_Attack:
         p3.frame = 0
     @staticmethod
     def do(p3):
-        p3.frame = p3.frame + 6 * 3 * game_framework.frame_time
-        if p3.frame >= 5.9:
+        p3.frame = p3.frame + 5 * 3 * game_framework.frame_time
+        if p3.frame >= 4.9:
             p3.state_machine.handle_event(('STOP', None))
         p3.x += p3.dir * RUN_SPEED_PPS * 1 * game_framework.frame_time
 
     @staticmethod
     def draw(p3):
         if p3.dir == -1:
-            p3.run_attack.clip_composite_draw(int(p3.frame) * 79, 0, 79, 64, 0, 'h', p3.x-35, p3.y, 247, 200)
+            p3.run_attack.clip_composite_draw(int(p3.frame) * 66, 0, 66, 49, 0, 'h', p3.x-50, p3.y, 206, 153)
         elif p3.dir == 1:
-            p3.run_attack.clip_composite_draw(int(p3.frame) * 79, 0, 79, 64, 0, '', p3.x+35, p3.y, 247, 200)
+            p3.run_attack.clip_composite_draw(int(p3.frame) * 66, 0, 66, 49, 0, '', p3.x+50, p3.y, 206, 153)
 
 class Jump_Attack:
     @staticmethod
@@ -446,16 +446,16 @@ class Jump_Attack:
 
     @staticmethod
     def do(p3):
-        p3.frame = p3.frame + 5 * 3.5 * game_framework.frame_time
-        if p3.frame >= 4.9:
+        p3.frame = p3.frame + 3 * 3.5 * game_framework.frame_time
+        if p3.frame >= 2.9:
             p3.state_machine.handle_event(('STOP', None))
 
     @staticmethod
     def draw(p3):
         if p3.dir == -1:
-            p3.jump_attack.clip_composite_draw(int(p3.frame) * 56, 0, 56, 64, 0, 'h', p3.x, p3.y, 175, 200)
+            p3.jump_attack.clip_composite_draw(int(p3.frame) * 50, 0, 50, 48, 0, 'h', p3.x, p3.y, 156, 150)
         elif p3.dir == 1:
-            p3.jump_attack.clip_composite_draw(int(p3.frame) * 56, 0, 56, 64, 0, '', p3.x, p3.y, 175, 200)
+            p3.jump_attack.clip_composite_draw(int(p3.frame) * 50, 0, 50, 48, 0, '', p3.x, p3.y, 156, 150)
 
 class Skill_motion:
     @staticmethod
@@ -498,8 +498,8 @@ class Skill_motion:
                 p3.frame = 0
                 p3.state_machine.handle_event(('STOP', None))
         elif p3.skill_num == 'shuriken':
-            p3.frame = (p3.frame + 4 * 4 * game_framework.frame_time) % 4
-            if p3.frame >= 3:
+            p3.frame = (p3.frame + 3 * 4 * game_framework.frame_time) % 3
+            if p3.frame >= 2:
                 p3.frame = 0
                 p3.state_machine.handle_event(('STOP', None))
 
@@ -507,9 +507,9 @@ class Skill_motion:
     def draw(p3):
         if p3.skill_num == 'skill1':
             if p3.dir == -1:
-                p3.skill1.clip_composite_draw(int(p3.frame) * 37, 0, 37, 64, 0, 'h', p3.x, p3.y+22, 115, 200)
+                p3.skill1.clip_composite_draw(int(p3.frame) * 170, 0, 170, 152, 0, 'h', p3.x-60, p3.y-25, 531, 475)
             elif p3.dir == 1:
-                p3.skill1.clip_composite_draw(int(p3.frame) * 37, 0, 37, 64, 0, '', p3.x, p3.y+22, 115, 200)
+                p3.skill1.clip_composite_draw(int(p3.frame) * 170, 0, 170, 152, 0, '', p3.x+60, p3.y-25, 531, 475)
         elif p3.skill_num == 'skill2':
             if p3.dir == -1:
                 p3.skill2.clip_composite_draw(int(p3.frame) * 104, 0, 104, 77, 0, 'h', p3.x, p3.y+41, 325, 241)
@@ -518,14 +518,14 @@ class Skill_motion:
         elif p3.skill_num == 'shuriken':
             if p3.jump_state:
                 if p3.dir == -1:
-                    p3.shuriken_jump.clip_composite_draw(int(p3.frame) * 40, 0, 40, 64, 0, 'h', p3.x, p3.y, 125, 200)
+                    p3.shuriken_jump.clip_composite_draw(int(p3.frame) * 42, 0, 42, 56, 0, 'h', p3.x, p3.y-25, 131, 175)
                 elif p3.dir == 1:
-                    p3.shuriken_jump.clip_composite_draw(int(p3.frame) * 40, 0, 40, 64, 0, '', p3.x, p3.y, 125, 200)
+                    p3.shuriken_jump.clip_composite_draw(int(p3.frame) * 42, 0, 42, 56, 0, '', p3.x, p3.y-25, 131, 175)
             else:
                 if p3.dir == -1:
-                    p3.shuriken_stand.clip_composite_draw(int(p3.frame) * 40, 0, 40, 64, 0, 'h', p3.x, p3.y, 125, 200)
+                    p3.shuriken_stand.clip_composite_draw(int(p3.frame) * 50, 0, 50, 64, 0, 'h', p3.x-15, p3.y+15, 156, 200)
                 elif p3.dir == 1:
-                    p3.shuriken_stand.clip_composite_draw(int(p3.frame) * 40, 0, 40, 64, 0, '', p3.x, p3.y, 125, 200)
+                    p3.shuriken_stand.clip_composite_draw(int(p3.frame) * 50, 0, 50, 64, 0, '', p3.x+15, p3.y+15, 156, 200)
 
 class Easy_hit:
     @staticmethod
@@ -554,9 +554,9 @@ class Easy_hit:
     @staticmethod
     def draw(p3):
         if p3.dir == -1:
-            p3.easy_hit.clip_composite_draw(int(p3.frame) * 40, 0, 40, 64, 0, 'h', p3.x, p3.y, 125, 200)
+            p3.easy_hit.clip_composite_draw(int(p3.frame) * 43, 0, 43, 64, 0, 'h', p3.x+15, p3.y+15, 134, 200)
         elif p3.dir == 1:
-            p3.easy_hit.clip_composite_draw(int(p3.frame) * 40, 0, 40, 64, 0, '', p3.x, p3.y, 125, 200)
+            p3.easy_hit.clip_composite_draw(int(p3.frame) * 43, 0, 43, 64, 0, '', p3.x-15, p3.y+15, 134, 200)
 
 class Hard_hit:
     @staticmethod
@@ -594,14 +594,14 @@ class Hard_hit:
     def draw(p3):
         if p3.frame > 3:
             if p3.dir == -1:
-                p3.hard_hit.clip_composite_draw(3 * 64, 0, 64, 40, 0, 'h', p3.x, p3.y - 15, 200, 125)
+                p3.hard_hit.clip_composite_draw(3 * 66, 0, 66, 40, 0, 'h', p3.x, p3.y - 15, 206, 125)
             elif p3.dir == 1:
-                p3.hard_hit.clip_composite_draw(3 * 64, 0, 64, 40, 0, '', p3.x, p3.y - 15, 200, 125)
+                p3.hard_hit.clip_composite_draw(3 * 66, 0, 66, 40, 0, '', p3.x, p3.y - 15, 206, 125)
         else:
             if p3.dir == -1:
-                p3.hard_hit.clip_composite_draw(int(p3.frame) * 64, 0, 64, 40, 0, 'h', p3.x, p3.y-15, 200, 125)
+                p3.hard_hit.clip_composite_draw(int(p3.frame) * 66, 0, 66, 40, 0, 'h', p3.x, p3.y-15, 206, 125)
             elif p3.dir == 1:
-                p3.hard_hit.clip_composite_draw(int(p3.frame) * 64, 0, 64, 40, 0, '', p3.x, p3.y-15, 200, 125)
+                p3.hard_hit.clip_composite_draw(int(p3.frame) * 66, 0, 66, 40, 0, '', p3.x, p3.y-15, 206, 125)
 
 class Win:
     @staticmethod
@@ -615,14 +615,14 @@ class Win:
 
     @staticmethod
     def do(p3):
-        p3.frame = (p3.frame + 12 * 1 * game_framework.frame_time) % 12
+        p3.frame = (p3.frame + 16 * 1 * game_framework.frame_time) % 16
 
     @staticmethod
     def draw(p3):
         if p3.dir == 1:
-            p3.win_image.clip_composite_draw(int(p3.frame) * 34, 0, 34, 64, 0, '', p3.x-10, p3.y-6, 103, 200)
+            p3.win_image.clip_composite_draw(int(p3.frame) * 42, 0, 42, 74, 0, '', p3.x, p3.y, 90, 159)
         elif p3.dir == -1:
-            p3.win_image.clip_composite_draw(int(p3.frame) * 34, 0, 34, 64, 0, 'h', p3.x + 10, p3.y - 6, 103, 200)
+            p3.win_image.clip_composite_draw(int(p3.frame) * 42, 0, 42, 74, 0, 'h', p3.x, p3.y, 90, 159)
 
 class Lose:
     @staticmethod
@@ -705,15 +705,15 @@ class ITACHI:
         self.attack2 = load_image('resource/itachi_attack2.png')
         self.attack3 = load_image('resource/itachi_attack3.png')
         self.attack4 = load_image('resource/itachi_attack4.png')
-        self.shuriken_stand = load_image('resource/sasuke_shuriken_stand.png')
-        self.shuriken_jump = load_image('resource/sasuke_shuriken_jump.png')
-        self.skill1 = load_image('resource/sasuke_skill1.png')
+        self.shuriken_stand = load_image('resource/itachi_shuriken_stand.png')
+        self.shuriken_jump = load_image('resource/itachi_shuriken_jump.png')
+        self.skill1 = load_image('resource/itachi_skill1.png')
         self.skill2 = load_image('resource/sasuke_skill2.png')
-        self.run_attack = load_image('resource/sasuke_run_attack.png')
-        self.jump_attack = load_image('resource/sasuke_jump_attack.png')
-        self.easy_hit = load_image('resource/sasuke_easy_hit.png')
-        self.hard_hit = load_image('resource/sasuke_hard_hit.png')
-        self.win_image = load_image('resource/sasuke_win.png')
+        self.run_attack = load_image('resource/itachi_run_attack.png')
+        self.jump_attack = load_image('resource/itachi_jump_attack.png')
+        self.easy_hit = load_image('resource/itachi_easy_hit.png')
+        self.hard_hit = load_image('resource/itachi_hard_hit.png')
+        self.win_image = load_image('resource/itachi_win.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.jump_move = False
