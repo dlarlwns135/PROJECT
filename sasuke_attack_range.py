@@ -21,7 +21,7 @@ class Shuriken:
 
     def draw(self):
         self.shuriken.clip_composite_draw(int(self.frame) * 44, 0, 44, 35, 0, '', self.x, self.y, 44, 35)
-        draw_rectangle(*self.get_bb())
+        # draw_rectangle(*self.get_bb())
 
     def update(self):
         self.frame = (self.frame + 4 * 4 * game_framework.frame_time) % 4
@@ -57,7 +57,7 @@ class Skill1:
         elif self.dir == -1:
             self.skill1_effect.clip_composite_draw(int(self.frame) * 97, 0, 97, 80, 0, 'h',
                                                     self.x, self.y + 90, 325, 241)
-        draw_rectangle(*self.get_bb())
+        # draw_rectangle(*self.get_bb())
 
     def update(self):
         self.frame = (self.frame + 10 * 2 * game_framework.frame_time) % 10
@@ -111,7 +111,7 @@ class Skill2:
                 else:
                     self.skill2_effect1.clip_composite_draw((int(self.frame) - 1) * 104, 0, 104, 77, 0, '',
                                                             self.x - 30, self.y + 41 - 10, 325, 241)
-        draw_rectangle(*self.get_bb())
+        # draw_rectangle(*self.get_bb())
 
     def update(self):
         self.count += 1
@@ -212,7 +212,8 @@ class Attack_range:
         pass
 
     def draw(self):
-        draw_rectangle(*self.get_bb())
+        # draw_rectangle(*self.get_bb())
+        pass
 
     def get_bb(self):
         return (self.x - self.attack_range_x + self.dir * self.attack_x_dis,

@@ -29,13 +29,14 @@ def init():
     global p1
     global p2
     global map
-    global health_bar, health_hp, naruto_mug, sasuke_mug, chakra_image, chakra_frame
+    global health_bar, health_hp, naruto_mug, sasuke_mug, itachi_mug, chakra_image, chakra_frame
     global ko, fight, fight_frame
 
     health_bar = load_image('resource/health_bar.png')
     health_hp = load_image('resource/health_hp.png')
     naruto_mug = load_image('resource/naruto_mugshot.png')
     sasuke_mug = load_image('resource/sasuke_mugshot.png')
+    itachi_mug = load_image('resource/itachi_mugshot.png')
     chakra_image = load_image('resource/chakra.png')
     chakra_frame = 0
     ko = load_image('resource/ko.png')
@@ -129,11 +130,15 @@ def draw():
         naruto_mug.clip_composite_draw(0, 0, 104, 112, 0, '', 1150, 550, 80, 80)
     elif charactor_choose_mode.p1_choose_result() == 2:
         sasuke_mug.clip_composite_draw(0, 0, 96, 104, 0, '', 1150, 550, 80, 80)
+    elif charactor_choose_mode.p1_choose_result() == 3:
+        itachi_mug.clip_composite_draw(0, 0, 112, 112, 0, '', 1150, 550, 80, 80)
 
     if charactor_choose_mode.p2_choose_result() == 1:
         naruto_mug.clip_composite_draw(0, 0, 104, 112, 0, '', 50, 550, 80, 80)
     elif charactor_choose_mode.p2_choose_result() == 2:
         sasuke_mug.clip_composite_draw(0, 0, 96, 104, 0, '', 50, 550, 80, 80)
+    elif charactor_choose_mode.p2_choose_result() == 3:
+        itachi_mug.clip_composite_draw(0, 0, 112, 112, 0, '', 50, 550, 80, 80)
 
     if fight_frame <= 600:
         fight.clip_composite_draw(0, 0, 1601, 786, 0, '', 600, 900-int(fight_frame), 473, 228)
