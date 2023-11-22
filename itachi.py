@@ -145,7 +145,6 @@ class Idle:
             if p3.chakra >= 30:
                 p3.chakra -= 30
                 p3.chakra_lack = False
-                p3.skill()
             else:
                 p3.chakra_lack = True
 
@@ -491,10 +490,9 @@ class Skill_motion:
                 p3.frame = 0
                 p3.state_machine.handle_event(('STOP', None))
         elif p3.skill_num == 'skill2':
-            p3.frame = (p3.frame + 19 * 1.0 * game_framework.frame_time) % 19
-            if p3.frame >= 8:
-                p3.x += p3.dir * RUN_SPEED_PPS * 2 * game_framework.frame_time
-            if p3.frame >= 18:
+            p3.frame = p3.frame + 6 * 2 * game_framework.frame_time
+            if p3.frame >= 5.9:
+                # p3.skill()
                 p3.frame = 0
                 p3.state_machine.handle_event(('STOP', None))
         elif p3.skill_num == 'shuriken':
@@ -512,9 +510,9 @@ class Skill_motion:
                 p3.skill1.clip_composite_draw(int(p3.frame) * 170, 0, 170, 152, 0, '', p3.x+60, p3.y-25, 531, 475)
         elif p3.skill_num == 'skill2':
             if p3.dir == -1:
-                p3.skill2.clip_composite_draw(int(p3.frame) * 104, 0, 104, 77, 0, 'h', p3.x, p3.y+41, 325, 241)
+                p3.skill2.clip_composite_draw(int(p3.frame) * 42, 0, 42, 72, 0, 'h', p3.x+10, p3.y+5, 90, 155)
             elif p3.dir == 1:
-                p3.skill2.clip_composite_draw(int(p3.frame) * 104, 0, 104, 77, 0, '', p3.x, p3.y+41, 325, 241)
+                p3.skill2.clip_composite_draw(int(p3.frame) * 42, 0, 42, 72, 0, '', p3.x-10, p3.y+5, 90, 155)
         elif p3.skill_num == 'shuriken':
             if p3.jump_state:
                 if p3.dir == -1:
@@ -708,7 +706,7 @@ class ITACHI:
         self.shuriken_stand = load_image('resource/itachi_shuriken_stand.png')
         self.shuriken_jump = load_image('resource/itachi_shuriken_jump.png')
         self.skill1 = load_image('resource/itachi_skill1.png')
-        self.skill2 = load_image('resource/sasuke_skill2.png')
+        self.skill2 = load_image('resource/itachi_skill2.png')
         self.run_attack = load_image('resource/itachi_run_attack.png')
         self.jump_attack = load_image('resource/itachi_jump_attack.png')
         self.easy_hit = load_image('resource/itachi_easy_hit.png')
@@ -729,7 +727,7 @@ class ITACHI:
         player_num = p_num
         self.invincible = False
         self.hp = 400
-        self.chakra = 0
+        self.chakra = 100
         self.chakra_lack = False
         self.win = False
 

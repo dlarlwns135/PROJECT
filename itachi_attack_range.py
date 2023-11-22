@@ -2,6 +2,7 @@ from pico2d import *
 
 import game_framework
 import game_world
+
 PIXEL_PER_METER = (10.0 / 0.3) # 10 pixel 30 cm
 RUN_SPEED_KMPH = 50.0 # Km / Hour
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
@@ -77,6 +78,9 @@ class Skill1:
         if not other.invincible:
             if group == 'p1:p2_skill1' or group == 'p2:p1_skill1':
                 print("화둔 맞음")
+                # other.hp = -self.damage
+                # other.invincible = True
+
 class Skill2:
     skill2_effect1 = None
     skill2_effect2 = None

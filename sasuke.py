@@ -729,7 +729,7 @@ class SASUKE:
         player_num = p_num
         self.invincible = False
         self.hp = 400
-        self.chakra = 0
+        self.chakra = 100
         self.chakra_lack = False
         self.win = False
 
@@ -805,12 +805,12 @@ class SASUKE:
                     self.frame = 0
                     self.state_machine.cur_state = Easy_hit
                 if group == 'p1:p2_skill1':
-                    self.invincible = True
                     self.dir = -other.dir
                     print(other.damage)
                     self.hp -= other.damage
                     print("p2한테 skill1 맞음")
                     self.frame = 0
+                    self.invincible = True
                     self.state_machine.cur_state = Hard_hit
                 if group == 'p1:p2_skill2':
                     self.invincible = True
