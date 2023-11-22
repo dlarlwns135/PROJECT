@@ -206,9 +206,9 @@ class Run:
     @staticmethod
     def draw(p3):
         if p3.dir == -1:
-            p3.run.clip_composite_draw(int(p3.frame) * 64, 0, 64, 32, 0, 'h', p3.x, p3.y-15, 200, 100)
+            p3.run.clip_composite_draw(int(p3.frame) * 50, 0, 50, 48, 0, 'h', p3.x, p3.y-10, 153, 150)
         elif p3.dir == 1:
-            p3.run.clip_composite_draw(int(p3.frame) * 64, 0, 64, 32, 0, '', p3.x, p3.y-15, 200, 100)
+            p3.run.clip_composite_draw(int(p3.frame) * 50, 0, 50, 48, 0, '', p3.x, p3.y-10, 153, 150)
 
 
 class Jump:
@@ -278,9 +278,9 @@ class Jump:
     @staticmethod
     def draw(p3):
         if p3.dir == -1:
-            p3.jump.clip_composite_draw(int(p3.frame) * 32, 0, 32, 64, 0, 'h', p3.x, p3.y, 100, 200)
+            p3.jump.clip_composite_draw(int(p3.frame) * 50, 0, 50, 64, 0, 'h', p3.x, p3.y, 153, 200)
         elif p3.dir == 1:
-            p3.jump.clip_composite_draw(int(p3.frame) * 32, 0, 32, 64, 0, '', p3.x, p3.y, 100, 200)
+            p3.jump.clip_composite_draw(int(p3.frame) * 50, 0, 50, 64, 0, '', p3.x, p3.y, 153, 200)
 
 class Teleport:
     @staticmethod
@@ -697,8 +697,8 @@ class ITACHI:
         self.frame = 0
         self.dir = 1
         self.idle = load_image('resource/itachi_idle.png')
-        self.run = load_image('resource/sasuke_run.png')
-        self.jump = load_image('resource/sasuke_jump.png')
+        self.run = load_image('resource/itachi_run.png')
+        self.jump = load_image('resource/itachi_jump.png')
         self.teleport = load_image('resource/sasuke_teleport.png')
         self.teleport_motion = load_image('resource/teleport.png')
         self.attack1 = load_image('resource/sasuke_attack1.png')
