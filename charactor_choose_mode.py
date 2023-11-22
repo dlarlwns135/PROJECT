@@ -2,17 +2,18 @@ from pico2d import *
 import game_framework
 import play_mode
 
-character_count = 2
+character_count = 3
 
 def init():
-    global image1, naruto, sasuke
+    global image1, naruto, sasuke, itachi
     global p1_x, p1_y, p2_x, p2_y, p1_choose, p2_choose, p1_image, p2_image, character_back
     global vs, press_space
-    global naruto_frame, sasuke_frame, space_frame, space_up
+    global naruto_frame, sasuke_frame, itachi_frame, space_frame, space_up
     global duplicate, dup_on, dup_wait_time
     image1 = load_image('resource/title_main.png')
     naruto = load_image('resource/naruto_idle.png')
     sasuke = load_image('resource/sasuke_idle.png')
+    itachi = load_image('resource/itachi_idle.png')
     p1_image = load_image('resource/p1_image.png')
     p2_image = load_image('resource/p2_image.png')
     character_back = load_image('resource/charactor_back.png')
@@ -23,16 +24,16 @@ def init():
     p1_y = 360
     p2_x = 300
     p2_y = 360
-    p1_choose = 1
-    p2_choose = 2
-    naruto_frame, sasuke_frame = 0, 0
+    p1_choose = 2
+    p2_choose = 3
+    naruto_frame, sasuke_frame, itachi_frame = 0, 0, 0
     space_frame = 0
     space_up = True
     dup_on = False
     dup_wait_time = 0
 def finish():
-    global image1, naruto, sasuke, p1_image, p2_image, character_back, vs, press_space, duplicate
-    del image1, naruto, sasuke, p1_image, p2_image, character_back, vs, press_space, duplicate
+    global image1, naruto, sasuke, itachi, p1_image, p2_image, character_back, vs, press_space, duplicate
+    del image1, naruto, sasuke, itachi, p1_image, p2_image, character_back, vs, press_space, duplicate
 def handle_events():
     events = get_events()
     global p1_choose, p2_choose, character_count, dup_on, dup_wait_time
@@ -75,14 +76,18 @@ def draw():
     p1_image.clip_composite_draw(0, 0, 64, 32, 0, '', 900, 500, 120, 60)
     p2_image.clip_composite_draw(0, 0, 64, 32, 0, '', 300, 500, 120, 60)
     if p1_choose == 1:
-        naruto.clip_composite_draw(int(naruto_frame)*32, 0, 32, 48, 0, '', p1_x, p1_y, 100, 150)
+        naruto.clip_composite_draw(int(naruto_frame)*32, 0, 32, 48, 0, 'h', p1_x, p1_y, 100, 150)
     elif p1_choose == 2:
-        sasuke.clip_composite_draw(int(sasuke_frame)*32, 0, 32, 64, 0, '', p1_x, p1_y, 100, 200)
+        sasuke.clip_composite_draw(int(sasuke_frame)*32, 0, 32, 64, 0, 'h', p1_x, p1_y, 100, 200)
+    elif p1_choose == 3:
+        itachi.clip_composite_draw(int(itachi_frame)*32, 0, 32, 64, 0, 'h', p1_x, p1_y+15, 100, 200)
 
     if p2_choose == 1:
         naruto.clip_composite_draw(int(naruto_frame)*32, 0, 32, 48, 0, '', p2_x, p2_y, 100, 150)
     elif p2_choose == 2:
         sasuke.clip_composite_draw(int(sasuke_frame)*32, 0, 32, 64, 0, '', p2_x, p2_y, 100, 200)
+    elif p2_choose == 3:
+        itachi.clip_composite_draw(int(itachi_frame) * 32, 0, 32, 64, 0, '', p2_x, p2_y+15, 100, 200)
 
     if space_up:
         press_space.clip_composite_draw(0, 0, 1920, 1080, 0, '', 600, 60 + space_frame, 900, 500)
@@ -94,9 +99,10 @@ def draw():
     update_canvas()
 
 def update():
-    global naruto_frame, sasuke_frame, space_frame, space_up, dup_wait_time, dup_on
+    global naruto_frame, sasuke_frame, itachi_frame, space_frame, space_up, dup_wait_time, dup_on
     naruto_frame = (naruto_frame + 6 * game_framework.frame_time) % 6
     sasuke_frame = (sasuke_frame + 6 * game_framework.frame_time) % 6
+    itachi_frame = (itachi_frame + 4 * game_framework.frame_time) % 4
     space_frame = space_frame + 10 * game_framework.frame_time
     if space_frame >= 9:
         if space_up:

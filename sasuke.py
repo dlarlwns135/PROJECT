@@ -300,9 +300,17 @@ class Teleport:
     def exit(p1, e):
         if p1.frame >= 3:
             if p1.up_tele:
+                if p1.right and not p1.left:
+                    p1.x += tele_dis
+                elif p1.left and not p1.right:
+                    p1.x -= tele_dis
                 p1.y += tele_dis
                 p1.up_tele = False
             elif p1.down_tele:
+                if p1.right and not p1.left:
+                    p1.x += tele_dis
+                elif p1.left and not p1.right:
+                    p1.x -= tele_dis
                 p1.y -= tele_dis
                 if p1.y <= ground_y:
                     p1.y = ground_y
