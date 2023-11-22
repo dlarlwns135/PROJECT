@@ -12,7 +12,7 @@ class Shuriken:
     shuriken = None
     def __init__(self, x = 400, y = 300, dir = 1):
         if Shuriken.shuriken == None:
-            Shuriken.shuriken = load_image('shuriken1.png')
+            Shuriken.shuriken = load_image('resource/shuriken1.png')
         self.x, self.y = x, y,
         self.frame = 0
         self.dir = dir
@@ -43,7 +43,7 @@ class Skill1:
     skill1_effect = None
     def __init__(self, x = 400, y = 300, dir = 1):
         if Skill1.skill1_effect == None:
-            Skill1.skill1_effect = load_image('sasuke_skill1_effect.png')
+            Skill1.skill1_effect = load_image('resource/sasuke_skill1_effect.png')
         self.x, self.y = x + dir * 150, y
         self.frame = 0
         self.dir = dir
@@ -82,9 +82,9 @@ class Skill2:
     skill2_effect2 = None
     def __init__(self, x = 400, y = 300, dir = 1):
         if Skill2.skill2_effect1 == None:
-            Skill2.skill2_effect1 = load_image('sasuke_skill2_effect1.png')
+            Skill2.skill2_effect1 = load_image('resource/sasuke_skill2_effect1.png')
         if Skill2.skill2_effect2 == None:
-            Skill2.skill2_effect2 = load_image('sasuke_skill2_effect2.png')
+            Skill2.skill2_effect2 = load_image('resource/sasuke_skill2_effect2.png')
         self.x, self.y = x, y
         self.frame = 0
         self.dir = dir

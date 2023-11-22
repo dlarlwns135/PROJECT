@@ -10,15 +10,15 @@ def init():
     global vs, press_space
     global naruto_frame, sasuke_frame, space_frame, space_up
     global duplicate, dup_on, dup_wait_time
-    image1 = load_image('title_main.png')
-    naruto = load_image('naruto_idle.png')
-    sasuke = load_image('sasuke_idle.png')
-    p1_image = load_image('p1_image.png')
-    p2_image = load_image('p2_image.png')
-    character_back = load_image('charactor_back.png')
-    vs = load_image('vs.png')
-    press_space = load_image('press_space.png')
-    duplicate = load_image('duplicate.png')
+    image1 = load_image('resource/title_main.png')
+    naruto = load_image('resource/naruto_idle.png')
+    sasuke = load_image('resource/sasuke_idle.png')
+    p1_image = load_image('resource/p1_image.png')
+    p2_image = load_image('resource/p2_image.png')
+    character_back = load_image('resource/charactor_back.png')
+    vs = load_image('resource/vs.png')
+    press_space = load_image('resource/press_space.png')
+    duplicate = load_image('resource/duplicate.png')
     p1_x = 900
     p1_y = 360
     p2_x = 300

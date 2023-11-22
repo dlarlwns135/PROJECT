@@ -31,14 +31,14 @@ def init():
     global health_bar, health_hp, naruto_mug, sasuke_mug, chakra_image, chakra_frame
     global ko, fight, fight_frame
 
-    health_bar = load_image('health_bar.png')
-    health_hp = load_image('health_hp.png')
-    naruto_mug = load_image('naruto_mugshot.png')
-    sasuke_mug = load_image('sasuke_mugshot.png')
-    chakra_image = load_image('chakra.png')
+    health_bar = load_image('resource/health_bar.png')
+    health_hp = load_image('resource/health_hp.png')
+    naruto_mug = load_image('resource/naruto_mugshot.png')
+    sasuke_mug = load_image('resource/sasuke_mugshot.png')
+    chakra_image = load_image('resource/chakra.png')
     chakra_frame = 0
-    ko = load_image('ko.png')
-    fight = load_image('fight.png')
+    ko = load_image('resource/ko.png')
+    fight = load_image('resource/fight.png')
     fight_frame = 0
 
     running = True

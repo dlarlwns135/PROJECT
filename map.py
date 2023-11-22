@@ -2,7 +2,7 @@ from pico2d import *
 
 class Map:
     def __init__(self):
-        self.uchihamap = load_image('uchihamap.png')
+        self.uchihamap = load_image('resource/uchihamap.png')
         # self.ruler_image = load_image('ruler.png')
 
     def update(self):
