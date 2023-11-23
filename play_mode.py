@@ -69,12 +69,15 @@ def init():
         p2 = ITACHI(2)
         game_world.add_object(p2, 1)
 
-    p1.x = 900
-    p1.dir = -1
-    p2.x = 300
+
 
     p1.set_background(map)
     p2.set_background(map)
+
+    p1.x = 900
+    p1.dir = -1
+    p2.x = 300
+    p1.y, p2.y = 300, 300
 
     game_world.add_collision_pair('p1:p2_attack', p1, None)
     game_world.add_collision_pair('p1:p2_shuriken', p1, None)

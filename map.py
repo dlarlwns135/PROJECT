@@ -11,9 +11,11 @@ class Map:
 
     def update(self):
 
-        self.window_left = clamp(0, min(int(play_mode.p1.x), int(play_mode.p2.x)) - self.cw // 2,
+        self.window_left = clamp(0, int((play_mode.p1.x+play_mode.p2.x)//2) - self.cw // 2,
                                  self.w - self.cw - 1)
-        # if abs(play_mode.p1.x - play_mode.p2.x) >= self.cw//2:
+        # if abs(play_mode.p1.x - play_mode.p2.x) >= self.cw - 100:
+        #     if play_mode.p1.x > play_mode.p2.x:
+        #         play_mode.p1.x =
         #     # self.window_left = min(int(play_mode.p1.x)-self.cw,int(play_mode.p2.x)-self.cw)aaaaaaaaaa
         #     self.window_left = clamp(0, min(int(play_mode.p1.x), int(play_mode.p2.x)) - self.cw // 2,
         #                              max(int(play_mode.p1.x), int(play_mode.p2.x)) - self.cw // 2)
@@ -34,7 +36,7 @@ class Map:
         #     self.window_left = int(play_mode.p2.x) - self.cw + 20
         #     if play_mode.p1.x <= self.window_left + 50:
         #         play_mode.p1.x = self.window_left + 50
-        self.window_bottom = clamp(0, min(int(play_mode.p1.y),int(play_mode.p2.y)) - self.ch // 2,
+        self.window_bottom = clamp(0, int((play_mode.p1.y+play_mode.p2.y)//2) - self.ch // 2,
                                    self.h - self.ch - 1)
         # self.cw = int(abs(play_mode.p1.x - play_mode.p2.x)) + 300
         # self.ch = int(abs(play_mode.p1.y - play_mode.p2.y)) + 400
