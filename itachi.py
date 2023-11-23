@@ -578,6 +578,7 @@ class Hard_hit:
         if p3.frame >= 15:
             p3.invincible = False
             p3.frame = 0
+            p3.hit_state = 0
             p3.state_machine.handle_event(('STOP', None))
         if p3.frame < 2.8:
             p3.x += -p3.dir * RUN_SPEED_PPS * 1 * game_framework.frame_time
@@ -730,6 +731,7 @@ class ITACHI:
         self.chakra = 100
         self.chakra_lack = False
         self.win = False
+        self.hit_state = 0
 
     def skill(self):
         if self.skill_num == 'shuriken':
@@ -762,10 +764,12 @@ class ITACHI:
         elif player_num == 2:
             game_world.add_collision_pair('p1:p2_attack', None, attack_range)
     def update(self):
+        if self.hit_state == 'hard':
+            self.state_machine.cur_state = Hard_hit
         self.state_machine.update()
         if self.chakra <= 100:
             self.chakra += 8 * game_framework.frame_time
-            pass
+
 
     def handle_event(self, event):
         self.state_machine.handle_event(('INPUT', event))
@@ -786,66 +790,67 @@ class ITACHI:
         return self.x - 30, self.y - 70, self.x + 30, self.y + 70
 
     def handle_collision(self, group, other):
-        if not self.invincible:
-            if player_num == 1:
-                if group == 'p1:p2_attack':
-                    self.dir = -other.dir
-                    print(other.damage)
-                    self.hp -= other.damage
-                    print("p2한테 맞음")
-                    self.frame = 0
-                    self.state_machine.cur_state = Easy_hit
-                if group == 'p1:p2_shuriken':
-                    self.dir = -other.dir
-                    print(other.damage)
-                    self.hp -= other.damage
-                    print("p2한테 표창 맞음")
-                    self.frame = 0
-                    self.state_machine.cur_state = Easy_hit
-                if group == 'p1:p2_skill1':
-                    self.invincible = True
-                    self.dir = -other.dir
-                    print(other.damage)
-                    self.hp -= other.damage
-                    print("p2한테 skill1 맞음")
-                    self.frame = 0
-                    self.state_machine.cur_state = Hard_hit
-                if group == 'p1:p2_skill2':
-                    self.invincible = True
-                    self.dir = -other.dir
-                    print(other.damage)
-                    self.hp -= other.damage
-                    print("p2한테 special 맞음")
-                    self.frame = 0
-                    self.state_machine.cur_state = Hard_hit
-            elif player_num == 2:
-                if group == 'p2:p1_attack':
-                    self.dir = -other.dir
-                    print(other.damage)
-                    self.hp -= other.damage
-                    print("p1한테 맞음")
-                    self.frame = 0
-                    self.state_machine.cur_state = Easy_hit
-                if group == 'p2:p1_shuriken':
-                    self.dir = -other.dir
-                    print(other.damage)
-                    self.hp -= other.damage
-                    print("p1한테 표창 맞음")
-                    self.frame = 0
-                    self.state_machine.cur_state = Easy_hit
-                if group == 'p2:p1_skill1':
-                    self.invincible = True
-                    self.dir = -other.dir
-                    print(other.damage)
-                    self.hp -= other.damage
-                    print("p2한테 skill1 맞음")
-                    self.frame = 0
-                    self.state_machine.cur_state = Hard_hit
-                if group == 'p2:p1_skill2':
-                    self.invincible = True
-                    self.dir = -other.dir
-                    print(other.damage)
-                    self.hp -= other.damage
-                    print("p1한테 special 맞음")
-                    self.frame = 0
-                    self.state_machine.cur_state = Hard_hit
+        pass
+        # if not self.invincible:
+        #     if player_num == 1:
+        #         if group == 'p1:p2_attack':
+        #             self.dir = -other.dir
+        #             print(other.damage)
+        #             self.hp -= other.damage
+        #             print("p2한테 맞음")
+        #             self.frame = 0
+        #             self.state_machine.cur_state = Easy_hit
+        #         if group == 'p1:p2_shuriken':
+        #             self.dir = -other.dir
+        #             print(other.damage)
+        #             self.hp -= other.damage
+        #             print("p2한테 표창 맞음")
+        #             self.frame = 0
+        #             self.state_machine.cur_state = Easy_hit
+        #         if group == 'p1:p2_skill1':
+        #             self.invincible = True
+        #             self.dir = -other.dir
+        #             print(other.damage)
+        #             self.hp -= other.damage
+        #             print("p2한테 skill1 맞음")
+        #             self.frame = 0
+        #             self.state_machine.cur_state = Hard_hit
+        #         if group == 'p1:p2_skill2':
+        #             self.invincible = True
+        #             self.dir = -other.dir
+        #             print(other.damage)
+        #             self.hp -= other.damage
+        #             print("p2한테 special 맞음")
+        #             self.frame = 0
+        #             self.state_machine.cur_state = Hard_hit
+        #     elif player_num == 2:
+        #         if group == 'p2:p1_attack':
+        #             self.dir = -other.dir
+        #             print(other.damage)
+        #             self.hp -= other.damage
+        #             print("p1한테 맞음")
+        #             self.frame = 0
+        #             self.state_machine.cur_state = Easy_hit
+        #         if group == 'p2:p1_shuriken':
+        #             self.dir = -other.dir
+        #             print(other.damage)
+        #             self.hp -= other.damage
+        #             print("p1한테 표창 맞음")
+        #             self.frame = 0
+        #             self.state_machine.cur_state = Easy_hit
+        #         if group == 'p2:p1_skill1':
+        #             self.invincible = True
+        #             self.dir = -other.dir
+        #             print(other.damage)
+        #             self.hp -= other.damage
+        #             print("p2한테 skill1 맞음")
+        #             self.frame = 0
+        #             self.state_machine.cur_state = Hard_hit
+        #         if group == 'p2:p1_skill2':
+        #             self.invincible = True
+        #             self.dir = -other.dir
+        #             print(other.damage)
+        #             self.hp -= other.damage
+        #             print("p1한테 special 맞음")
+        #             self.frame = 0
+        #             self.state_machine.cur_state = Hard_hit

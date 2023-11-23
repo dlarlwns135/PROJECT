@@ -2,11 +2,17 @@ from pico2d import *
 
 import game_framework
 import game_world
+
+# from naruto import Hard_hit, Easy_hit
+# from sasuke import Hard_hit, Easy_hit
+# from itachi import Hard_hit, Easy_hit
 PIXEL_PER_METER = (10.0 / 0.3) # 10 pixel 30 cm
 RUN_SPEED_KMPH = 50.0 # Km / Hour
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
+
+
 
 class Shuriken:
     shuriken = None
@@ -37,6 +43,11 @@ class Shuriken:
         if group == 'p1:p2_shuriken' or group == 'p2:p1_shuriken':
             print("충돌")
             if not other.invincible:
+                other.dir = -self.dir
+                print(self.damage)
+                other.hp -= self.damage
+                other.frame = 0
+                # other.state_machine.cur_state = Easy_hit
                 game_world.remove_object(self)
 
 class Skill1:
@@ -77,6 +88,13 @@ class Skill1:
         if not other.invincible:
             if group == 'p1:p2_skill1' or group == 'p2:p1_skill1':
                 print("화둔 맞음")
+                other.hp -= self.damage
+                other.dir = -self.dir
+                other.frame = 0
+                print(other.hp)
+                other.hit_state = 'hard'
+                # other.state_machine.cur_state = other.Hard_hit
+                other.invincible = True
 class Skill2:
     skill2_effect1 = None
     skill2_effect2 = None
@@ -130,6 +148,12 @@ class Skill2:
         if not other.invincible:
             if group == 'p1:p2_skill2' or group == 'p2:p1_skill2':
                 print("치도리 맞음")
+                other.hp -= self.damage
+                other.dir = -self.dir
+                other.frame = 0
+                print(other.hp)
+                # other.state_machine.cur_state = Hard_hit
+                other.invincible = True
 
 class Attack_range:
     def __init__(self, x = 400, y = 300, dir = 1, attack_num = 0):
@@ -201,5 +225,10 @@ class Attack_range:
         if not other.invincible:
             if group == 'p1:p2_attack' or group == 'p2:p1_attack':
                 # print("충돌")
+                other.hp -= self.damage
+                other.dir = -self.dir
+                other.frame = 0
+                print(other.hp)
+                # other.state_machine.cur_state = Easy_hit
                 game_world.remove_object(self)
         pass

@@ -2,6 +2,9 @@ from pico2d import *
 
 import game_framework
 import game_world
+# from naruto import Hard_hit, Easy_hit
+# from sasuke import Hard_hit, Easy_hit
+# from itachi import Hard_hit, Easy_hit
 PIXEL_PER_METER = (10.0 / 0.3) # 10 pixel 30 cm
 RUN_SPEED_KMPH = 50.0 # Km / Hour
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
@@ -36,6 +39,11 @@ class Shuriken:
         if group == 'p1:p2_shuriken' or group == 'p2:p1_shuriken':
             # print("충돌")
             if not other.invincible:
+                other.dir = -self.dir
+                print(self.damage)
+                other.hp -= self.damage
+                other.frame = 0
+                # other.state_machine.cur_state = Easy_hit
                 game_world.remove_object(self)
 
 class Skill1:
@@ -73,6 +81,12 @@ class Skill1:
         if not other.invincible:
             if group == 'p1:p2_skill1' or group == 'p2:p1_skill1':
                 print("skill1 맞음")
+                other.hp -= self.damage
+                other.dir = -self.dir
+                other.frame = 0
+                print(other.hp)
+                # other.state_machine.cur_state = Hard_hit
+                other.invincible = True
             # game_world.remove_object(self)
 
 class Skill2:
@@ -116,6 +130,12 @@ class Skill2:
         if not other.invincible:
             if group == 'p1:p2_skill2' or group == 'p2:p1_skill2':
                 print("나선환 맞음")
+                other.hp -= self.damage
+                other.dir = -self.dir
+                other.frame = 0
+                print(other.hp)
+                # other.state_machine.cur_state = Hard_hit
+                other.invincible = True
             # game_world.remove_object(self)
 
 
@@ -188,5 +208,9 @@ class Attack_range:
         if not other.invincible:
             if group == 'p1:p2_attack' or group == 'p2:p1_attack':
                 # print("충돌")
+                other.hp -= self.damage
+                other.dir = -self.dir
+                other.frame = 0
+                print(other.hp)
+                # other.state_machine.cur_state = Easy_hit
                 game_world.remove_object(self)
-        pass

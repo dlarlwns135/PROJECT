@@ -4,8 +4,11 @@ import game_framework
 import game_world
 # from naruto import Hard_hit
 # from sasuke import Hard_hit
+# import charactor_choose_mode
+# if charactor_choose_mode.
 from naruto import Hard_hit, Easy_hit
 from sasuke import Hard_hit, Easy_hit
+# from itachi import Hard_hit, Easy_hit
 
 PIXEL_PER_METER = (10.0 / 0.3) # 10 pixel 30 cm
 RUN_SPEED_KMPH = 50.0 # Km / Hour
@@ -21,7 +24,6 @@ class Shuriken:
         self.x, self.y = x, y,
         self.frame = 0
         self.dir = dir
-        self.count = 0
         self.damage = 200
 
     def draw(self):
@@ -42,6 +44,11 @@ class Shuriken:
         if group == 'p1:p2_shuriken' or group == 'p2:p1_shuriken':
             print("충돌")
             if not other.invincible:
+                other.dir = -self.dir
+                print(self.damage)
+                other.hp -= self.damage
+                other.frame = 0
+                other.state_machine.cur_state = Easy_hit
                 game_world.remove_object(self)
 
 class Skill1:
@@ -217,4 +224,3 @@ class Attack_range:
                 other.frame = 0
                 other.state_machine.cur_state = Easy_hit
                 game_world.remove_object(self)
-        pass
