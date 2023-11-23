@@ -3,6 +3,8 @@ from pico2d import *
 import game_framework
 import game_world
 import play_mode
+import math
+import charactor_choose_mode
 
 PIXEL_PER_METER = (10.0 / 0.3) # 10 pixel 30 cm
 RUN_SPEED_KMPH = 50.0 # Km / Hour
@@ -99,46 +101,81 @@ class Skill2:
     skill2_effect2 = None
     def __init__(self, x = 400, y = 300, dir = 1):
         if Skill2.skill2_effect1 == None:
-            Skill2.skill2_effect1 = load_image('resource/sasuke_skill2_effect1.png')
+            Skill2.skill2_effect1 = load_image('resource/itachi_skill2_effect1.png')
         if Skill2.skill2_effect2 == None:
-            Skill2.skill2_effect2 = load_image('resource/sasuke_skill2_effect2.png')
+            Skill2.skill2_effect2 = load_image('resource/itachi_skill2_effect2.png')
         self.x, self.y = x, y
         self.frame = 0
+        self.dot_frame = 0
+        self.dot_count = 0
         self.dir = dir
         self.count = 0
-        self.damage = 80
+        self.damage = 20
         self.sx, self.sy = 0, 0
+        self.reach = False
+        if charactor_choose_mode.p1_choose_result() == 3:
+            self.p_num = 1
+        elif charactor_choose_mode.p2_choose_result() == 3:
+            self.p_num = 2
+    def get_enenmy(self):
+        if self.p_num == 1:
+            if self.x < play_mode.p2.x:
+                self.dir = 1
+            else:
+                self.dir = -1
+            rad = math.atan2(play_mode.p2.y - self.y, play_mode.p2.x - self.x)
+            self.x += 100 * math.cos(rad) * game_framework.frame_time
+            self.y += 100 * math.sin(rad) * game_framework.frame_time
+            pass
+        elif self.p_num == 2:
+            if self.x < play_mode.p1.x:
+                self.dir = 1
+            else:
+                self.dir = -1
+            rad = math.atan2(play_mode.p1.y - self.y, play_mode.p1.x - self.x)
+            self.x += 100 * math.cos(rad) * game_framework.frame_time
+            self.y += 100 * math.sin(rad) * game_framework.frame_time
+            pass
 
     def draw(self):
+
         self.sx, self.sy = self.x - play_mode.map.window_left, self.y - play_mode.map.window_bottom
-        if self.frame <= 7:
-            self.skill2_effect2.clip_composite_draw(int(self.frame) * 104, 0, 104, 77, 0, '',
-                                                    self.sx, self.sy + 41, 325, 241)
-            # p1.skill1_stand.clip_composite_draw(int(p1.frame) * 40, 0, 40, 64, 0, 'h', p1.x, p1.y, 125, 200)
-        if self.frame >= 1:
-            if self.dir == -1:
-                if self.frame > 7:
-                    self.skill2_effect1.clip_composite_draw((int(self.frame) - 1) * 104, 0, 104, 77, 0, 'h',
-                                                            self.sx + 30, self.sy - 10, 325, 241)
-                else:
-                    self.skill2_effect1.clip_composite_draw((int(self.frame) - 1) * 104, 0, 104, 77, 0, 'h',
-                                                            self.sx + 30, self.sy + 41 - 10, 325, 241)
-            elif self.dir == 1:
-                if self.frame > 7:
-                    self.skill2_effect1.clip_composite_draw((int(self.frame) - 1) * 104, 0, 104, 77, 0, '',
-                                                            self.sx - 30, self.sy - 10, 325, 241)
-                else:
-                    self.skill2_effect1.clip_composite_draw((int(self.frame) - 1) * 104, 0, 104, 77, 0, '',
-                                                            self.sx - 30, self.sy + 41 - 10, 325, 241)
+        if not self.reach:
+            self.get_enenmy()
+            if self.dir == 1:
+                self.skill2_effect1.clip_composite_draw(int(self.frame) * 171, 0, 171,128, 0, '',
+                                                        self.sx, self.sy + 41, 325, 241)
+            elif self.dir == -1:
+                self.skill2_effect1.clip_composite_draw(int(self.frame) * 171, 0, 171, 128, 0, 'h',
+                                                        self.sx, self.sy + 41, 325, 241)
+        else:
+            if self.p_num == 1:
+                self.skill2_effect2.clip_composite_draw(int(self.frame) * 133, 0, 133, 150, 0, '',
+                                                        play_mode.p2.sx, play_mode.p2.sy, 100, 130)
+            elif self.p_num == 2:
+                self.skill2_effect2.clip_composite_draw(int(self.frame) * 133, 0, 133, 150, 0, '',
+                                                        play_mode.p1.sx, play_mode.p1.sy, 100, 130)
         draw_rectangle(*self.get_bb())
 
     def update(self):
-        self.count += 1
-        self.frame = (self.frame + 18 * 1 * game_framework.frame_time) % 18
-        if self.frame >= 7:
-            self.x += self.dir * RUN_SPEED_PPS * 2 * game_framework.frame_time
-        if self.frame >= 17:
-            game_world.remove_object(self)
+        # self.count += 1
+        self.frame = (self.frame + 4 * 1 * game_framework.frame_time) % 4
+        if self.reach:
+            self.dot_frame = self.dot_frame + 5 * game_framework.frame_time
+            if self.dot_frame >= 10:
+                print("dot++")
+                self.dot_frame = 0
+                self.dot_count += 1
+                if self.p_num == 1:
+                    play_mode.p2.hp -= self.damage
+                    play_mode.p2.frame = 0
+                    play_mode.p2.hit_state = 'easy'
+                elif self.p_num == 2:
+                    play_mode.p1.hp -= self.damage
+                    play_mode.p1.frame = 0
+                    play_mode.p1.hit_state = 'easy'
+            if self.dot_count == 5:
+                game_world.remove_object(self)
         pass
 
     def get_bb(self):
@@ -146,9 +183,10 @@ class Skill2:
         return self.sx - 130, self.sy - 70, self.sx + 130, self.sy + 70
 
     def handle_collision(self, group, other):
-        if not other.invincible:
+        if not self.reach:
             if group == 'p1:p2_skill2' or group == 'p2:p1_skill2':
-                print("치도리 맞음")
+                print("아마테라스 맞음")
+                self.reach = True
 
 class Attack_range:
     def __init__(self, x = 400, y = 300, dir = 1, attack_num = 0):
