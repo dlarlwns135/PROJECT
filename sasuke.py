@@ -176,9 +176,12 @@ class Idle:
     @staticmethod
     def draw(p1):
         if p1.dir == -1:
-            p1.idle.clip_composite_draw(int(p1.frame) * 32, 0, 32, 64, 0, 'h', p1.x + 10, p1.y, 100, 200)
+            sx, sy = (p1.x+10) - p1.bg.window_left, p1.y - p1.bg.window_bottom
+
+            p1.idle.clip_composite_draw(int(p1.frame) * 32, 0, 32, 64, 0, 'h', sx, sy, 100, 200)
         elif p1.dir == 1:
-            p1.idle.clip_composite_draw(int(p1.frame) * 32, 0, 32, 64, 0, '', p1.x - 10, p1.y, 100 , 200)
+            sx, sy = (p1.x - 10) - p1.bg.window_left, p1.y - p1.bg.window_bottom
+            p1.idle.clip_composite_draw(int(p1.frame) * 32, 0, 32, 64, 0, '', sx, sy, 100 , 200)
 
 
 class Run:
@@ -206,9 +209,11 @@ class Run:
     @staticmethod
     def draw(p1):
         if p1.dir == -1:
-            p1.run.clip_composite_draw(int(p1.frame) * 64, 0, 64, 32, 0, 'h', p1.x, p1.y-15, 200, 100)
+            sx, sy = p1.x - p1.bg.window_left, (p1.y-15) - p1.bg.window_bottom
+            p1.run.clip_composite_draw(int(p1.frame) * 64, 0, 64, 32, 0, 'h', sx, sy, 200, 100)
         elif p1.dir == 1:
-            p1.run.clip_composite_draw(int(p1.frame) * 64, 0, 64, 32, 0, '', p1.x, p1.y-15, 200, 100)
+            sx, sy = p1.x - p1.bg.window_left, (p1.y - 15) - p1.bg.window_bottom
+            p1.run.clip_composite_draw(int(p1.frame) * 64, 0, 64, 32, 0, '', sx, sy, 200, 100)
 
 
 class Jump:
@@ -766,6 +771,11 @@ class SASUKE:
             game_world.add_collision_pair('p2:p1_attack', None, attack_range)
         elif player_num == 2:
             game_world.add_collision_pair('p1:p2_attack', None, attack_range)
+
+    def set_background(self, bg):
+        self.bg = bg
+        self.x = self.bg.w / 2
+        self.y = self.bg.h / 2
     def update(self):
         if self.hit_state == 'hard':
             self.state_machine.cur_state = Hard_hit
@@ -774,7 +784,8 @@ class SASUKE:
         self.state_machine.update()
         if self.chakra <= 100:
             self.chakra += 8 * game_framework.frame_time
-            pass
+        self.x = clamp(50.0, self.x, self.bg.w - 50.0)
+        self.y = clamp(50.0, self.y, self.bg.h - 50.0)
 
     def handle_event(self, event):
         self.state_machine.handle_event(('INPUT', event))
