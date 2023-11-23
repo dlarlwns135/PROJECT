@@ -791,12 +791,12 @@ class SASUKE:
         if not self.invincible:
             if player_num == 1:
                 if group == 'p1:p2_attack':
-                    self.dir = -other.dir
+                    # self.dir = -other.dir
                     print(other.damage)
-                    self.hp -= other.damage
+                    # self.hp -= other.damage
                     print("p2한테 맞음")
-                    self.frame = 0
-                    self.state_machine.cur_state = Easy_hit
+                    # self.frame = 0
+                    # self.state_machine.cur_state = Easy_hit
                 if group == 'p1:p2_shuriken':
                     self.dir = -other.dir
                     print(other.damage)
@@ -805,11 +805,11 @@ class SASUKE:
                     self.frame = 0
                     self.state_machine.cur_state = Easy_hit
                 if group == 'p1:p2_skill1':
-                    self.dir = -other.dir
+                    # self.dir = -other.dir
                     print(other.damage)
                     # self.hp -= other.damage
                     print("p2한테 skill1 맞음")
-                    self.frame = 0
+                    # self.frame = 0
                     # self.invincible = True
                     # self.state_machine.cur_state = Hard_hit
                 if group == 'p1:p2_skill2':
@@ -822,12 +822,12 @@ class SASUKE:
                     self.state_machine.cur_state = Hard_hit
             elif player_num == 2:
                 if group == 'p2:p1_attack':
-                    self.dir = -other.dir
+                    # self.dir = -other.dir
                     print(other.damage)
-                    self.hp -= other.damage
+                    # self.hp -= other.damage
                     print("p1한테 맞음")
-                    self.frame = 0
-                    self.state_machine.cur_state = Easy_hit
+                    # self.frame = 0
+                    # self.state_machine.cur_state = Easy_hit
                 if group == 'p2:p1_shuriken':
                     self.dir = -other.dir
                     print(other.damage)
@@ -836,13 +836,13 @@ class SASUKE:
                     self.frame = 0
                     self.state_machine.cur_state = Easy_hit
                 if group == 'p2:p1_skill1':
-                    self.invincible = True
-                    self.dir = -other.dir
+                    # self.invincible = True
+                    # self.dir = -other.dir
                     print(other.damage)
-                    self.hp -= other.damage
-                    print("p2한테 skill1 맞음")
-                    self.frame = 0
-                    self.state_machine.cur_state = Hard_hit
+                    # self.hp -= other.damage
+                    print("p1한테 skill1 맞음")
+                    # self.frame = 0
+                    # self.state_machine.cur_state = Hard_hit
                 if group == 'p2:p1_skill2':
                     self.invincible = True
                     self.dir = -other.dir

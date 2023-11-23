@@ -124,48 +124,28 @@ class Attack_range:
         self.x, self.y = x, y
         self.frame = 0
         self.dir = dir
-        self.attack_x_dis = 30
-        self.attack_y_dis = 0
+        self.range_set(0, 0, 0, 0, 0)
         self.attack_num = attack_num
-        self.attack_range_x = 0
-        self.attack_range_y = 0
-        self.damage = 0
         if self.attack_num == 1:
-            self.attack_range_x = 50
-            self.attack_range_y = 20
-            self.attack_x_dis = 40
-            self.attack_y_dis = 10
-            self.damage = 10
+            self.range_set(50, 20, 40, 10, 10)
         elif self.attack_num == 2:
-            self.attack_range_x = 50
-            self.attack_range_y = 40
-            self.attack_x_dis = 30
-            self.attack_y_dis = 20
-            self.damage = 10
+            self.range_set(50, 40, 30, 20, 10)
         elif self.attack_num == 3:
-            self.attack_range_x = 50
-            self.attack_range_y = 60
-            self.attack_x_dis = 30
-            self.attack_y_dis = 10
-            self.damage = 15
+            self.range_set(50, 60, 30, 10, 15)
         elif self.attack_num == 4:
-            self.attack_range_x = 40
-            self.attack_range_y = 80
-            self.attack_x_dis = 0
-            self.attack_y_dis = 0
-            self.damage = 20
+            self.range_set(40, 80, 0, 0, 20)
         elif self.attack_num == 'run':
-            self.attack_range_x = 40
-            self.attack_range_y = 50
-            self.attack_x_dis = 30
-            self.attack_y_dis = -20
-            self.damage = 30
+            self.range_set(40, 50, 30, -20, 30)
         elif self.attack_num == 'jump':
-            self.attack_range_x = 50
-            self.attack_range_y = 60
-            self.attack_x_dis = 30
-            self.attack_y_dis = 20
-            self.damage = 30
+            self.range_set(50, 60, 30, 20, 30)
+
+    def range_set(self, range_x, range_y, dis_x, dis_y, damage):
+        self.attack_range_x = range_x
+        self.attack_range_y = range_y
+        self.attack_x_dis = dis_x
+        self.attack_y_dis = dis_y
+        self.damage = damage
+
     def update(self):
         self.frame = self.frame + 7 * 3 * game_framework.frame_time
         if self.attack_num == 1:

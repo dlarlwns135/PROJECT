@@ -4,8 +4,8 @@ import game_framework
 import game_world
 # from naruto import Hard_hit
 # from sasuke import Hard_hit
-from naruto import *
-from sasuke import *
+from naruto import Hard_hit, Easy_hit
+from sasuke import Hard_hit, Easy_hit
 
 PIXEL_PER_METER = (10.0 / 0.3) # 10 pixel 30 cm
 RUN_SPEED_KMPH = 50.0 # Km / Hour
@@ -83,6 +83,8 @@ class Skill1:
             if group == 'p1:p2_skill1' or group == 'p2:p1_skill1':
                 print("화둔 맞음")
                 other.hp -= self.damage
+                other.dir = -self.dir
+                other.frame = 0
                 print(other.hp)
                 other.state_machine.cur_state = Hard_hit
                 other.invincible = True
@@ -146,52 +148,28 @@ class Attack_range:
         self.x, self.y = x, y
         self.frame = 0
         self.dir = dir
-        self.attack_x_dis = 30
-        self.attack_y_dis = 0
+        self.range_set(0, 0, 0, 0, 0)
         self.attack_num = attack_num
-        self.attack_range_x = 0
-        self.attack_range_y = 0
-        self.damage = 0
         if self.attack_num == 1:
-            self.attack_range_x = 50
-            self.attack_range_y = 50
-            self.attack_x_dis = 30
-            self.attack_y_dis = 20
-            self.damage = 10
+            self.range_set(50, 50, 30, 20, 10)
         elif self.attack_num == 2:
-            self.attack_range_x = 80
-            self.attack_range_y = 30
-            self.attack_x_dis = 50
-            self.attack_y_dis = 10
-            self.damage = 10
-            pass
+            self.range_set(80, 30, 50, 10, 10)
         elif self.attack_num == 3:
-            self.attack_range_x = 80
-            self.attack_range_y = 50
-            self.attack_x_dis = 50
-            self.attack_y_dis = 20
-            self.damage = 15
-            pass
+            self.range_set(80, 50, 50, 20, 15)
         elif self.attack_num == 4:
-            self.attack_range_x = 60
-            self.attack_range_y = 80
-            self.attack_x_dis = 50
-            self.attack_y_dis = 60
-            self.damage = 20
-            pass
+            self.range_set(60, 80, 50, 60, 20)
         elif self.attack_num == 'run':
-            self.attack_range_x = 70
-            self.attack_range_y = 50
-            self.attack_x_dis = 50
-            self.attack_y_dis = 0
-            self.damage = 30
-            pass
+            self.range_set(70, 50, 50, 0, 30)
         elif self.attack_num == 'jump':
-            self.attack_range_x = 80
-            self.attack_range_y = 40
-            self.attack_x_dis = 10
-            self.attack_y_dis = 0
-            self.damage = 30
+            self.range_set(80, 40, 10, 0, 30)
+
+    def range_set(self, range_x, range_y, dis_x, dis_y, damage):
+        self.attack_range_x = range_x
+        self.attack_range_y = range_y
+        self.attack_x_dis = dis_x
+        self.attack_y_dis = dis_y
+        self.damage = damage
+
     def update(self):
         self.frame = self.frame + 7 * 3 * game_framework.frame_time
         if self.attack_num == 1:
@@ -234,5 +212,9 @@ class Attack_range:
         if not other.invincible:
             if group == 'p1:p2_attack' or group == 'p2:p1_attack':
                 # print("충돌")
+                other.dir = -self.dir
+                other.hp -= self.damage
+                other.frame = 0
+                other.state_machine.cur_state = Easy_hit
                 game_world.remove_object(self)
         pass
