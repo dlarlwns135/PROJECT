@@ -175,9 +175,9 @@ class Idle:
     @staticmethod
     def draw(p2):
         if p2.dir == -1:
-            p2.idle.clip_composite_draw(int(p2.frame) * 32, 0, 32, 48, 0, 'h', p2.x, p2.y - 15, 90, 135)
+            p2.idle.clip_composite_draw(int(p2.frame) * 32, 0, 32, 48, 0, 'h', p2.sx, p2.sy - 15, 90, 135)
         elif p2.dir == 1:
-            p2.idle.clip_composite_draw(int(p2.frame) * 32, 0, 32, 48, 0, '', p2.x, p2.y - 15, 90, 135)
+            p2.idle.clip_composite_draw(int(p2.frame) * 32, 0, 32, 48, 0, '', p2.sx, p2.sy - 15, 90, 135)
 
 
 class Run:
@@ -202,9 +202,9 @@ class Run:
     @staticmethod
     def draw(p2):
         if p2.dir == -1:
-            p2.run.clip_composite_draw(int(p2.frame) * 48, 0, 48, 48, 0, 'h', p2.x, p2.y-15, 135, 135)
+            p2.run.clip_composite_draw(int(p2.frame) * 48, 0, 48, 48, 0, 'h', p2.sx, p2.sy-15, 135, 135)
         elif p2.dir == 1:
-            p2.run.clip_composite_draw(int(p2.frame) * 48, 0, 48, 48, 0, '', p2.x, p2.y-15, 135, 135)
+            p2.run.clip_composite_draw(int(p2.frame) * 48, 0, 48, 48, 0, '', p2.sx, p2.sy-15, 135, 135)
 
 
 class Jump:
@@ -276,14 +276,14 @@ class Jump:
     def draw(p2):
         if p2.dir == -1:
             if int(p2.frame) < 2:
-                p2.jump.clip_composite_draw(int(p2.frame) * 32, 0, 32, 48, 0, 'h', p2.x, p2.y, 90, 135)
+                p2.jump.clip_composite_draw(int(p2.frame) * 32, 0, 32, 48, 0, 'h', p2.sx, p2.sy, 90, 135)
             else:
-                p2.jump.clip_composite_draw(64 + (int(p2.frame) - 2) * 40, 0, 40, 48, 0, 'h', p2.x, p2.y, 90, 135)
+                p2.jump.clip_composite_draw(64 + (int(p2.frame) - 2) * 40, 0, 40, 48, 0, 'h', p2.sx, p2.sy, 90, 135)
         elif p2.dir == 1:
             if int(p2.frame) < 2:
-                p2.jump.clip_composite_draw(int(p2.frame) * 32, 0, 32, 48, 0, '', p2.x, p2.y, 90, 135)
+                p2.jump.clip_composite_draw(int(p2.frame) * 32, 0, 32, 48, 0, '', p2.sx, p2.sy, 90, 135)
             else:
-                p2.jump.clip_composite_draw(64 + (int(p2.frame) - 2) * 40, 0, 40, 48, 0, '', p2.x, p2.y, 90, 135)
+                p2.jump.clip_composite_draw(64 + (int(p2.frame) - 2) * 40, 0, 40, 48, 0, '', p2.sx, p2.sy, 90, 135)
 
 class Teleport:
     @staticmethod
@@ -333,11 +333,11 @@ class Teleport:
     @staticmethod
     def draw(p2):
         if p2.dir == -1:
-            p2.teleport.clip_composite_draw(int(p2.frame) * 32, 0, 32, 56, 0, 'h', p2.x, p2.y, 90, 158)
-            p2.teleport_motion.clip_composite_draw(int(p2.frame) * 72, 0, 72, 75, 0, 'h', p2.x, p2.y, 150, 250)
+            p2.teleport.clip_composite_draw(int(p2.frame) * 32, 0, 32, 56, 0, 'h', p2.sx, p2.sy, 90, 158)
+            p2.teleport_motion.clip_composite_draw(int(p2.frame) * 72, 0, 72, 75, 0, 'h', p2.sx, p2.sy, 150, 250)
         elif p2.dir == 1:
-            p2.teleport.clip_composite_draw(int(p2.frame) * 32, 0, 32, 56, 0, '', p2.x, p2.y, 90, 158)
-            p2.teleport_motion.clip_composite_draw(int(p2.frame) * 72, 0, 72, 75, 0, '', p2.x, p2.y, 150, 250)
+            p2.teleport.clip_composite_draw(int(p2.frame) * 32, 0, 32, 56, 0, '', p2.sx, p2.sy, 90, 158)
+            p2.teleport_motion.clip_composite_draw(int(p2.frame) * 72, 0, 72, 75, 0, '', p2.sx, p2.sy, 150, 250)
 
 class Attack:
     @staticmethod
@@ -390,24 +390,24 @@ class Attack:
     def draw(p2):
         if p2.attack_num == 1:
             if p2.dir == -1:
-                p2.attack1.clip_composite_draw(int(p2.frame) * 56, 0, 56, 48, 0, 'h', p2.x - 10, p2.y - 15, 158, 135)
+                p2.attack1.clip_composite_draw(int(p2.frame) * 56, 0, 56, 48, 0, 'h', p2.sx - 10, p2.sy - 15, 158, 135)
             elif p2.dir == 1:
-                p2.attack1.clip_composite_draw(int(p2.frame) * 56, 0, 56, 48, 0, '', p2.x + 10, p2.y - 15, 158, 135)
+                p2.attack1.clip_composite_draw(int(p2.frame) * 56, 0, 56, 48, 0, '', p2.sx + 10, p2.sy - 15, 158, 135)
         elif p2.attack_num == 2:
             if p2.dir == -1:
-                p2.attack2.clip_composite_draw(int(p2.frame) * 48, 0, 48, 48, 0, 'h', p2.x-10, p2.y - 15, 135, 135)
+                p2.attack2.clip_composite_draw(int(p2.frame) * 48, 0, 48, 48, 0, 'h', p2.sx-10, p2.sy - 15, 135, 135)
             elif p2.dir == 1:
-                p2.attack2.clip_composite_draw(int(p2.frame) * 48, 0, 48, 48, 0, '', p2.x+10, p2.y - 15, 135, 135)
+                p2.attack2.clip_composite_draw(int(p2.frame) * 48, 0, 48, 48, 0, '', p2.sx+10, p2.sy - 15, 135, 135)
         elif p2.attack_num == 3:
             if p2.dir == -1:
-                    p2.attack3.clip_composite_draw(int(p2.frame) * 48, 0, 48, 48, 0, 'h', p2.x - 10, p2.y-15, 135, 135)
+                    p2.attack3.clip_composite_draw(int(p2.frame) * 48, 0, 48, 48, 0, 'h', p2.sx - 10, p2.sy-15, 135, 135)
             elif p2.dir == 1:
-                    p2.attack3.clip_composite_draw(int(p2.frame) * 48, 0, 48, 48, 0, '', p2.x + 10, p2.y-15, 135, 135)
+                    p2.attack3.clip_composite_draw(int(p2.frame) * 48, 0, 48, 48, 0, '', p2.sx + 10, p2.sy-15, 135, 135)
         elif p2.attack_num == 4:
             if p2.dir == -1:
-                    p2.attack4.clip_composite_draw(int(p2.frame) * 40, 0, 40, 56, 0, 'h', p2.x, p2.y, 113, 158)
+                    p2.attack4.clip_composite_draw(int(p2.frame) * 40, 0, 40, 56, 0, 'h', p2.sx, p2.sy, 113, 158)
             elif p2.dir == 1:
-                    p2.attack4.clip_composite_draw(int(p2.frame) * 40, 0, 40, 56, 0, '', p2.x, p2.y, 113, 158)
+                    p2.attack4.clip_composite_draw(int(p2.frame) * 40, 0, 40, 56, 0, '', p2.sx, p2.sy, 113, 158)
 
 class Run_Attack:
     @staticmethod
@@ -430,9 +430,9 @@ class Run_Attack:
     @staticmethod
     def draw(p2):
         if p2.dir == -1:
-            p2.run_attack.clip_composite_draw(int(p2.frame) * 40, 0, 40, 48, 0, 'h', p2.x, p2.y-15, 113, 135)
+            p2.run_attack.clip_composite_draw(int(p2.frame) * 40, 0, 40, 48, 0, 'h', p2.sx, p2.sy-15, 113, 135)
         elif p2.dir == 1:
-            p2.run_attack.clip_composite_draw(int(p2.frame) * 40, 0, 40, 48, 0, '', p2.x, p2.y-15, 113, 135)
+            p2.run_attack.clip_composite_draw(int(p2.frame) * 40, 0, 40, 48, 0, '', p2.sx, p2.sy-15, 113, 135)
 
 class Jump_Attack:
     @staticmethod
@@ -455,9 +455,9 @@ class Jump_Attack:
     @staticmethod
     def draw(p2):
         if p2.dir == -1:
-            p2.jump_attack.clip_composite_draw(int(p2.frame) * 48, 0, 48, 52, 0, 'h', p2.x, p2.y, 135, 146)
+            p2.jump_attack.clip_composite_draw(int(p2.frame) * 48, 0, 48, 52, 0, 'h', p2.sx, p2.sy, 135, 146)
         elif p2.dir == 1:
-            p2.jump_attack.clip_composite_draw(int(p2.frame) * 48, 0, 48, 52, 0, '', p2.x, p2.y, 135, 146)
+            p2.jump_attack.clip_composite_draw(int(p2.frame) * 48, 0, 48, 52, 0, '', p2.sx, p2.sy, 135, 146)
 
 class Skill_motion:
     @staticmethod
@@ -512,25 +512,25 @@ class Skill_motion:
     def draw(p2):
         if p2.skill_num == 'skill1':
             if p2.dir == -1:
-                p2.skill1.clip_composite_draw(int(p2.frame) * 193, 0, 193, 136, 0, 'h', p2.x-60, p2.y+70, 543, 382)
+                p2.skill1.clip_composite_draw(int(p2.frame) * 193, 0, 193, 136, 0, 'h', p2.sx-60, p2.sy+70, 543, 382)
             elif p2.dir == 1:
-                p2.skill1.clip_composite_draw(int(p2.frame) * 193, 0, 193, 136, 0, '', p2.x+60, p2.y+70, 543, 382)
+                p2.skill1.clip_composite_draw(int(p2.frame) * 193, 0, 193, 136, 0, '', p2.sx+60, p2.sy+70, 543, 382)
         elif p2.skill_num == 'skill2':
             if p2.dir == -1:
-                p2.skill2.clip_composite_draw(int(p2.frame) * 83, 0, 83, 50, 0, 'h', p2.x-20, p2.y-15, 233, 140)
+                p2.skill2.clip_composite_draw(int(p2.frame) * 83, 0, 83, 50, 0, 'h', p2.sx-20, p2.sy-15, 233, 140)
             elif p2.dir == 1:
-                p2.skill2.clip_composite_draw(int(p2.frame) * 83, 0, 83, 50, 0, '', p2.x+20, p2.y-15, 233, 140)
+                p2.skill2.clip_composite_draw(int(p2.frame) * 83, 0, 83, 50, 0, '', p2.sx+20, p2.sy-15, 233, 140)
         elif p2.skill_num == 'shuriken':
             if p2.jump_state:
                 if p2.dir == -1:
-                    p2.shuriken_jump.clip_composite_draw(int(p2.frame) * 40, 0, 40, 64, 0, 'h', p2.x, p2.y-30, 112, 180)
+                    p2.shuriken_jump.clip_composite_draw(int(p2.frame) * 40, 0, 40, 64, 0, 'h', p2.sx, p2.sy-30, 112, 180)
                 elif p2.dir == 1:
-                    p2.shuriken_jump.clip_composite_draw(int(p2.frame) * 40, 0, 40, 64, 0, '', p2.x, p2.y-30, 112, 180)
+                    p2.shuriken_jump.clip_composite_draw(int(p2.frame) * 40, 0, 40, 64, 0, '', p2.sx, p2.sy-30, 112, 180)
             else:
                 if p2.dir == -1:
-                    p2.shuriken_stand.clip_composite_draw(int(p2.frame) * 40, 0, 40, 48, 0, 'h', p2.x-10, p2.y-15, 112, 135)
+                    p2.shuriken_stand.clip_composite_draw(int(p2.frame) * 40, 0, 40, 48, 0, 'h', p2.sx-10, p2.sy-15, 112, 135)
                 elif p2.dir == 1:
-                    p2.shuriken_stand.clip_composite_draw(int(p2.frame) * 40, 0, 40, 48, 0, '', p2.x+10, p2.y-15, 112, 135)
+                    p2.shuriken_stand.clip_composite_draw(int(p2.frame) * 40, 0, 40, 48, 0, '', p2.sx+10, p2.sy-15, 112, 135)
 
 class Easy_hit:
     @staticmethod
@@ -560,9 +560,9 @@ class Easy_hit:
     @staticmethod
     def draw(p2):
         if p2.dir == -1:
-            p2.easy_hit.clip_composite_draw(int(p2.frame) * 40, 0, 40, 48, 0, 'h', p2.x, p2.y-15, 112, 135)
+            p2.easy_hit.clip_composite_draw(int(p2.frame) * 40, 0, 40, 48, 0, 'h', p2.sx, p2.sy-15, 112, 135)
         elif p2.dir == 1:
-            p2.easy_hit.clip_composite_draw(int(p2.frame) * 40, 0, 40, 48, 0, '', p2.x, p2.y-15, 112, 135)
+            p2.easy_hit.clip_composite_draw(int(p2.frame) * 40, 0, 40, 48, 0, '', p2.sx, p2.sy-15, 112, 135)
 
 class Hard_hit:
     @staticmethod
@@ -601,14 +601,14 @@ class Hard_hit:
     def draw(p2):
         if p2.frame > 3:
             if p2.dir == -1:
-                p2.hard_hit.clip_composite_draw(3 * 48, 0, 48, 40, 0, 'h', p2.x, p2.y - 15, 135, 112)
+                p2.hard_hit.clip_composite_draw(3 * 48, 0, 48, 40, 0, 'h', p2.sx, p2.sy - 15, 135, 112)
             elif p2.dir == 1:
-                p2.hard_hit.clip_composite_draw(3 * 48, 0, 48, 40, 0, '', p2.x, p2.y - 15, 135, 112)
+                p2.hard_hit.clip_composite_draw(3 * 48, 0, 48, 40, 0, '', p2.sx, p2.sy - 15, 135, 112)
         else:
             if p2.dir == -1:
-                p2.hard_hit.clip_composite_draw(int(p2.frame) * 48, 0, 48, 40, 0, 'h', p2.x, p2.y-15, 135, 112)
+                p2.hard_hit.clip_composite_draw(int(p2.frame) * 48, 0, 48, 40, 0, 'h', p2.sx, p2.sy-15, 135, 112)
             elif p2.dir == 1:
-                p2.hard_hit.clip_composite_draw(int(p2.frame) * 48, 0, 48, 40, 0, '', p2.x, p2.y-15, 135, 112)
+                p2.hard_hit.clip_composite_draw(int(p2.frame) * 48, 0, 48, 40, 0, '', p2.sx, p2.sy-15, 135, 112)
 
 class Win:
     @staticmethod
@@ -626,7 +626,7 @@ class Win:
 
     @staticmethod
     def draw(p2):
-        p2.win_image.clip_composite_draw(int(p2.frame) * 50, 0, 50, 64, 0, '', p2.x, p2.y, 140, 180)
+        p2.win_image.clip_composite_draw(int(p2.frame) * 50, 0, 50, 64, 0, '', p2.sx, p2.sy, 140, 180)
 
 class Lose:
     @staticmethod
@@ -646,9 +646,9 @@ class Lose:
     @staticmethod
     def draw(p2):
         if p2.dir == -1:
-            p2.hard_hit.clip_composite_draw(int(p2.frame) * 48, 0, 48, 40, 0, 'h', p2.x, p2.y - 15, 135, 112)
+            p2.hard_hit.clip_composite_draw(int(p2.frame) * 48, 0, 48, 40, 0, 'h', p2.sx, p2.sy - 15, 135, 112)
         elif p2.dir == 1:
-            p2.hard_hit.clip_composite_draw(int(p2.frame) * 48, 0, 48, 40, 0, '', p2.x, p2.y - 15, 135, 112)
+            p2.hard_hit.clip_composite_draw(int(p2.frame) * 48, 0, 48, 40, 0, '', p2.sx, p2.sy - 15, 135, 112)
 
 class StateMachine:
     def __init__(self, p2):
@@ -741,6 +741,7 @@ class NARUTO:
         self.chakra_lack = False
         self.win = False
         self.hit_state = 0
+        self.sx, self.sy = 0, 0
 
     def skill(self):
         if self.skill_num == 'shuriken':
@@ -773,6 +774,12 @@ class NARUTO:
             game_world.add_collision_pair('p2:p1_attack', None, attack_range)
         elif player_num == 2:
             game_world.add_collision_pair('p1:p2_attack', None, attack_range)
+
+    def set_background(self, bg):
+        self.bg = bg
+        # self.x = self.bg.w / 2
+        # self.y = self.bg.h / 2
+
     def update(self):
         if self.hit_state == 'hard':
             self.state_machine.cur_state = Hard_hit
@@ -795,11 +802,12 @@ class NARUTO:
             self.left = True
 
     def draw(self):
+        self.sx, self.sy = self.x - self.bg.window_left, self.y - self.bg.window_bottom
         self.state_machine.draw()
-        # draw_rectangle(*self.get_bb())
+        draw_rectangle(*self.get_bb())
 
     def get_bb(self):
-        return self.x - 30, self.y - 70, self.x + 30, self.y + 70
+        return self.sx - 30, self.sy - 70, self.sx + 30, self.sy + 70
 
     def handle_collision(self, group, other):
         pass

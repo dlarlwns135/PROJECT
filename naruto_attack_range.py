@@ -2,6 +2,7 @@ from pico2d import *
 
 import game_framework
 import game_world
+import play_mode
 
 PIXEL_PER_METER = (10.0 / 0.3) # 10 pixel 30 cm
 RUN_SPEED_KMPH = 50.0 # Km / Hour
@@ -19,19 +20,21 @@ class Shuriken:
         self.dir = dir
         self.count = 0
         self.damage = 200
+        self.sx, self.sy = 0, 0
 
     def draw(self):
-        self.shuriken.clip_composite_draw(int(self.frame) * 44, 0, 44, 35, 0, '', self.x, self.y, 44, 35)
-        # draw_rectangle(*self.get_bb())
+        self.sx, self.sy = self.x - play_mode.map.window_left, self.y - play_mode.map.window_bottom
+        self.shuriken.clip_composite_draw(int(self.frame) * 44, 0, 44, 35, 0, '', self.sx, self.sy, 44, 35)
+        draw_rectangle(*self.get_bb())
 
     def update(self):
         self.frame = (self.frame + 4 * 4 * game_framework.frame_time) % 4
         self.x += self.dir * RUN_SPEED_PPS * 1.5 * game_framework.frame_time
-        if self.x < 0 or self.x > 1200:
+        if self.x < 0 or self.x > play_mode.map.w:
             game_world.remove_object(self)
 
     def get_bb(self):
-        return self.x - 22, self.y - 18, self.x + 22, self.y + 18
+        return self.sx - 22, self.sy - 18, self.sx + 22, self.sy + 18
 
     def handle_collision(self, group, other):
         if group == 'p1:p2_shuriken' or group == 'p2:p1_shuriken':
@@ -54,15 +57,17 @@ class Skill1:
         self.dir = dir
         self.count = 0
         self.damage = 60
+        self.sx, self.sy = 0, 0
 
     def draw(self):
+        self.sx, self.sy = self.x - play_mode.map.window_left, self.y - play_mode.map.window_bottom
         if self.dir == 1:
             self.skill1_effect.clip_composite_draw(int(self.frame) * 193, 0, 193, 136, 0, '',
-                                                   self.x, self.y+20, 543, 382)
+                                                   self.sx, self.sy+20, 543, 382)
         elif self.dir == -1:
             self.skill1_effect.clip_composite_draw(int(self.frame) * 193, 0, 193, 136, 0, 'h',
-                                                   self.x, self.y+20, 543, 382)
-        # draw_rectangle(*self.get_bb())
+                                                   self.sx, self.sy+20, 543, 382)
+        draw_rectangle(*self.get_bb())
 
     def update(self):
         self.frame = (self.frame + 10 * 2 * game_framework.frame_time) % 10
@@ -71,9 +76,9 @@ class Skill1:
 
     def get_bb(self):
         if self.dir == 1:
-            return self.x - 200, self.y - 130, self.x + 270, self.y + 180
+            return self.sx - 200, self.sy - 130, self.sx + 270, self.sy + 180
         elif self.dir == -1:
-            return self.x - 270, self.y - 130, self.x + 200, self.y + 180
+            return self.sx - 270, self.sy - 130, self.sx + 200, self.sy + 180
 
     def handle_collision(self, group, other):
         if not other.invincible:
@@ -97,16 +102,18 @@ class Skill2:
         self.dir = dir
         self.count = 0
         self.damage = 60
+        self.sx, self.sy = 0, 0
 
     def draw(self):
+        self.sx, self.sy = self.x - play_mode.map.window_left, self.y - play_mode.map.window_bottom
         if self.frame >= 7:
             if self.dir == 1:
                 self.skill2_effect.clip_composite_draw((int(self.frame)-7) * 159, 0, 159, 88, 0, '',
-                                                       self.x, self.y , 447, 247)
+                                                       self.sx, self.sy , 447, 247)
             elif self.dir == -1:
                 self.skill2_effect.clip_composite_draw((int(self.frame)-7) * 159, 0, 159, 88, 0, 'h',
-                                                       self.x, self.y, 447, 247)
-        # draw_rectangle(*self.get_bb())
+                                                       self.sx, self.sy, 447, 247)
+        draw_rectangle(*self.get_bb())
 
     def update(self):
         self.frame = (self.frame + 16 * 1 * game_framework.frame_time) % 16
@@ -114,15 +121,15 @@ class Skill2:
             self.x += self.dir * RUN_SPEED_PPS * 1 * game_framework.frame_time
             if self.frame >= 15:
                 self.frame = 12
-        if self.x < 0 or self.x > 1200:
+        if self.x < 0 or self.x > play_mode.map.w:
             game_world.remove_object(self)
         pass
 
     def get_bb(self):
         if self.dir == 1:
-            return self.x - 80, self.y - 130, self.x + 220, self.y + 110
+            return self.sx - 80, self.sy - 130, self.sx + 220, self.sy + 110
         elif self.dir == -1:
-            return self.x - 220, self.y - 130, self.x + 80, self.y + 110
+            return self.sx - 220, self.sy - 130, self.sx + 80, self.sy + 110
 
     def handle_collision(self, group, other):
         if not other.invincible:
@@ -156,6 +163,7 @@ class Attack_range:
             self.range_set(40, 50, 30, -20, 30)
         elif self.attack_num == 'jump':
             self.range_set(50, 60, 30, 20, 30)
+        self.sx, self.sy = 0, 0
 
     def range_set(self, range_x, range_y, dis_x, dis_y, damage):
         self.attack_range_x = range_x
@@ -193,14 +201,15 @@ class Attack_range:
                 game_world.remove_object(self)
 
     def draw(self):
-        # draw_rectangle(*self.get_bb())
+        draw_rectangle(*self.get_bb())
+        self.sx, self.sy = self.x - play_mode.map.window_left, self.y - play_mode.map.window_bottom
         pass
 
     def get_bb(self):
-        return (self.x - self.attack_range_x + self.dir * self.attack_x_dis,
-                self.y - self.attack_range_y + self.attack_y_dis,
-                self.x + self.attack_range_x + self.dir * self.attack_x_dis,
-                self.y + self.attack_range_y + self.attack_y_dis)
+        return (self.sx - self.attack_range_x + self.dir * self.attack_x_dis,
+                self.sy - self.attack_range_y + self.attack_y_dis,
+                self.sx + self.attack_range_x + self.dir * self.attack_x_dis,
+                self.sy + self.attack_range_y + self.attack_y_dis)
 
     def handle_collision(self, group, other):
         if not other.invincible:
