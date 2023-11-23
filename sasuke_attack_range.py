@@ -3,9 +3,6 @@ from pico2d import *
 import game_framework
 import game_world
 
-# from naruto import Hard_hit, Easy_hit
-# from sasuke import Hard_hit, Easy_hit
-# from itachi import Hard_hit, Easy_hit
 PIXEL_PER_METER = (10.0 / 0.3) # 10 pixel 30 cm
 RUN_SPEED_KMPH = 50.0 # Km / Hour
 RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
@@ -47,7 +44,7 @@ class Shuriken:
                 print(self.damage)
                 other.hp -= self.damage
                 other.frame = 0
-                # other.state_machine.cur_state = Easy_hit
+                other.hit_state = 'easy'
                 game_world.remove_object(self)
 
 class Skill1:
@@ -93,7 +90,6 @@ class Skill1:
                 other.frame = 0
                 print(other.hp)
                 other.hit_state = 'hard'
-                # other.state_machine.cur_state = other.Hard_hit
                 other.invincible = True
 class Skill2:
     skill2_effect1 = None
@@ -152,7 +148,7 @@ class Skill2:
                 other.dir = -self.dir
                 other.frame = 0
                 print(other.hp)
-                # other.state_machine.cur_state = Hard_hit
+                other.hit_state = 'hard'
                 other.invincible = True
 
 class Attack_range:
@@ -229,6 +225,5 @@ class Attack_range:
                 other.dir = -self.dir
                 other.frame = 0
                 print(other.hp)
-                # other.state_machine.cur_state = Easy_hit
+                other.hit_state = 'easy'
                 game_world.remove_object(self)
-        pass

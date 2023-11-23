@@ -546,6 +546,7 @@ class Easy_hit:
         p3.frame = p3.frame + 2 * 5 * game_framework.frame_time
         if p3.frame >= 1.9:
             p3.frame = 0
+            p3.hit_state = 0
             p3.state_machine.handle_event(('STOP', None))
 
 
@@ -766,6 +767,8 @@ class ITACHI:
     def update(self):
         if self.hit_state == 'hard':
             self.state_machine.cur_state = Hard_hit
+        if self.hit_state == 'easy':
+            self.state_machine.cur_state = Easy_hit
         self.state_machine.update()
         if self.chakra <= 100:
             self.chakra += 8 * game_framework.frame_time

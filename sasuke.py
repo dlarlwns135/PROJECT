@@ -548,6 +548,7 @@ class Easy_hit:
         p1.frame = p1.frame + 2 * 5 * game_framework.frame_time
         if p1.frame >= 1.9:
             p1.frame = 0
+            p1.hit_state = 0
             p1.state_machine.handle_event(('STOP', None))
 
 
@@ -580,6 +581,7 @@ class Hard_hit:
         if p1.frame >= 15:
             p1.invincible = False
             p1.frame = 0
+            p1.hit_state = 0
             p1.state_machine.handle_event(('STOP', None))
         if p1.frame < 2.8:
             p1.x += -p1.dir * RUN_SPEED_PPS * 1 * game_framework.frame_time
@@ -732,6 +734,7 @@ class SASUKE:
         self.chakra = 100
         self.chakra_lack = False
         self.win = False
+        self.hit_state = 0
 
     def skill(self):
         if self.skill_num == 'shuriken':
@@ -764,6 +767,10 @@ class SASUKE:
         elif player_num == 2:
             game_world.add_collision_pair('p1:p2_attack', None, attack_range)
     def update(self):
+        if self.hit_state == 'hard':
+            self.state_machine.cur_state = Hard_hit
+        if self.hit_state == 'easy':
+            self.state_machine.cur_state = Easy_hit
         self.state_machine.update()
         if self.chakra <= 100:
             self.chakra += 8 * game_framework.frame_time
