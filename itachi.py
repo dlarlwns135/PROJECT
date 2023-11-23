@@ -175,11 +175,9 @@ class Idle:
     @staticmethod
     def draw(p3):
         if p3.dir == -1:
-            sx, sy = p3.x - p3.bg.window_left, (p3.y+15) - p3.bg.window_bottom
-            p3.idle.clip_composite_draw(int(p3.frame) * 32, 0, 32, 64, 0, 'h', sx,sy, 100, 200)
+            p3.idle.clip_composite_draw(int(p3.frame) * 32, 0, 32, 64, 0, 'h', p3.sx, p3.sy+15, 100, 200)
         elif p3.dir == 1:
-            sx, sy = p3.x - p3.bg.window_left, (p3.y + 15) - p3.bg.window_bottom
-            p3.idle.clip_composite_draw(int(p3.frame) * 32, 0, 32, 64, 0, '', sx,sy, 100 , 200)
+            p3.idle.clip_composite_draw(int(p3.frame) * 32, 0, 32, 64, 0, '', p3.sx, p3.sy+15, 100 , 200)
 
 
 class Run:
@@ -207,11 +205,9 @@ class Run:
     @staticmethod
     def draw(p3):
         if p3.dir == -1:
-            sx, sy = p3.x - p3.bg.window_left, (p3.y - 10) - p3.bg.window_bottom
-            p3.run.clip_composite_draw(int(p3.frame) * 50, 0, 50, 48, 0, 'h', sx,sy, 153, 150)
+            p3.run.clip_composite_draw(int(p3.frame) * 50, 0, 50, 48, 0, 'h', p3.sx, p3.sy-10, 153, 150)
         elif p3.dir == 1:
-            sx, sy = p3.x - p3.bg.window_left, (p3.y - 10) - p3.bg.window_bottom
-            p3.run.clip_composite_draw(int(p3.frame) * 50, 0, 50, 48, 0, '', sx,sy, 153, 150)
+            p3.run.clip_composite_draw(int(p3.frame) * 50, 0, 50, 48, 0, '', p3.sx, p3.sy-10, 153, 150)
 
 
 class Jump:
@@ -281,9 +277,9 @@ class Jump:
     @staticmethod
     def draw(p3):
         if p3.dir == -1:
-            p3.jump.clip_composite_draw(int(p3.frame) * 50, 0, 50, 64, 0, 'h', p3.x, p3.y, 153, 200)
+            p3.jump.clip_composite_draw(int(p3.frame) * 50, 0, 50, 64, 0, 'h', p3.sx, p3.sy, 153, 200)
         elif p3.dir == 1:
-            p3.jump.clip_composite_draw(int(p3.frame) * 50, 0, 50, 64, 0, '', p3.x, p3.y, 153, 200)
+            p3.jump.clip_composite_draw(int(p3.frame) * 50, 0, 50, 64, 0, '', p3.sx, p3.sy, 153, 200)
 
 class Teleport:
     @staticmethod
@@ -333,11 +329,11 @@ class Teleport:
     @staticmethod
     def draw(p3):
         if p3.dir == -1:
-            p3.teleport.clip_composite_draw(int(p3.frame) * 40, 0, 40, 66, 0, 'h', p3.x, p3.y, 125, 202)
-            p3.teleport_motion.clip_composite_draw(int(p3.frame) * 72, 0, 72, 75, 0, 'h', p3.x, p3.y, 150, 250)
+            p3.teleport.clip_composite_draw(int(p3.frame) * 40, 0, 40, 66, 0, 'h', p3.sx, p3.sy, 125, 202)
+            p3.teleport_motion.clip_composite_draw(int(p3.frame) * 72, 0, 72, 75, 0, 'h', p3.sx, p3.sy, 150, 250)
         elif p3.dir == 1:
-            p3.teleport.clip_composite_draw(int(p3.frame) * 40, 0, 40, 66, 0, '', p3.x, p3.y, 125, 202)
-            p3.teleport_motion.clip_composite_draw(int(p3.frame) * 72, 0, 72, 75, 0, '', p3.x, p3.y, 150, 250)
+            p3.teleport.clip_composite_draw(int(p3.frame) * 40, 0, 40, 66, 0, '', p3.sx, p3.sy, 125, 202)
+            p3.teleport_motion.clip_composite_draw(int(p3.frame) * 72, 0, 72, 75, 0, '', p3.sx, p3.sy, 150, 250)
 
 class Attack:
     @staticmethod
@@ -391,24 +387,24 @@ class Attack:
     def draw(p3):
         if p3.attack_num == 1:
             if p3.dir == -1:
-                p3.attack1.clip_composite_draw(int(p3.frame) * 42, 0, 42, 64, 0, 'h', p3.x, p3.y-15, 131, 200)
+                p3.attack1.clip_composite_draw(int(p3.frame) * 42, 0, 42, 64, 0, 'h', p3.sx, p3.sy-15, 131, 200)
             elif p3.dir == 1:
-                p3.attack1.clip_composite_draw(int(p3.frame) * 42, 0, 42, 64, 0, '', p3.x, p3.y-15, 131, 200)
+                p3.attack1.clip_composite_draw(int(p3.frame) * 42, 0, 42, 64, 0, '', p3.sx, p3.sy-15, 131, 200)
         elif p3.attack_num == 2:
             if p3.dir == -1:
-                p3.attack2.clip_composite_draw(int(p3.frame) * 58, 0, 58, 72, 0, 'h', p3.x-40, p3.y, 181, 225)
+                p3.attack2.clip_composite_draw(int(p3.frame) * 58, 0, 58, 72, 0, 'h', p3.sx-40, p3.sy, 181, 225)
             elif p3.dir == 1:
-                p3.attack2.clip_composite_draw(int(p3.frame) * 58, 0, 58, 72, 0, '', p3.x+40, p3.y, 181, 225)
+                p3.attack2.clip_composite_draw(int(p3.frame) * 58, 0, 58, 72, 0, '', p3.sx+40, p3.sy, 181, 225)
         elif p3.attack_num == 3:
             if p3.dir == -1:
-                    p3.attack3.clip_composite_draw(int(p3.frame) * 74, 0, 74, 72, 0, 'h', p3.x - 40, p3.y, 227, 225)
+                    p3.attack3.clip_composite_draw(int(p3.frame) * 74, 0, 74, 72, 0, 'h', p3.sx - 40, p3.sy, 227, 225)
             elif p3.dir == 1:
-                    p3.attack3.clip_composite_draw(int(p3.frame) * 74, 0, 74, 72, 0, '', p3.x + 40, p3.y, 227, 225)
+                    p3.attack3.clip_composite_draw(int(p3.frame) * 74, 0, 74, 72, 0, '', p3.sx + 40, p3.sy, 227, 225)
         elif p3.attack_num == 4:
             if p3.dir == -1:
-                    p3.attack4.clip_composite_draw(int(p3.frame) * 42, 0, 42, 72, 0, 'h', p3.x - 20, p3.y+15, 131, 225)
+                    p3.attack4.clip_composite_draw(int(p3.frame) * 42, 0, 42, 72, 0, 'h', p3.sx - 20, p3.sy+15, 131, 225)
             elif p3.dir == 1:
-                    p3.attack4.clip_composite_draw(int(p3.frame) * 42, 0, 42, 72, 0, '', p3.x + 20, p3.y+15, 131, 225)
+                    p3.attack4.clip_composite_draw(int(p3.frame) * 42, 0, 42, 72, 0, '', p3.sx + 20, p3.sy+15, 131, 225)
 
 class Run_Attack:
     @staticmethod
@@ -431,9 +427,9 @@ class Run_Attack:
     @staticmethod
     def draw(p3):
         if p3.dir == -1:
-            p3.run_attack.clip_composite_draw(int(p3.frame) * 66, 0, 66, 49, 0, 'h', p3.x-50, p3.y, 206, 153)
+            p3.run_attack.clip_composite_draw(int(p3.frame) * 66, 0, 66, 49, 0, 'h', p3.sx-50, p3.sy, 206, 153)
         elif p3.dir == 1:
-            p3.run_attack.clip_composite_draw(int(p3.frame) * 66, 0, 66, 49, 0, '', p3.x+50, p3.y, 206, 153)
+            p3.run_attack.clip_composite_draw(int(p3.frame) * 66, 0, 66, 49, 0, '', p3.sx+50, p3.sy, 206, 153)
 
 class Jump_Attack:
     @staticmethod
@@ -456,9 +452,9 @@ class Jump_Attack:
     @staticmethod
     def draw(p3):
         if p3.dir == -1:
-            p3.jump_attack.clip_composite_draw(int(p3.frame) * 50, 0, 50, 48, 0, 'h', p3.x, p3.y, 156, 150)
+            p3.jump_attack.clip_composite_draw(int(p3.frame) * 50, 0, 50, 48, 0, 'h', p3.sx, p3.sy, 156, 150)
         elif p3.dir == 1:
-            p3.jump_attack.clip_composite_draw(int(p3.frame) * 50, 0, 50, 48, 0, '', p3.x, p3.y, 156, 150)
+            p3.jump_attack.clip_composite_draw(int(p3.frame) * 50, 0, 50, 48, 0, '', p3.sx, p3.sy, 156, 150)
 
 class Skill_motion:
     @staticmethod
@@ -509,25 +505,25 @@ class Skill_motion:
     def draw(p3):
         if p3.skill_num == 'skill1':
             if p3.dir == -1:
-                p3.skill1.clip_composite_draw(int(p3.frame) * 170, 0, 170, 152, 0, 'h', p3.x-60, p3.y-25, 531, 475)
+                p3.skill1.clip_composite_draw(int(p3.frame) * 170, 0, 170, 152, 0, 'h', p3.sx-60, p3.sy-25, 531, 475)
             elif p3.dir == 1:
-                p3.skill1.clip_composite_draw(int(p3.frame) * 170, 0, 170, 152, 0, '', p3.x+60, p3.y-25, 531, 475)
+                p3.skill1.clip_composite_draw(int(p3.frame) * 170, 0, 170, 152, 0, '', p3.sx+60, p3.sy-25, 531, 475)
         elif p3.skill_num == 'skill2':
             if p3.dir == -1:
-                p3.skill2.clip_composite_draw(int(p3.frame) * 42, 0, 42, 72, 0, 'h', p3.x+10, p3.y+5, 90, 155)
+                p3.skill2.clip_composite_draw(int(p3.frame) * 42, 0, 42, 72, 0, 'h', p3.sx+10, p3.sy+5, 90, 155)
             elif p3.dir == 1:
-                p3.skill2.clip_composite_draw(int(p3.frame) * 42, 0, 42, 72, 0, '', p3.x-10, p3.y+5, 90, 155)
+                p3.skill2.clip_composite_draw(int(p3.frame) * 42, 0, 42, 72, 0, '', p3.sx-10, p3.sy+5, 90, 155)
         elif p3.skill_num == 'shuriken':
             if p3.jump_state:
                 if p3.dir == -1:
-                    p3.shuriken_jump.clip_composite_draw(int(p3.frame) * 42, 0, 42, 56, 0, 'h', p3.x, p3.y-25, 131, 175)
+                    p3.shuriken_jump.clip_composite_draw(int(p3.frame) * 42, 0, 42, 56, 0, 'h', p3.sx, p3.sy-25, 131, 175)
                 elif p3.dir == 1:
-                    p3.shuriken_jump.clip_composite_draw(int(p3.frame) * 42, 0, 42, 56, 0, '', p3.x, p3.y-25, 131, 175)
+                    p3.shuriken_jump.clip_composite_draw(int(p3.frame) * 42, 0, 42, 56, 0, '', p3.sx, p3.sy-25, 131, 175)
             else:
                 if p3.dir == -1:
-                    p3.shuriken_stand.clip_composite_draw(int(p3.frame) * 50, 0, 50, 64, 0, 'h', p3.x-15, p3.y+15, 156, 200)
+                    p3.shuriken_stand.clip_composite_draw(int(p3.frame) * 50, 0, 50, 64, 0, 'h', p3.sx-15, p3.sy+15, 156, 200)
                 elif p3.dir == 1:
-                    p3.shuriken_stand.clip_composite_draw(int(p3.frame) * 50, 0, 50, 64, 0, '', p3.x+15, p3.y+15, 156, 200)
+                    p3.shuriken_stand.clip_composite_draw(int(p3.frame) * 50, 0, 50, 64, 0, '', p3.sx+15, p3.sy+15, 156, 200)
 
 class Easy_hit:
     @staticmethod
@@ -557,9 +553,9 @@ class Easy_hit:
     @staticmethod
     def draw(p3):
         if p3.dir == -1:
-            p3.easy_hit.clip_composite_draw(int(p3.frame) * 43, 0, 43, 64, 0, 'h', p3.x+15, p3.y+15, 134, 200)
+            p3.easy_hit.clip_composite_draw(int(p3.frame) * 43, 0, 43, 64, 0, 'h', p3.sx+15, p3.sy+15, 134, 200)
         elif p3.dir == 1:
-            p3.easy_hit.clip_composite_draw(int(p3.frame) * 43, 0, 43, 64, 0, '', p3.x-15, p3.y+15, 134, 200)
+            p3.easy_hit.clip_composite_draw(int(p3.frame) * 43, 0, 43, 64, 0, '', p3.sx-15, p3.sy+15, 134, 200)
 
 class Hard_hit:
     @staticmethod
@@ -598,14 +594,14 @@ class Hard_hit:
     def draw(p3):
         if p3.frame > 3:
             if p3.dir == -1:
-                p3.hard_hit.clip_composite_draw(3 * 66, 0, 66, 40, 0, 'h', p3.x, p3.y - 15, 206, 125)
+                p3.hard_hit.clip_composite_draw(3 * 66, 0, 66, 40, 0, 'h', p3.sx, p3.sy - 15, 206, 125)
             elif p3.dir == 1:
-                p3.hard_hit.clip_composite_draw(3 * 66, 0, 66, 40, 0, '', p3.x, p3.y - 15, 206, 125)
+                p3.hard_hit.clip_composite_draw(3 * 66, 0, 66, 40, 0, '', p3.sx, p3.sy - 15, 206, 125)
         else:
             if p3.dir == -1:
-                p3.hard_hit.clip_composite_draw(int(p3.frame) * 66, 0, 66, 40, 0, 'h', p3.x, p3.y-15, 206, 125)
+                p3.hard_hit.clip_composite_draw(int(p3.frame) * 66, 0, 66, 40, 0, 'h', p3.sx, p3.sy-15, 206, 125)
             elif p3.dir == 1:
-                p3.hard_hit.clip_composite_draw(int(p3.frame) * 66, 0, 66, 40, 0, '', p3.x, p3.y-15, 206, 125)
+                p3.hard_hit.clip_composite_draw(int(p3.frame) * 66, 0, 66, 40, 0, '', p3.sx, p3.sy-15, 206, 125)
 
 class Win:
     @staticmethod
@@ -624,9 +620,9 @@ class Win:
     @staticmethod
     def draw(p3):
         if p3.dir == 1:
-            p3.win_image.clip_composite_draw(int(p3.frame) * 42, 0, 42, 74, 0, '', p3.x, p3.y, 90, 159)
+            p3.win_image.clip_composite_draw(int(p3.frame) * 42, 0, 42, 74, 0, '', p3.sx, p3.sy, 90, 159)
         elif p3.dir == -1:
-            p3.win_image.clip_composite_draw(int(p3.frame) * 42, 0, 42, 74, 0, 'h', p3.x, p3.y, 90, 159)
+            p3.win_image.clip_composite_draw(int(p3.frame) * 42, 0, 42, 74, 0, 'h', p3.sx, p3.sy, 90, 159)
 
 class Lose:
     @staticmethod
@@ -646,9 +642,9 @@ class Lose:
     @staticmethod
     def draw(p3):
         if p3.dir == -1:
-            p3.hard_hit.clip_composite_draw(int(p3.frame) * 64, 0, 64, 40, 0, 'h', p3.x, p3.y - 15, 200, 125)
+            p3.hard_hit.clip_composite_draw(int(p3.frame) * 64, 0, 64, 40, 0, 'h', p3.sx, p3.sy - 15, 200, 125)
         elif p3.dir == 1:
-            p3.hard_hit.clip_composite_draw(int(p3.frame) * 64, 0, 64, 40, 0, '', p3.x, p3.y - 15, 200, 125)
+            p3.hard_hit.clip_composite_draw(int(p3.frame) * 64, 0, 64, 40, 0, '', p3.sx, p3.sy - 15, 200, 125)
 
 class StateMachine:
     def __init__(self, p3):
@@ -737,6 +733,7 @@ class ITACHI:
         self.chakra_lack = False
         self.win = False
         self.hit_state = 0
+        self.sx, self.sy = 0, 0
 
     def skill(self):
         if self.skill_num == 'shuriken':
@@ -771,8 +768,8 @@ class ITACHI:
 
     def set_background(self, bg):
         self.bg = bg
-        self.x = self.bg.w / 2
-        self.y = self.bg.h / 2
+        # self.x = self.bg.w / 2
+        # self.y = self.bg.h / 2
 
     def update(self):
         if self.hit_state == 'hard':
