@@ -2,6 +2,10 @@ from pico2d import *
 
 import game_framework
 import game_world
+# from naruto import Hard_hit
+# from sasuke import Hard_hit
+from naruto import *
+from sasuke import *
 
 PIXEL_PER_METER = (10.0 / 0.3) # 10 pixel 30 cm
 RUN_SPEED_KMPH = 50.0 # Km / Hour
@@ -78,8 +82,10 @@ class Skill1:
         if not other.invincible:
             if group == 'p1:p2_skill1' or group == 'p2:p1_skill1':
                 print("화둔 맞음")
-                # other.hp = -self.damage
-                # other.invincible = True
+                other.hp -= self.damage
+                print(other.hp)
+                other.state_machine.cur_state = Hard_hit
+                other.invincible = True
 
 class Skill2:
     skill2_effect1 = None

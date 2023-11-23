@@ -807,11 +807,11 @@ class SASUKE:
                 if group == 'p1:p2_skill1':
                     self.dir = -other.dir
                     print(other.damage)
-                    self.hp -= other.damage
+                    # self.hp -= other.damage
                     print("p2한테 skill1 맞음")
                     self.frame = 0
-                    self.invincible = True
-                    self.state_machine.cur_state = Hard_hit
+                    # self.invincible = True
+                    # self.state_machine.cur_state = Hard_hit
                 if group == 'p1:p2_skill2':
                     self.invincible = True
                     self.dir = -other.dir
