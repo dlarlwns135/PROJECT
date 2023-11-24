@@ -1,5 +1,6 @@
 from pico2d import *
 import play_mode
+import mode_choose_mode
 class Map:
     def __init__(self):
         # self.uchihamap = load_image('resource/uchihamap.png')
@@ -13,9 +14,16 @@ class Map:
         # self.ruler_image = load_image('ruler.png')
 
     def update(self):
-
-        self.window_left = clamp(0, int((play_mode.p1.x+play_mode.p2.x)//2) - self.cw // 2,
-                                 self.w - self.cw - 1)
+        if mode_choose_mode.mode_choose_result() == '1p':
+            self.window_left = clamp(0, int(play_mode.p1.x) - self.cw // 2,
+                                     self.w - self.cw - 1)
+            self.window_bottom = clamp(0, int(play_mode.p1.y) - self.ch // 2,
+                                       self.h - self.ch - 1)
+        elif mode_choose_mode.mode_choose_result() == '2p':
+            self.window_left = clamp(0, int((play_mode.p1.x+play_mode.p2.x)//2) - self.cw // 2,
+                                     self.w - self.cw - 1)
+            self.window_bottom = clamp(0, int((play_mode.p1.y + play_mode.p2.y) // 2) - self.ch // 2,
+                                       self.h - self.ch - 1)
         # if abs(play_mode.p1.x - play_mode.p2.x) >= self.cw - 100:
         #     if play_mode.p1.x > play_mode.p2.x:
         #         play_mode.p1.x =
@@ -39,8 +47,7 @@ class Map:
         #     self.window_left = int(play_mode.p2.x) - self.cw + 20
         #     if play_mode.p1.x <= self.window_left + 50:
         #         play_mode.p1.x = self.window_left + 50
-        self.window_bottom = clamp(0, int((play_mode.p1.y+play_mode.p2.y)//2) - self.ch // 2,
-                                   self.h - self.ch - 1)
+
         # self.cw = int(abs(play_mode.p1.x - play_mode.p2.x)) + 300
         # self.ch = int(abs(play_mode.p1.y - play_mode.p2.y)) + 400
 

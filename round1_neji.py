@@ -4,6 +4,7 @@ from pico2d import *
 
 import game_framework
 import game_world
+import play_mode
 from round1_neji_attack_range import Shuriken, Skill1, Skill2, Attack_range
 from behavior_tree import BehaviorTree, Action, Sequence, Condition, Selector
 
@@ -203,9 +204,9 @@ class Run:
     @staticmethod
     def draw(p2):
         if p2.dir == -1:
-            p2.run.clip_composite_draw(int(p2.frame) * 48, 0, 48, 48, 0, 'h', p2.sx, p2.sy-15, 135, 135)
+            p2.run.clip_composite_draw(int(p2.frame) * 42, 0, 42, 48, 0, 'h', p2.sx, p2.sy-15, 118, 135)
         elif p2.dir == 1:
-            p2.run.clip_composite_draw(int(p2.frame) * 48, 0, 48, 48, 0, '', p2.sx, p2.sy-15, 135, 135)
+            p2.run.clip_composite_draw(int(p2.frame) * 42, 0, 42, 48, 0, '', p2.sx, p2.sy-15, 118, 135)
 
 
 class Jump:
@@ -710,7 +711,7 @@ class NEJI:
         self.frame = 0
         self.dir = 1
         self.idle = load_image('resource/neji_idle.png')
-        self.run = load_image('resource/naruto_run.png')
+        self.run = load_image('resource/neji_run.png')
         self.jump = load_image('resource/naruto_jump.png')
         self.teleport = load_image('resource/naruto_teleport.png')
         self.teleport_motion = load_image('resource/teleport.png')
@@ -747,6 +748,8 @@ class NEJI:
         self.win = False
         self.hit_state = 0
         self.sx, self.sy = 0, 0
+        self.state = 'idle'
+        self.build_behavior_tree()
 
     def skill(self):
         if self.skill_num == 'shuriken':
@@ -793,6 +796,7 @@ class NEJI:
         self.state_machine.update()
         if self.chakra <= 100:
             self.chakra += 8 * game_framework.frame_time
+        self.bt.run()
 
 
     def handle_event(self, event):
@@ -815,4 +819,33 @@ class NEJI:
         return self.sx - 30, self.sy - 70, self.sx + 30, self.sy + 70
 
     def handle_collision(self, group, other):
+        pass
+
+    def move_slightly_to(self, tx, ty):
+        self.dir = math.atan2(ty-self.y, tx-self.x)
+        self.speed = RUN_SPEED_PPS
+        self.x += self.speed * math.cos(self.dir) * game_framework.frame_time
+        self.y += self.speed * math.sin(self.dir) * game_framework.frame_time
+
+    def distance_less_than(self, x1, y1, x2, y2, r):
+        distance2 = (x1-x2)**2 + (y1-y2)**2
+        return distance2 < (r * PIXEL_PER_METER) ** 2
+    def move_to_p1(self, r=10):
+        self.state = 'run'
+        # self.move_slightly_to(play_mode.boy.x, play_mode.boy.y)
+        if self.x < play_mode.p1.x:
+            self.dir = 1
+        else:
+            self.dir = -1
+        self.x += self.dir * 50 * game_framework.frame_time
+        if self.distance_less_than(play_mode.p1.x, play_mode.p1.y, self.x, self.y, r):
+            return BehaviorTree.SUCCESS
+        else:
+            return BehaviorTree.RUNNING
+    def build_behavior_tree(self):
+        a2 = Action('Move to', self.move_to_p1)
+
+        root = SEQ_move_to_target_location = Sequence('Move to target location', a2)
+
+        self.bt = BehaviorTree(root)
         pass
