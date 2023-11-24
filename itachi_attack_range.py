@@ -104,7 +104,7 @@ class Skill2:
             Skill2.skill2_effect1 = load_image('resource/itachi_skill2_effect1.png')
         if Skill2.skill2_effect2 == None:
             Skill2.skill2_effect2 = load_image('resource/itachi_skill2_effect2.png')
-        self.x, self.y = x, y
+        self.x, self.y = x, y - 60
         self.frame = 0
         self.dot_frame = 0
         self.dot_count = 0
@@ -143,11 +143,11 @@ class Skill2:
         if not self.reach:
             self.get_enenmy()
             if self.dir == 1:
-                self.skill2_effect1.clip_composite_draw(int(self.frame) * 171, 0, 171,128, 0, '',
-                                                        self.sx, self.sy + 41, 325, 241)
+                self.skill2_effect1.clip_composite_draw(int(self.frame) * 122, 0, 122,56, 0, '',
+                                                        self.sx, self.sy + 41, 200, 140)
             elif self.dir == -1:
-                self.skill2_effect1.clip_composite_draw(int(self.frame) * 171, 0, 171, 128, 0, 'h',
-                                                        self.sx, self.sy + 41, 325, 241)
+                self.skill2_effect1.clip_composite_draw(int(self.frame) * 122, 0, 122, 56, 0, 'h',
+                                                        self.sx, self.sy + 41, 200, 140)
         else:
             if self.p_num == 1:
                 self.skill2_effect2.clip_composite_draw(int(self.frame) * 133, 0, 133, 150, 0, '',
@@ -159,7 +159,7 @@ class Skill2:
 
     def update(self):
         # self.count += 1
-        self.frame = (self.frame + 4 * 1 * game_framework.frame_time) % 4
+        self.frame = (self.frame + 6 * 1 * game_framework.frame_time) % 6
         if self.reach:
             self.dot_frame = self.dot_frame + 5 * game_framework.frame_time
             if self.dot_frame >= 10:
@@ -180,7 +180,7 @@ class Skill2:
 
     def get_bb(self):
         # return self.x - skill_range_x, self.y - skill_range_y, self.x + skill_range_x, self.y + skill_range_y
-        return self.sx - 130, self.sy - 70, self.sx + 130, self.sy + 70
+        return self.sx - 110, self.sy - 30, self.sx + 110, self.sy + 90
 
     def handle_collision(self, group, other):
         if not self.reach:
