@@ -12,7 +12,7 @@ RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
 RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
 RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
-ground_y = 70
+ground_y = 120
 tele_dis = 220
 player_num = 0
 
@@ -587,7 +587,7 @@ class Hard_hit:
             p1.x += -p1.dir * RUN_SPEED_PPS * 1 * game_framework.frame_time
         if p1.y > ground_y and p1.frame >= 2.8:
             p1.x += -p1.dir * RUN_SPEED_PPS * 0.7 * game_framework.frame_time
-            p1.y -= RUN_SPEED_PPS * game_framework.frame_time * (15 - p1.frame) // 15
+            p1.y -= RUN_SPEED_PPS * game_framework.frame_time * 0.6
             if p1.y < ground_y:
                 p1.y = ground_y
 

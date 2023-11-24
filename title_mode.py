@@ -3,6 +3,7 @@ from pico2d import *
 import charactor_choose_mode
 import game_framework
 import play_mode
+import single_character_choice_mode
 
 def init():
     global image1, image2, naruto, sasuke, title_frame, sasuke_x, naruto_x
@@ -31,6 +32,7 @@ def handle_events():
             game_framework.quit()
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_SPACE):
             game_framework.change_mode(charactor_choose_mode)
+            # game_framework.change_mode(single_character_choice_mode)
 
 def running():
     pass

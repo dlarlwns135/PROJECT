@@ -76,7 +76,7 @@ class Skill1:
         if self.frame >= 8:
             self.frame = 5
         # if self.frame >= 9:
-        self.x += self.dir * RUN_SPEED_PPS * 0.7 * game_framework.frame_time
+        self.x += self.dir * RUN_SPEED_PPS * 1.2 * game_framework.frame_time
         if self.x < 0 - 200 or self.x > play_mode.map.w + 200:
             print("화둔 없어짐")
             game_world.remove_object(self)
