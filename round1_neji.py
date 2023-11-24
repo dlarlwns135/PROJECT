@@ -1,4 +1,5 @@
 # 이것은 각 상태들을 객체로 구현한 것임.
+import random
 
 from pico2d import *
 
@@ -793,6 +794,11 @@ class NEJI:
             self.state_machine.cur_state = Hard_hit
         if self.hit_state == 'easy':
             self.state_machine.cur_state = Easy_hit
+        if self.state == 'idle':
+            self.state_machine.cur_state = Idle
+        if self.state == 'run':
+            self.state_machine.cur_state = Run
+
         self.state_machine.update()
         if self.chakra <= 100:
             self.chakra += 8 * game_framework.frame_time
@@ -837,15 +843,26 @@ class NEJI:
             self.dir = 1
         else:
             self.dir = -1
-        self.x += self.dir * 50 * game_framework.frame_time
+        # self.x += self.dir * 50 * game_framework.frame_time
         if self.distance_less_than(play_mode.p1.x, play_mode.p1.y, self.x, self.y, r):
             return BehaviorTree.SUCCESS
         else:
             return BehaviorTree.RUNNING
+
+    def stay(self):
+        self.state = 'idle'
+        x = random.randint(0,100)
+        if x > 98:
+            return BehaviorTree.SUCCESS
+        else:
+            return BehaviorTree.RUNNING
+
     def build_behavior_tree(self):
+        a1 = Action('Stay',self.stay)
         a2 = Action('Move to', self.move_to_p1)
 
-        root = SEQ_move_to_target_location = Sequence('Move to target location', a2)
+        root = SEQ_move_to_target_location = Sequence('Move to target location', a1,a2)
+        # root = SEQ_move_to_target_location = Selector('Move to target location', a1, a2)
 
         self.bt = BehaviorTree(root)
         pass
