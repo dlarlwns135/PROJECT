@@ -4,6 +4,7 @@ from single_map import Map
 from sasuke import SASUKE
 from naruto import NARUTO
 from itachi import ITACHI
+from round1_neji import NEJI
 import game_framework
 import game_world
 import single_character_choice_mode
@@ -20,7 +21,7 @@ def handle_events():
             exit(1)
         else:
             p1.handle_event(event)
-            # p2.handle_event(event)
+            p2.handle_event(event)
 
 
 def init():
@@ -59,9 +60,11 @@ def init():
         p1 = ITACHI(1)
         game_world.add_object(p1, 1)
 
+    p2 = NEJI(2)
+    game_world.add_object(p2, 1)
     # if charactor_choose_mode.p2_choose_result() == 1:
     #     p2 = NARUTO(2)
-    #     game_world.add_object(p2, 1)
+    #
     # elif charactor_choose_mode.p2_choose_result() == 2:
     #     p2 = SASUKE(2)
     #     game_world.add_object(p2, 1)
@@ -72,23 +75,22 @@ def init():
 
 
     p1.set_background(map)
-    # p2.set_background(map)
+    p2.set_background(map)
 
     p1.x, p1.y = 900, 300
-
+    p2.x, p2.y = 300, 300
     p1.dir = -1
-    # p2.x = 300
-    # p1.y, p2.y = 300, 300
+
 
     game_world.add_collision_pair('p1:p2_attack', p1, None)
     game_world.add_collision_pair('p1:p2_shuriken', p1, None)
     game_world.add_collision_pair('p1:p2_skill1', p1, None)
     game_world.add_collision_pair('p1:p2_skill2', p1, None)
 
-    # game_world.add_collision_pair('p2:p1_attack', p2, None)
-    # game_world.add_collision_pair('p2:p1_shuriken', p2, None)
-    # game_world.add_collision_pair('p2:p1_skill1', p2, None)
-    # game_world.add_collision_pair('p2:p1_skill2', p2, None)
+    game_world.add_collision_pair('p2:p1_attack', p2, None)
+    game_world.add_collision_pair('p2:p1_shuriken', p2, None)
+    game_world.add_collision_pair('p2:p1_skill1', p2, None)
+    game_world.add_collision_pair('p2:p1_skill2', p2, None)
     # p1 = P1(2)
     # game_world.add_object(p1, 1)
     #
@@ -109,22 +111,22 @@ def update():
         fight_frame += game_framework.frame_time * 800
     if p1.hp <= 0:
         p2.win = True
-    # if p2.hp <= 0:
-    #     p1.win = True
+    if p2.hp <= 0:
+        p1.win = True
 
 def draw():
     clear_canvas()
     game_world.render()
     health_bar.clip_composite_draw(0, 0, 402, 22, 0, '', 300, 570, 402, 30)
     health_bar.clip_composite_draw(0, 0, 402, 22, 0, '', 900, 570, 402, 30)
-    # health_hp.clip_composite_draw(0, 0, 8, 9, 0, '', 300-(400-p2.hp)//2, 570, p2.hp, 28)
+    health_hp.clip_composite_draw(0, 0, 8, 9, 0, '', 300-(400-p2.hp)//2, 570, p2.hp, 28)
     health_hp.clip_composite_draw(0, 0, 8, 9, 0, '', 900-(400-p1.hp)//2, 570, p1.hp, 28)
-    # if p2.chakra >= 30:
-    #     chakra_image.clip_composite_draw(int(chakra_frame)*32, 0, 32, 56, 0, '', 120, 520, 32, 56)
-    # if p2.chakra >= 60:
-    #     chakra_image.clip_composite_draw(int(chakra_frame)*32, 0, 32, 56, 0, '', 160, 520, 32, 56)
-    # if p2.chakra >= 90:
-    #     chakra_image.clip_composite_draw(int(chakra_frame)*32, 0, 32, 56, 0, '', 200, 520, 32, 56)
+    if p2.chakra >= 30:
+        chakra_image.clip_composite_draw(int(chakra_frame)*32, 0, 32, 56, 0, '', 120, 520, 32, 56)
+    if p2.chakra >= 60:
+        chakra_image.clip_composite_draw(int(chakra_frame)*32, 0, 32, 56, 0, '', 160, 520, 32, 56)
+    if p2.chakra >= 90:
+        chakra_image.clip_composite_draw(int(chakra_frame)*32, 0, 32, 56, 0, '', 200, 520, 32, 56)
 
     if p1.chakra >= 30:
         chakra_image.clip_composite_draw(int(chakra_frame)*32, 0, 32, 56, 0, '', 1080, 520, 32, 56)
@@ -154,8 +156,8 @@ def draw():
     elif 900 < fight_frame <= 1500:
         fight.clip_composite_draw(0, 0, 1601, 786, 0, '', 600, int(fight_frame)-600, 473, 228)
 
-    # if p1.win or p2.win:
-    #     ko.clip_composite_draw(0, 0, 473, 228, 0, '', 600, 300, 473, 228)
+    if p1.win or p2.win:
+        ko.clip_composite_draw(0, 0, 473, 228, 0, '', 600, 300, 473, 228)
     if p1.win:
         ko.clip_composite_draw(0, 0, 473, 228, 0, '', 600, 300, 473, 228)
     update_canvas()

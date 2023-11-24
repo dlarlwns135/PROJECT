@@ -1,12 +1,15 @@
 from pico2d import *
 
+import mode_choose_mode
 from map import Map
 from sasuke import SASUKE
 from naruto import NARUTO
 from itachi import ITACHI
+from round1_neji import NEJI
 import game_framework
 import game_world
 import charactor_choose_mode
+import single_character_choice_mode
 def handle_events():
     global running
 
@@ -51,25 +54,39 @@ def init():
     map = Map()
     game_world.add_object(map, 1)
 
-    if charactor_choose_mode.p1_choose_result() == 1:
-        p1 = NARUTO(1)
-        game_world.add_object(p1, 1)
-    elif charactor_choose_mode.p1_choose_result() == 2:
-        p1 = SASUKE(1)
-        game_world.add_object(p1, 1)
-    elif charactor_choose_mode.p1_choose_result() == 3:
-        p1 = ITACHI(1)
-        game_world.add_object(p1, 1)
+    if mode_choose_mode.mode_choose_result() == '1p':
+        if single_character_choice_mode.p1_choose_result() == 1:
+            p1 = NARUTO(1)
+            game_world.add_object(p1, 1)
+        elif single_character_choice_mode.p1_choose_result() == 2:
+            p1 = SASUKE(1)
+            game_world.add_object(p1, 1)
+        elif single_character_choice_mode.p1_choose_result() == 3:
+            p1 = ITACHI(1)
+            game_world.add_object(p1, 1)
 
-    if charactor_choose_mode.p2_choose_result() == 1:
-        p2 = NARUTO(2)
+        p2 = NEJI(2)
         game_world.add_object(p2, 1)
-    elif charactor_choose_mode.p2_choose_result() == 2:
-        p2 = SASUKE(2)
-        game_world.add_object(p2, 1)
-    elif charactor_choose_mode.p2_choose_result() == 3:
-        p2 = ITACHI(2)
-        game_world.add_object(p2, 1)
+    elif mode_choose_mode.mode_choose_result() == '2p':
+        if charactor_choose_mode.p1_choose_result() == 1:
+            p1 = NARUTO(1)
+            game_world.add_object(p1, 1)
+        elif charactor_choose_mode.p1_choose_result() == 2:
+            p1 = SASUKE(1)
+            game_world.add_object(p1, 1)
+        elif charactor_choose_mode.p1_choose_result() == 3:
+            p1 = ITACHI(1)
+            game_world.add_object(p1, 1)
+
+        if charactor_choose_mode.p2_choose_result() == 1:
+            p2 = NARUTO(2)
+            game_world.add_object(p2, 1)
+        elif charactor_choose_mode.p2_choose_result() == 2:
+            p2 = SASUKE(2)
+            game_world.add_object(p2, 1)
+        elif charactor_choose_mode.p2_choose_result() == 3:
+            p2 = ITACHI(2)
+            game_world.add_object(p2, 1)
 
 
 
@@ -134,19 +151,28 @@ def draw():
     if p1.chakra >= 90:
         chakra_image.clip_composite_draw(int(chakra_frame)*32, 0, 32, 56, 0, '', 1000, 520, 32, 56)
 
-    if charactor_choose_mode.p1_choose_result() == 1:
-        naruto_mug.clip_composite_draw(0, 0, 104, 112, 0, '', 1150, 550, 80, 80)
-    elif charactor_choose_mode.p1_choose_result() == 2:
-        sasuke_mug.clip_composite_draw(0, 0, 96, 104, 0, '', 1150, 550, 80, 80)
-    elif charactor_choose_mode.p1_choose_result() == 3:
-        itachi_mug.clip_composite_draw(0, 0, 112, 112, 0, '', 1150, 550, 80, 80)
+    if mode_choose_mode.mode_choose_result() == '1p':
+        if single_character_choice_mode.p1_choose_result() == 1:
+            naruto_mug.clip_composite_draw(0, 0, 104, 112, 0, '', 1150, 550, 80, 80)
+        elif single_character_choice_mode.p1_choose_result() == 2:
+            sasuke_mug.clip_composite_draw(0, 0, 96, 104, 0, '', 1150, 550, 80, 80)
+        elif single_character_choice_mode.p1_choose_result() == 3:
+            itachi_mug.clip_composite_draw(0, 0, 112, 112, 0, '', 1150, 550, 80, 80)
+        pass
+    elif mode_choose_mode.mode_choose_result() == '2p':
+        if charactor_choose_mode.p1_choose_result() == 1:
+            naruto_mug.clip_composite_draw(0, 0, 104, 112, 0, '', 1150, 550, 80, 80)
+        elif charactor_choose_mode.p1_choose_result() == 2:
+            sasuke_mug.clip_composite_draw(0, 0, 96, 104, 0, '', 1150, 550, 80, 80)
+        elif charactor_choose_mode.p1_choose_result() == 3:
+            itachi_mug.clip_composite_draw(0, 0, 112, 112, 0, '', 1150, 550, 80, 80)
 
-    if charactor_choose_mode.p2_choose_result() == 1:
-        naruto_mug.clip_composite_draw(0, 0, 104, 112, 0, '', 50, 550, 80, 80)
-    elif charactor_choose_mode.p2_choose_result() == 2:
-        sasuke_mug.clip_composite_draw(0, 0, 96, 104, 0, '', 50, 550, 80, 80)
-    elif charactor_choose_mode.p2_choose_result() == 3:
-        itachi_mug.clip_composite_draw(0, 0, 112, 112, 0, '', 50, 550, 80, 80)
+        if charactor_choose_mode.p2_choose_result() == 1:
+            naruto_mug.clip_composite_draw(0, 0, 104, 112, 0, '', 50, 550, 80, 80)
+        elif charactor_choose_mode.p2_choose_result() == 2:
+            sasuke_mug.clip_composite_draw(0, 0, 96, 104, 0, '', 50, 550, 80, 80)
+        elif charactor_choose_mode.p2_choose_result() == 3:
+            itachi_mug.clip_composite_draw(0, 0, 112, 112, 0, '', 50, 550, 80, 80)
 
     if fight_frame <= 600:
         fight.clip_composite_draw(0, 0, 1601, 786, 0, '', 600, 900-int(fight_frame), 473, 228)

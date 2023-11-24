@@ -1,5 +1,6 @@
 from pico2d import *
 import game_framework
+import play_mode
 import round1
 
 character_count = 3
@@ -44,7 +45,7 @@ def handle_events():
             game_framework.quit()
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_SPACE):
             # if p1_choose != p2_choose:
-            game_framework.change_mode(round1)
+            game_framework.change_mode(play_mode)
             # else:
             #     dup_on = True
             #     dup_wait_time = get_time()
