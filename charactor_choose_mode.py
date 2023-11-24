@@ -1,6 +1,7 @@
 from pico2d import *
 import game_framework
 import play_mode
+import mode_choose_mode
 
 character_count = 3
 
@@ -9,7 +10,7 @@ def init():
     global p1_x, p1_y, p2_x, p2_y, p1_choose, p2_choose, p1_image, p2_image, character_back
     global vs, press_space
     global naruto_frame, sasuke_frame, itachi_frame, space_frame, space_up
-    global duplicate, dup_on, dup_wait_time, dir_image
+    global duplicate, dup_on, dup_wait_time, dir_image, mode_choose
     image1 = load_image('resource/title_main.png')
     naruto = load_image('resource/naruto_idle.png')
     sasuke = load_image('resource/sasuke_idle.png')
@@ -32,6 +33,7 @@ def init():
     space_up = True
     dup_on = False
     dup_wait_time = 0
+    mode_choose = mode_choose_mode.mode_choose_result()
 def finish():
     global image1, naruto, sasuke, itachi, p1_image, p2_image, character_back, vs, press_space, duplicate, dir_image
     del image1, naruto, sasuke, itachi, p1_image, p2_image, character_back, vs, press_space, duplicate, dir_image

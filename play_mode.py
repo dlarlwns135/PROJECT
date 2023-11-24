@@ -18,6 +18,8 @@ def handle_events():
             exit(1)
         elif event.type == SDL_KEYDOWN and event.key == SDLK_SPACE and (p1.win or p2.win):
             exit(1)
+        # elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
+        #     game_framework.
         else:
             p1.handle_event(event)
             p2.handle_event(event)

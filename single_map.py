@@ -1,5 +1,5 @@
 from pico2d import *
-import single_play_mode
+import round1
 class Map:
     def __init__(self):
         self.uchihamap = load_image('resource/uchihamap.png')
@@ -11,7 +11,7 @@ class Map:
 
     def update(self):
 
-        self.window_left = clamp(0, int(single_play_mode.p1.x) - self.cw // 2,
+        self.window_left = clamp(0, int(round1.p1.x) - self.cw // 2,
                                  self.w - self.cw - 1)
         # if abs(play_mode.p1.x - play_mode.p2.x) >= self.cw - 100:
         #     if play_mode.p1.x > play_mode.p2.x:
@@ -36,7 +36,7 @@ class Map:
         #     self.window_left = int(play_mode.p2.x) - self.cw + 20
         #     if play_mode.p1.x <= self.window_left + 50:
         #         play_mode.p1.x = self.window_left + 50
-        self.window_bottom = clamp(0, int(single_play_mode.p1.y) - self.ch // 2,
+        self.window_bottom = clamp(0, int(round1.p1.y) - self.ch // 2,
                                    self.h - self.ch - 1)
         # self.cw = int(abs(play_mode.p1.x - play_mode.p2.x)) + 300
         # self.ch = int(abs(play_mode.p1.y - play_mode.p2.y)) + 400

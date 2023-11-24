@@ -619,6 +619,10 @@ class Win:
     @staticmethod
     def do(p3):
         p3.frame = (p3.frame + 16 * 1 * game_framework.frame_time) % 16
+        if p3.y > ground_y:
+            p3.y -= RUN_SPEED_PPS * game_framework.frame_time * 0.6
+            if p3.y < ground_y:
+                p3.y = ground_y
 
     @staticmethod
     def draw(p3):
