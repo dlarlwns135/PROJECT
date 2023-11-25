@@ -167,8 +167,8 @@ class Idle:
         if p2.hp <= 0:
             p2.state_machine.cur_state = Lose
 
-        if p2.y > ground_y:
-            p2.state_machine.handle_event(('JUMP_STATE', None))
+        # if p2.y > ground_y:
+        #     p2.state_machine.handle_event(('JUMP_STATE', None))
         if p2.right and not p2.left:
             p2.state_machine.handle_event(('RUN_STATE', None))
         if not p2.right and p2.left:
@@ -563,9 +563,9 @@ class Easy_hit:
     @staticmethod
     def draw(p2):
         if p2.dir == -1:
-            p2.easy_hit.clip_composite_draw(int(p2.frame) * 40, 0, 40, 48, 0, 'h', p2.sx, p2.sy-15, 112, 135)
+            p2.easy_hit.clip_composite_draw(int(p2.frame) * 32, 0, 32, 48, 0, 'h', p2.sx, p2.sy-15, 90, 135)
         elif p2.dir == 1:
-            p2.easy_hit.clip_composite_draw(int(p2.frame) * 40, 0, 40, 48, 0, '', p2.sx, p2.sy-15, 112, 135)
+            p2.easy_hit.clip_composite_draw(int(p2.frame) * 32, 0, 32, 48, 0, '', p2.sx, p2.sy-15, 90, 135)
 
 class Hard_hit:
     @staticmethod
@@ -726,7 +726,7 @@ class NEJI:
         self.skill2 = load_image('resource/naruto_skill2.png')
         self.run_attack = load_image('resource/naruto_run_attack.png')
         self.jump_attack = load_image('resource/naruto_jump_attack.png')
-        self.easy_hit = load_image('resource/naruto_easy_hit.png')
+        self.easy_hit = load_image('resource/neji_easy_hit.png')
         self.hard_hit = load_image('resource/naruto_hard_hit.png')
         self.win_image = load_image('resource/naruto_win.png')
         self.state_machine = StateMachine(self)
@@ -852,16 +852,16 @@ class NEJI:
     def stay(self):
         self.state = 'idle'
         x = random.randint(0,100)
-        if x > 98:
+        if x > 100:
             return BehaviorTree.SUCCESS
         else:
             return BehaviorTree.RUNNING
 
     def build_behavior_tree(self):
-        a1 = Action('Stay',self.stay)
+        a1 = Action('Stay', self.stay)
         a2 = Action('Move to', self.move_to_p1)
 
-        root = SEQ_move_to_target_location = Sequence('Move to target location', a1,a2)
+        root = SEQ_move_to_target_location = Sequence('Move to target location', a2,a1)
         # root = SEQ_move_to_target_location = Selector('Move to target location', a1, a2)
 
         self.bt = BehaviorTree(root)
