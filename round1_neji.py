@@ -167,8 +167,8 @@ class Idle:
         if p2.hp <= 0:
             p2.state_machine.cur_state = Lose
 
-        # if p2.y > ground_y:
-        #     p2.state_machine.handle_event(('JUMP_STATE', None))
+        if p2.y > ground_y:
+            p2.state_machine.handle_event(('JUMP_STATE', None))
         if p2.right and not p2.left:
             p2.state_machine.handle_event(('RUN_STATE', None))
         if not p2.right and p2.left:
@@ -604,14 +604,14 @@ class Hard_hit:
     def draw(p2):
         if p2.frame > 3:
             if p2.dir == -1:
-                p2.hard_hit.clip_composite_draw(3 * 48, 0, 48, 40, 0, 'h', p2.sx, p2.sy - 15, 135, 112)
+                p2.hard_hit.clip_composite_draw(3 * 48, 0, 48, 36, 0, 'h', p2.sx, p2.sy - 15, 135, 101)
             elif p2.dir == 1:
-                p2.hard_hit.clip_composite_draw(3 * 48, 0, 48, 40, 0, '', p2.sx, p2.sy - 15, 135, 112)
+                p2.hard_hit.clip_composite_draw(3 * 48, 0, 48, 36, 0, '', p2.sx, p2.sy - 15, 135, 101)
         else:
             if p2.dir == -1:
-                p2.hard_hit.clip_composite_draw(int(p2.frame) * 48, 0, 48, 40, 0, 'h', p2.sx, p2.sy-15, 135, 112)
+                p2.hard_hit.clip_composite_draw(int(p2.frame) * 48, 0, 48, 36, 0, 'h', p2.sx, p2.sy-15, 135, 101)
             elif p2.dir == 1:
-                p2.hard_hit.clip_composite_draw(int(p2.frame) * 48, 0, 48, 40, 0, '', p2.sx, p2.sy-15, 135, 112)
+                p2.hard_hit.clip_composite_draw(int(p2.frame) * 48, 0, 48, 36, 0, '', p2.sx, p2.sy-15, 135, 101)
 
 class Win:
     @staticmethod
@@ -727,7 +727,7 @@ class NEJI:
         self.run_attack = load_image('resource/naruto_run_attack.png')
         self.jump_attack = load_image('resource/naruto_jump_attack.png')
         self.easy_hit = load_image('resource/neji_easy_hit.png')
-        self.hard_hit = load_image('resource/naruto_hard_hit.png')
+        self.hard_hit = load_image('resource/neji_hard_hit.png')
         self.win_image = load_image('resource/naruto_win.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start()
@@ -794,15 +794,15 @@ class NEJI:
             self.state_machine.cur_state = Hard_hit
         if self.hit_state == 'easy':
             self.state_machine.cur_state = Easy_hit
-        if self.state == 'idle':
-            self.state_machine.cur_state = Idle
-        if self.state == 'run':
-            self.state_machine.cur_state = Run
+        # if self.state == 'idle':
+        #     self.state_machine.cur_state = Idle
+        # if self.state == 'run':
+        #     self.state_machine.cur_state = Run
 
         self.state_machine.update()
         if self.chakra <= 100:
             self.chakra += 8 * game_framework.frame_time
-        self.bt.run()
+        # self.bt.run()
 
 
     def handle_event(self, event):
