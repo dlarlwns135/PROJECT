@@ -45,6 +45,7 @@ def handle_events():
             game_framework.quit()
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_SPACE):
             # if p1_choose != p2_choose:
+            play_mode.round_num = 1
             game_framework.change_mode(play_mode)
             # else:
             #     dup_on = True

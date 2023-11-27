@@ -58,7 +58,8 @@ class Skill1:
         self.count = 0
         self.damage = 40
         self.sx, self.sy = 0, 0
-        self.range_set(70, 60, 40, -40, 40)
+        self.range_set(0, 0, 0, 0, 0)
+
 
     def range_set(self, range_x, range_y, dis_x, dis_y, damage):
         self.attack_range_x = range_x
@@ -78,11 +79,14 @@ class Skill1:
         draw_rectangle(*self.get_bb())
 
     def update(self):
+        if int(self.frame) == 3:
+            self.range_set(70, 60, 40, -40, 40)
+
         if self.frame < 3:
-            self.frame = (self.frame + 59 * 0.05 * game_framework.frame_time) % 59
+            self.frame = (self.frame + 59 * 0.03 * game_framework.frame_time) % 59
         else:
-            self.frame = (self.frame + 59 * 0.3 * game_framework.frame_time) % 59
-            self.x += self.dir * RUN_SPEED_PPS * 0.3 * game_framework.frame_time
+            self.frame = (self.frame + 59 * 0.2 * game_framework.frame_time) % 59
+            self.x += self.dir * RUN_SPEED_PPS * 0.4 * game_framework.frame_time
         if play_mode.p1.x < self.x:
             self.dir = -1
         elif play_mode.p1.x >= self.x:

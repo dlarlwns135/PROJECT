@@ -645,6 +645,11 @@ class Lose:
     def do(p3):
         if p3.frame <= 3:
             p3.frame = p3.frame + 4 * 0.5 * game_framework.frame_time
+        if p3.y > ground_y:
+            p3.x += -p3.dir * RUN_SPEED_PPS * 0.2 * game_framework.frame_time
+            p3.y -= RUN_SPEED_PPS * game_framework.frame_time * 0.15
+            if p3.y < ground_y:
+                p3.y = ground_y
 
     @staticmethod
     def draw(p3):

@@ -646,6 +646,11 @@ class Lose:
     def do(p2):
         if p2.frame <= 3:
             p2.frame = p2.frame + 4 * 0.5 * game_framework.frame_time
+        if p2.y > ground_y:
+            p2.x += -p2.dir * RUN_SPEED_PPS * 0.2 * game_framework.frame_time
+            p2.y -= RUN_SPEED_PPS * game_framework.frame_time * 0.15
+            if p2.y < ground_y:
+                p2.y = ground_y
 
     @staticmethod
     def draw(p2):
@@ -792,6 +797,8 @@ class NARUTO:
         self.state_machine.update()
         if self.chakra <= 100:
             self.chakra += 8 * game_framework.frame_time
+        self.x = clamp(50.0, self.x, self.bg.w - 50.0)
+        self.y = clamp(50.0, self.y, self.bg.h - 50.0)
 
 
     def handle_event(self, event):

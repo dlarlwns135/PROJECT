@@ -514,12 +514,13 @@ class Skill_motion:
     def do(p2):
         if p2.skill_num == 'skill1':
             if p2.frame < 3:
-                p2.frame = (p2.frame + 59 * 0.05 * game_framework.frame_time) % 59
+                p2.frame = (p2.frame + 59 * 0.03 * game_framework.frame_time) % 59
             else:
-                p2.frame = (p2.frame + 59 * 0.3 * game_framework.frame_time) % 59
-                p2.x += p2.dir * RUN_SPEED_PPS * 0.3 * game_framework.frame_time
+                p2.frame = (p2.frame + 59 * 0.2 * game_framework.frame_time) % 59
+                p2.x += p2.dir * RUN_SPEED_PPS * 0.4 * game_framework.frame_time
             if p2.frame >= 58:
                 p2.frame = 0
+                p2.invincible = False
                 p2.state_machine.handle_event(('STOP', None))
         elif p2.skill_num == 'skill2':
             p2.frame = (p2.frame + 11 * 1.0 * game_framework.frame_time) % 11
@@ -542,6 +543,10 @@ class Skill_motion:
     def draw(p2):
         if p2.skill_num == 'skill1':
             if p2.frame < 52:
+                if p2.frame < 3:
+                    p2.skill1_effect.clip_composite_draw(0, 0, p2.skill1_effect.w, p2.skill1_effect.h,
+                                                         0, '', p2.sx, p2.sy-60,
+                                                         p2.skill1_effect.w*2, p2.skill1_effect.h*1.5)
                 if p2.dir == -1:
                     p2.skill1.clip_composite_draw(int(p2.frame) * 95, 0, 95, 54, 0, 'h', p2.sx-60, p2.sy-10, 267, 152)
                 elif p2.dir == 1:
@@ -658,7 +663,7 @@ class Win:
 
     @staticmethod
     def do(p2):
-        p2.frame = (p2.frame + 10 * 1 * game_framework.frame_time) % 10
+        p2.frame = (p2.frame + 10 * 0.5 * game_framework.frame_time) % 10
         if p2.y > ground_y:
             p2.y -= RUN_SPEED_PPS * game_framework.frame_time * 0.6
             if p2.y < ground_y:
@@ -685,6 +690,11 @@ class Lose:
     def do(p2):
         if p2.frame <= 3:
             p2.frame = p2.frame + 4 * 0.5 * game_framework.frame_time
+        if p2.y > ground_y:
+            p2.x += -p2.dir * RUN_SPEED_PPS * 0.2 * game_framework.frame_time
+            p2.y -= RUN_SPEED_PPS * game_framework.frame_time * 0.15
+            if p2.y < ground_y:
+                p2.y = ground_y
 
     @staticmethod
     def draw(p2):
@@ -760,6 +770,7 @@ class NEJI:
         self.shuriken_jump = load_image('resource/naruto_shuriken_jump.png')
         self.skill1 = load_image('resource/neji_skill1_1.png')
         self.skill1_2 = load_image('resource/neji_skill1_2.png')
+        self.skill1_effect = load_image('resource/neji_skill1_effect.png')
         self.skill2 = load_image('resource/naruto_skill2.png')
         self.run_attack = load_image('resource/naruto_run_attack.png')
         self.jump_attack = load_image('resource/naruto_jump_attack.png')
@@ -840,6 +851,8 @@ class NEJI:
         elif play_mode.p1.x >= self.x:
             self.dir = 1
         self.bt.run()
+        self.x = clamp(50.0, self.x, self.bg.w - 50.0)
+        self.y = clamp(50.0, self.y, self.bg.h - 50.0)
 
 
     def handle_event(self, event):
@@ -927,12 +940,16 @@ class NEJI:
 
     def end_check(self):
         if self.win or self.hp <= 0:
+            if self.win:
+                self.state_machine.cur_state = Win
+            elif self.hp <= 0:
+                self.state_machine.cur_state = Lose
             return BehaviorTree.SUCCESS
         else:
             return BehaviorTree.FAIL
 
     def chakra_check(self):
-        if self.chakra >= 40:
+        if self.chakra >= 90:
             return BehaviorTree.SUCCESS
         else:
             return BehaviorTree.FAIL
@@ -944,7 +961,8 @@ class NEJI:
             self.state_machine.cur_state = Skill_motion
             self.skill_num = 'skill1'
             self.skill()
-            self.chakra -= 30
+            self.chakra -= 90
+            self.invincible = True
             return BehaviorTree.SUCCESS
         else:
             return BehaviorTree.FAIL

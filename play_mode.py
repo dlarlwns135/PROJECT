@@ -36,12 +36,14 @@ def init():
     global map
     global health_bar, health_hp, naruto_mug, sasuke_mug, itachi_mug, chakra_image, chakra_frame
     global ko, fight, fight_frame
+    global round_num, neji_mug
 
     health_bar = load_image('resource/health_bar.png')
     health_hp = load_image('resource/health_hp.png')
     naruto_mug = load_image('resource/naruto_mugshot.png')
     sasuke_mug = load_image('resource/sasuke_mugshot.png')
     itachi_mug = load_image('resource/itachi_mugshot.png')
+    neji_mug = load_image('resource/neji_mugshot.png')
     chakra_image = load_image('resource/chakra.png')
     chakra_frame = 0
     ko = load_image('resource/ko.png')
@@ -65,8 +67,10 @@ def init():
             p1 = ITACHI(1)
             game_world.add_object(p1, 1)
 
-        p2 = NEJI(2)
-        game_world.add_object(p2, 1)
+        if round_num == 1:
+            p2 = NEJI(2)
+            game_world.add_object(p2, 1)
+
     elif mode_choose_mode.mode_choose_result() == '2p':
         if charactor_choose_mode.p1_choose_result() == 1:
             p1 = NARUTO(1)
@@ -107,14 +111,6 @@ def init():
     game_world.add_collision_pair('p2:p1_shuriken', p2, None)
     game_world.add_collision_pair('p2:p1_skill1', p2, None)
     game_world.add_collision_pair('p2:p1_skill2', p2, None)
-    # p1 = P1(2)
-    # game_world.add_object(p1, 1)
-    #
-    # p2 = P2(1)
-    # game_world.add_object(p2, 1)
-
-    # p3 = P3()
-    # game_world.add_object(p3, 1)
 
 def finish():
     pass
@@ -158,6 +154,9 @@ def draw():
             sasuke_mug.clip_composite_draw(0, 0, 96, 104, 0, '', 1150, 550, 80, 80)
         elif single_character_choice_mode.p1_choose_result() == 3:
             itachi_mug.clip_composite_draw(0, 0, 112, 112, 0, '', 1150, 550, 80, 80)
+
+        if round_num == 1:
+            neji_mug.clip_composite_draw(0, 0, neji_mug.w, neji_mug.h, 0, '', 50, 550, 80, 80)
         pass
     elif mode_choose_mode.mode_choose_result() == '2p':
         if charactor_choose_mode.p1_choose_result() == 1:
