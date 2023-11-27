@@ -168,6 +168,11 @@ class Idle:
         if p2.hp <= 0:
             p2.state_machine.cur_state = Lose
 
+        if play_mode.p1.x < p2.x:
+            p2.dir = -1
+        elif play_mode.p1.x >= p2.x:
+            p2.dir = 1
+
         if p2.y > ground_y:
             p2.state_machine.handle_event(('JUMP_STATE', None))
         if p2.right and not p2.left:
@@ -359,6 +364,7 @@ class Teleport:
 class Attack:
     @staticmethod
     def enter(p2, e):
+        p2.state = 'attack'
         if get_time() - p2.wait_time > 0.5:
             p2.attack_num = 1
         if right_down(e):
@@ -370,6 +376,7 @@ class Attack:
         elif left_up(e):
             p2.left = False
         else:
+            print("attack 생성")
             p2.attack()
 
     @staticmethod
@@ -522,8 +529,8 @@ class Skill_motion:
                     p2.frame = 0
                     p2.state_machine.handle_event(('STOP', None))
             else:
-                p2.frame = (p2.frame + 5 * 4 * game_framework.frame_time) % 5
-                if p2.frame >= 4:
+                p2.frame = (p2.frame + 4 * 4 * game_framework.frame_time) % 4
+                if p2.frame >= 3:
                     p2.frame = 0
                     p2.state_machine.handle_event(('STOP', None))
 
@@ -547,9 +554,9 @@ class Skill_motion:
                     p2.shuriken_jump.clip_composite_draw(int(p2.frame) * 40, 0, 40, 64, 0, '', p2.sx, p2.sy-30, 112, 180)
             else:
                 if p2.dir == -1:
-                    p2.shuriken_stand.clip_composite_draw(int(p2.frame) * 40, 0, 40, 48, 0, 'h', p2.sx-10, p2.sy-15, 112, 135)
+                    p2.shuriken_stand.clip_composite_draw(int(p2.frame) * 58, 0, 58, 40, 0, 'h', p2.sx-10, p2.sy-15, 163, 112)
                 elif p2.dir == 1:
-                    p2.shuriken_stand.clip_composite_draw(int(p2.frame) * 40, 0, 40, 48, 0, '', p2.sx+10, p2.sy-15, 112, 135)
+                    p2.shuriken_stand.clip_composite_draw(int(p2.frame) * 58, 0, 58, 40, 0, '', p2.sx+10, p2.sy-15, 163, 112)
 
 class Easy_hit:
     @staticmethod
@@ -736,7 +743,7 @@ class NEJI:
         self.attack2 = load_image('resource/naruto_attack2.png')
         self.attack3 = load_image('resource/naruto_attack3.png')
         self.attack4 = load_image('resource/naruto_attack4.png')
-        self.shuriken_stand = load_image('resource/naruto_shuriken_stand.png')
+        self.shuriken_stand = load_image('resource/neji_shuriken_stand.png')
         self.shuriken_jump = load_image('resource/naruto_shuriken_jump.png')
         self.skill1 = load_image('resource/naruto_skill1.png')
         self.skill2 = load_image('resource/naruto_skill2.png')
@@ -810,10 +817,6 @@ class NEJI:
             self.state_machine.cur_state = Hard_hit
         if self.hit_state == 'easy':
             self.state_machine.cur_state = Easy_hit
-        # if self.state == 'idle':
-        #     self.state_machine.cur_state = Idle
-        # if self.state == 'run':
-        #     self.state_machine.cur_state = Run
 
         self.state_machine.update()
         if self.chakra <= 100:
@@ -852,26 +855,6 @@ class NEJI:
     def distance_less_than(self, x1, y1, x2, y2, r):
         distance2 = (x1-x2)**2 + (y1-y2)**2
         return distance2 < (r * PIXEL_PER_METER) ** 2
-    def move_to_p1(self, r=10):
-        self.state = 'run'
-        # self.move_slightly_to(play_mode.boy.x, play_mode.boy.y)
-        if self.x < play_mode.p1.x:
-            self.dir = 1
-        else:
-            self.dir = -1
-        # self.x += self.dir * 50 * game_framework.frame_time
-        if self.distance_less_than(play_mode.p1.x, play_mode.p1.y, self.x, self.y, r):
-            return BehaviorTree.SUCCESS
-        else:
-            return BehaviorTree.RUNNING
-
-    def stay(self):
-        self.state = 'idle'
-        x = random.randint(0,100)
-        if x > 100:
-            return BehaviorTree.SUCCESS
-        else:
-            return BehaviorTree.RUNNING
 
     def random(self):
         x = random.randint(0, 1000)
@@ -883,36 +866,54 @@ class NEJI:
         if self.distance_less_than(play_mode.p1.x, play_mode.p1.y, self.x, self.y, r):
             if self.state == 'idle':
                 self.state_machine.cur_state = Run
-                self.state = 'run'
             elif self.state == 'run':
                 self.state_machine.cur_state = Idle
-                self.state = 'idle'
             return BehaviorTree.SUCCESS
         else:
             return BehaviorTree.RUNNING
     def shuriken(self):
         if self.state == 'idle':
+            self.frame = 0
             self.skill_num = 'shuriken'
             self.state_machine.cur_state = Skill_motion
-            self.state = 'skill_motion'
             self.skill()
             return BehaviorTree.SUCCESS
         else:
             return BehaviorTree.RUNNING
 
+    def is_p1_nearby(self, distance):
+        if self.distance_less_than(play_mode.p1.x, play_mode.p1.y, self.x, self.y, distance):
+            return BehaviorTree.SUCCESS
+        else:
+            return BehaviorTree.FAIL
+
+    def attack_p1(self):
+        if self.state == 'idle' or self.state == 'run':
+            self.frame = 0
+            self.state = 'attack'
+            self.state_machine.cur_state = Attack
+            self.attack()
+            return BehaviorTree.SUCCESS
+        else:
+            return BehaviorTree.FAIL
+
     def build_behavior_tree(self):
-        a1 = Action('Stay', self.stay)
-        a2 = Action('Move to', self.move_to_p1)
-        a3 = Action('state_change', self.state_change)
-        a4 = Action('shuriken', self.shuriken)
+        a1 = Action('state_change', self.state_change)
+        a2 = Action('shuriken', self.shuriken)
+        a3 = Action('attack_p1', self.attack_p1)
 
         c1 = Condition('랜덤', self.random)
+        c2 = Condition('is_p1_nearby', self.is_p1_nearby, 10)
 
         # root = SEQ_move_to_target_location = Sequence('Move to target location', a2,a1)
         # root = SEQ_move_to_target_location = Selector('Move to target location', a1, a2)
         # root = SEQ_state_change = Sequence('state change', a4, a3)
         # root = SEQ_state_change = Selector('state change', a4, a3)
-        root = SEQ_state_change = Sequence('state change', c1, a3)
-        root = SEQ_shuriken = Sequence('shuriken', c1, a4)
+        root = SEQ_state_change = Sequence('state change', c1, a1)
+        root = SEQ_shuriken = Sequence('shuriken', c1, a2)
+        root = SEQ_attack = Sequence('attack', c2, a3)
+
+        root = SEL_AT_or_SC_or_ShKen = Selector('AT or SC or ShKen', SEQ_attack,
+                                                SEQ_shuriken, SEQ_state_change)
 
         self.bt = BehaviorTree(root)
