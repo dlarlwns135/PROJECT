@@ -393,19 +393,19 @@ class Attack:
                 p2.frame = 0
                 p2.wait_time = get_time()
         if p2.attack_num == 2:
-            if p2.frame >= 4:
+            if p2.frame >= 6:
                 p2.state_machine.handle_event(('STOP', None))
                 p2.attack_num = 3
                 p2.frame = 0
                 p2.wait_time = get_time()
         if p2.attack_num == 3:
-            if p2.frame >= 4:
+            if p2.frame >= 9:
                 p2.state_machine.handle_event(('STOP', None))
                 p2.attack_num = 4
                 p2.frame = 0
                 p2.wait_time = get_time()
         if p2.attack_num == 4:
-            if p2.frame >= 5:
+            if p2.frame >= 7:
                 p2.state_machine.handle_event(('STOP', None))
                 p2.attack_num = 1
                 p2.frame = 0
@@ -414,24 +414,24 @@ class Attack:
     def draw(p2):
         if p2.attack_num == 1:
             if p2.dir == -1:
-                p2.attack1.clip_composite_draw(int(p2.frame) * 56, 0, 56, 48, 0, 'h', p2.sx - 10, p2.sy - 15, 158, 135)
+                p2.attack1.clip_composite_draw(int(p2.frame) * 44, 0, 44, 48, 0, 'h', p2.sx - 10, p2.sy - 15, 124, 135)
             elif p2.dir == 1:
-                p2.attack1.clip_composite_draw(int(p2.frame) * 56, 0, 56, 48, 0, '', p2.sx + 10, p2.sy - 15, 158, 135)
+                p2.attack1.clip_composite_draw(int(p2.frame) * 44, 0, 44, 48, 0, '', p2.sx + 10, p2.sy - 15, 124, 135)
         elif p2.attack_num == 2:
             if p2.dir == -1:
-                p2.attack2.clip_composite_draw(int(p2.frame) * 48, 0, 48, 48, 0, 'h', p2.sx-10, p2.sy - 15, 135, 135)
+                p2.attack2.clip_composite_draw(int(p2.frame) * 54, 0, 54, 48, 0, 'h', p2.sx-15, p2.sy - 15, 152, 135)
             elif p2.dir == 1:
-                p2.attack2.clip_composite_draw(int(p2.frame) * 48, 0, 48, 48, 0, '', p2.sx+10, p2.sy - 15, 135, 135)
+                p2.attack2.clip_composite_draw(int(p2.frame) * 54, 0, 54, 48, 0, '', p2.sx+15, p2.sy - 15, 152, 135)
         elif p2.attack_num == 3:
             if p2.dir == -1:
-                    p2.attack3.clip_composite_draw(int(p2.frame) * 48, 0, 48, 48, 0, 'h', p2.sx - 10, p2.sy-15, 135, 135)
+                    p2.attack3.clip_composite_draw(int(p2.frame) * 63, 0, 63, 48, 0, 'h', p2.sx - 25, p2.sy-15, 177, 135)
             elif p2.dir == 1:
-                    p2.attack3.clip_composite_draw(int(p2.frame) * 48, 0, 48, 48, 0, '', p2.sx + 10, p2.sy-15, 135, 135)
+                    p2.attack3.clip_composite_draw(int(p2.frame) * 63, 0, 63, 48, 0, '', p2.sx + 25, p2.sy-15, 177, 135)
         elif p2.attack_num == 4:
             if p2.dir == -1:
-                    p2.attack4.clip_composite_draw(int(p2.frame) * 40, 0, 40, 56, 0, 'h', p2.sx, p2.sy, 113, 158)
+                    p2.attack4.clip_composite_draw(int(p2.frame) * 59, 0, 59, 48, 0, 'h', p2.sx-35, p2.sy-10, 166, 135)
             elif p2.dir == 1:
-                    p2.attack4.clip_composite_draw(int(p2.frame) * 40, 0, 40, 56, 0, '', p2.sx, p2.sy, 113, 158)
+                    p2.attack4.clip_composite_draw(int(p2.frame) * 59, 0, 59, 48, 0, '', p2.sx+35, p2.sy-10, 166, 135)
 
 class Run_Attack:
     @staticmethod
@@ -529,7 +529,7 @@ class Skill_motion:
                     p2.frame = 0
                     p2.state_machine.handle_event(('STOP', None))
             else:
-                p2.frame = (p2.frame + 4 * 4 * game_framework.frame_time) % 4
+                p2.frame = (p2.frame + 4 * 3 * game_framework.frame_time) % 4
                 if p2.frame >= 3:
                     p2.frame = 0
                     p2.state_machine.handle_event(('STOP', None))
@@ -554,9 +554,9 @@ class Skill_motion:
                     p2.shuriken_jump.clip_composite_draw(int(p2.frame) * 40, 0, 40, 64, 0, '', p2.sx, p2.sy-30, 112, 180)
             else:
                 if p2.dir == -1:
-                    p2.shuriken_stand.clip_composite_draw(int(p2.frame) * 58, 0, 58, 40, 0, 'h', p2.sx-10, p2.sy-15, 163, 112)
+                    p2.shuriken_stand.clip_composite_draw(int(p2.frame) * 58, 0, 58, 40, 0, 'h', p2.sx-10, p2.sy-30, 163, 112)
                 elif p2.dir == 1:
-                    p2.shuriken_stand.clip_composite_draw(int(p2.frame) * 58, 0, 58, 40, 0, '', p2.sx+10, p2.sy-15, 163, 112)
+                    p2.shuriken_stand.clip_composite_draw(int(p2.frame) * 58, 0, 58, 40, 0, '', p2.sx+10, p2.sy-30, 163, 112)
 
 class Easy_hit:
     @staticmethod
@@ -648,7 +648,7 @@ class Win:
 
     @staticmethod
     def do(p2):
-        p2.frame = (p2.frame + 8 * 1 * game_framework.frame_time) % 8
+        p2.frame = (p2.frame + 10 * 1 * game_framework.frame_time) % 10
         if p2.y > ground_y:
             p2.y -= RUN_SPEED_PPS * game_framework.frame_time * 0.6
             if p2.y < ground_y:
@@ -656,7 +656,10 @@ class Win:
 
     @staticmethod
     def draw(p2):
-        p2.win_image.clip_composite_draw(int(p2.frame) * 50, 0, 50, 64, 0, '', p2.sx, p2.sy, 140, 180)
+        if p2.dir == -1:
+            p2.win_image.clip_composite_draw(int(p2.frame) * 42, 0, 42, 56, 0, 'h', p2.sx, p2.sy, 118, 157)
+        elif p2.dir == 1:
+            p2.win_image.clip_composite_draw(int(p2.frame) * 42, 0, 42, 56, 0, '', p2.sx, p2.sy, 118, 157)
 
 class Lose:
     @staticmethod
@@ -739,10 +742,10 @@ class NEJI:
         self.jump = load_image('resource/neji_jump.png')
         self.teleport = load_image('resource/naruto_teleport.png')
         self.teleport_motion = load_image('resource/teleport.png')
-        self.attack1 = load_image('resource/naruto_attack1.png')
-        self.attack2 = load_image('resource/naruto_attack2.png')
-        self.attack3 = load_image('resource/naruto_attack3.png')
-        self.attack4 = load_image('resource/naruto_attack4.png')
+        self.attack1 = load_image('resource/neji_attack1.png')
+        self.attack2 = load_image('resource/neji_attack2.png')
+        self.attack3 = load_image('resource/neji_attack3.png')
+        self.attack4 = load_image('resource/neji_attack4.png')
         self.shuriken_stand = load_image('resource/neji_shuriken_stand.png')
         self.shuriken_jump = load_image('resource/naruto_shuriken_jump.png')
         self.skill1 = load_image('resource/naruto_skill1.png')
@@ -751,7 +754,7 @@ class NEJI:
         self.jump_attack = load_image('resource/naruto_jump_attack.png')
         self.easy_hit = load_image('resource/neji_easy_hit.png')
         self.hard_hit = load_image('resource/neji_hard_hit.png')
-        self.win_image = load_image('resource/naruto_win.png')
+        self.win_image = load_image('resource/neji_win.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.jump_move = False
@@ -856,9 +859,16 @@ class NEJI:
         distance2 = (x1-x2)**2 + (y1-y2)**2
         return distance2 < (r * PIXEL_PER_METER) ** 2
 
-    def random(self):
-        x = random.randint(0, 1000)
+    def random1(self):
+        x = random.randint(0, 3000)
         if x <= 1:
+            return BehaviorTree.SUCCESS
+        else:
+            return BehaviorTree.FAIL
+
+    def random2(self):
+        x = random.randint(0, 1000)
+        if x <= 5:
             return BehaviorTree.SUCCESS
         else:
             return BehaviorTree.FAIL
@@ -866,8 +876,10 @@ class NEJI:
         if self.distance_less_than(play_mode.p1.x, play_mode.p1.y, self.x, self.y, r):
             if self.state == 'idle':
                 self.state_machine.cur_state = Run
+                self.state = 'run'
             elif self.state == 'run':
                 self.state_machine.cur_state = Idle
+                self.state = 'idle'
             return BehaviorTree.SUCCESS
         else:
             return BehaviorTree.RUNNING
@@ -875,6 +887,7 @@ class NEJI:
         if self.state == 'idle':
             self.frame = 0
             self.skill_num = 'shuriken'
+            self.state = 'skill_motion'
             self.state_machine.cur_state = Skill_motion
             self.skill()
             return BehaviorTree.SUCCESS
@@ -897,23 +910,32 @@ class NEJI:
         else:
             return BehaviorTree.FAIL
 
+    def end_check(self):
+        if self.win or self.hp <= 0:
+            return BehaviorTree.SUCCESS
+        else:
+            return BehaviorTree.FAIL
+
     def build_behavior_tree(self):
         a1 = Action('state_change', self.state_change)
         a2 = Action('shuriken', self.shuriken)
         a3 = Action('attack_p1', self.attack_p1)
 
-        c1 = Condition('랜덤', self.random)
-        c2 = Condition('is_p1_nearby', self.is_p1_nearby, 10)
+        c1 = Condition('랜덤1', self.random1)
+        c2 = Condition('랜덤2', self.random2)
+        c3 = Condition('is_p1_nearby', self.is_p1_nearby, 6)
+        c4 = Condition('end_check', self.end_check)
 
         # root = SEQ_move_to_target_location = Sequence('Move to target location', a2,a1)
         # root = SEQ_move_to_target_location = Selector('Move to target location', a1, a2)
         # root = SEQ_state_change = Sequence('state change', a4, a3)
         # root = SEQ_state_change = Selector('state change', a4, a3)
-        root = SEQ_state_change = Sequence('state change', c1, a1)
+        root = SEQ_state_change = Sequence('state change', c2, a1)
         root = SEQ_shuriken = Sequence('shuriken', c1, a2)
-        root = SEQ_attack = Sequence('attack', c2, a3)
+        root = SEQ_attack = Sequence('attack', c3, a3)
+        SEQ_end = Sequence('end', c4)
 
-        root = SEL_AT_or_SC_or_ShKen = Selector('AT or SC or ShKen', SEQ_attack,
+        root = SEL_AT_or_SC_or_ShKen = Selector('AT or SC or ShKen', SEQ_end, SEQ_attack,
                                                 SEQ_shuriken, SEQ_state_change)
 
         self.bt = BehaviorTree(root)
