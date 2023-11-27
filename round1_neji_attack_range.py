@@ -56,29 +56,45 @@ class Skill1:
         self.frame = 0
         self.dir = dir
         self.count = 0
-        self.damage = 60
+        self.damage = 40
         self.sx, self.sy = 0, 0
+        self.range_set(70, 60, 40, -40, 40)
+
+    def range_set(self, range_x, range_y, dis_x, dis_y, damage):
+        self.attack_range_x = range_x
+        self.attack_range_y = range_y
+        self.attack_x_dis = dis_x
+        self.attack_y_dis = dis_y
+        self.damage = damage
 
     def draw(self):
         self.sx, self.sy = self.x - play_mode.map.window_left, self.y - play_mode.map.window_bottom
-        if self.dir == 1:
-            self.skill1_effect.clip_composite_draw(int(self.frame) * 193, 0, 193, 136, 0, '',
-                                                   self.sx, self.sy+20, 543, 382)
-        elif self.dir == -1:
-            self.skill1_effect.clip_composite_draw(int(self.frame) * 193, 0, 193, 136, 0, 'h',
-                                                   self.sx, self.sy+20, 543, 382)
+        # if self.dir == 1:
+        #     self.skill1_effect.clip_composite_draw(int(self.frame) * 193, 0, 193, 136, 0, '',
+        #                                            self.sx, self.sy+20, 543, 382)
+        # elif self.dir == -1:
+        #     self.skill1_effect.clip_composite_draw(int(self.frame) * 193, 0, 193, 136, 0, 'h',
+        #                                            self.sx, self.sy+20, 543, 382)
         draw_rectangle(*self.get_bb())
 
     def update(self):
-        self.frame = (self.frame + 10 * 2 * game_framework.frame_time) % 10
-        if self.frame >= 9.5:
+        if self.frame < 3:
+            self.frame = (self.frame + 59 * 0.05 * game_framework.frame_time) % 59
+        else:
+            self.frame = (self.frame + 59 * 0.3 * game_framework.frame_time) % 59
+        if self.frame >= 58:
             game_world.remove_object(self)
 
     def get_bb(self):
-        if self.dir == 1:
-            return self.sx - 200, self.sy - 130, self.sx + 270, self.sy + 180
-        elif self.dir == -1:
-            return self.sx - 270, self.sy - 130, self.sx + 200, self.sy + 180
+        return (self.sx - self.attack_range_x + self.dir * self.attack_x_dis,
+                self.sy - self.attack_range_y + self.attack_y_dis,
+                self.sx + self.attack_range_x + self.dir * self.attack_x_dis,
+                self.sy + self.attack_range_y + self.attack_y_dis)
+        # if self.dir == 1:
+        #     return self.sx - 30, self.sy-100, self.sx + 110, self.sy + 25
+        # elif self.dir == -1:
+        #     return self.sx - 110, self.sy-100, self.sx + 30, self.sy + 25
+
 
     def handle_collision(self, group, other):
         if not other.invincible:

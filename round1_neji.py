@@ -513,8 +513,11 @@ class Skill_motion:
     @staticmethod
     def do(p2):
         if p2.skill_num == 'skill1':
-            p2.frame = (p2.frame + 6 * 1.2 * game_framework.frame_time) % 6
-            if p2.frame >= 5:
+            if p2.frame < 3:
+                p2.frame = (p2.frame + 59 * 0.05 * game_framework.frame_time) % 59
+            else:
+                p2.frame = (p2.frame + 59 * 0.3 * game_framework.frame_time) % 59
+            if p2.frame >= 58:
                 p2.frame = 0
                 p2.state_machine.handle_event(('STOP', None))
         elif p2.skill_num == 'skill2':
@@ -537,10 +540,16 @@ class Skill_motion:
     @staticmethod
     def draw(p2):
         if p2.skill_num == 'skill1':
-            if p2.dir == -1:
-                p2.skill1.clip_composite_draw(int(p2.frame) * 193, 0, 193, 136, 0, 'h', p2.sx-60, p2.sy+70, 543, 382)
-            elif p2.dir == 1:
-                p2.skill1.clip_composite_draw(int(p2.frame) * 193, 0, 193, 136, 0, '', p2.sx+60, p2.sy+70, 543, 382)
+            if p2.frame < 52:
+                if p2.dir == -1:
+                    p2.skill1.clip_composite_draw(int(p2.frame) * 95, 0, 95, 54, 0, 'h', p2.sx-60, p2.sy-10, 267, 152)
+                elif p2.dir == 1:
+                    p2.skill1.clip_composite_draw(int(p2.frame) * 95, 0, 95, 54, 0, '', p2.sx+60, p2.sy-10, 267, 152)
+            else:
+                if p2.dir == -1:
+                    p2.skill1_2.clip_composite_draw(int(p2.frame-52) * 49, 0, 49, 41, 0, 'h', p2.sx, p2.sy-15, 138, 115)
+                elif p2.dir == 1:
+                    p2.skill1_2.clip_composite_draw(int(p2.frame-52) * 49, 0, 49, 41, 0, '', p2.sx, p2.sy-15, 138, 115)
         elif p2.skill_num == 'skill2':
             if p2.dir == -1:
                 p2.skill2.clip_composite_draw(int(p2.frame) * 83, 0, 83, 50, 0, 'h', p2.sx-20, p2.sy-15, 233, 140)
@@ -748,7 +757,8 @@ class NEJI:
         self.attack4 = load_image('resource/neji_attack4.png')
         self.shuriken_stand = load_image('resource/neji_shuriken_stand.png')
         self.shuriken_jump = load_image('resource/naruto_shuriken_jump.png')
-        self.skill1 = load_image('resource/naruto_skill1.png')
+        self.skill1 = load_image('resource/neji_skill1_1.png')
+        self.skill1_2 = load_image('resource/neji_skill1_2.png')
         self.skill2 = load_image('resource/naruto_skill2.png')
         self.run_attack = load_image('resource/naruto_run_attack.png')
         self.jump_attack = load_image('resource/naruto_jump_attack.png')
@@ -916,15 +926,36 @@ class NEJI:
         else:
             return BehaviorTree.FAIL
 
+    def chakra_check(self):
+        if self.chakra >= 40:
+            return BehaviorTree.SUCCESS
+        else:
+            return BehaviorTree.FAIL
+
+    def skill_p1(self):
+        if self.state == 'idle' or self.state == 'run':
+            self.frame = 0
+            self.state = 'skill_motion'
+            self.state_machine.cur_state = Skill_motion
+            self.skill_num = 'skill1'
+            self.skill()
+            self.chakra -= 30
+            return BehaviorTree.SUCCESS
+        else:
+            return BehaviorTree.FAIL
+
+
     def build_behavior_tree(self):
         a1 = Action('state_change', self.state_change)
         a2 = Action('shuriken', self.shuriken)
         a3 = Action('attack_p1', self.attack_p1)
+        a4 = Action('skill_p1', self.skill_p1)
 
         c1 = Condition('랜덤1', self.random1)
         c2 = Condition('랜덤2', self.random2)
         c3 = Condition('is_p1_nearby', self.is_p1_nearby, 6)
         c4 = Condition('end_check', self.end_check)
+        c5 = Condition('chakra_check', self.chakra_check)
 
         # root = SEQ_move_to_target_location = Sequence('Move to target location', a2,a1)
         # root = SEQ_move_to_target_location = Selector('Move to target location', a1, a2)
@@ -934,8 +965,9 @@ class NEJI:
         root = SEQ_shuriken = Sequence('shuriken', c1, a2)
         root = SEQ_attack = Sequence('attack', c3, a3)
         SEQ_end = Sequence('end', c4)
+        SEQ_skill = Sequence('skill', c5, c3, a4)
 
-        root = SEL_AT_or_SC_or_ShKen = Selector('AT or SC or ShKen', SEQ_end, SEQ_attack,
+        root = SEL_AT_or_SC_or_ShKen = Selector('AT or SC or ShKen', SEQ_end, SEQ_skill, SEQ_attack,
                                                 SEQ_shuriken, SEQ_state_change)
 
         self.bt = BehaviorTree(root)
