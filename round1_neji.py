@@ -517,6 +517,7 @@ class Skill_motion:
                 p2.frame = (p2.frame + 59 * 0.05 * game_framework.frame_time) % 59
             else:
                 p2.frame = (p2.frame + 59 * 0.3 * game_framework.frame_time) % 59
+                p2.x += p2.dir * RUN_SPEED_PPS * 0.3 * game_framework.frame_time
             if p2.frame >= 58:
                 p2.frame = 0
                 p2.state_machine.handle_event(('STOP', None))
@@ -834,6 +835,10 @@ class NEJI:
         self.state_machine.update()
         if self.chakra <= 100:
             self.chakra += 8 * game_framework.frame_time
+        if play_mode.p1.x < self.x:
+            self.dir = -1
+        elif play_mode.p1.x >= self.x:
+            self.dir = 1
         self.bt.run()
 
 

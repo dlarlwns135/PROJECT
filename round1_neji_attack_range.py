@@ -82,6 +82,11 @@ class Skill1:
             self.frame = (self.frame + 59 * 0.05 * game_framework.frame_time) % 59
         else:
             self.frame = (self.frame + 59 * 0.3 * game_framework.frame_time) % 59
+            self.x += self.dir * RUN_SPEED_PPS * 0.3 * game_framework.frame_time
+        if play_mode.p1.x < self.x:
+            self.dir = -1
+        elif play_mode.p1.x >= self.x:
+            self.dir = 1
         if self.frame >= 58:
             game_world.remove_object(self)
 
