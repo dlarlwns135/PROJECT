@@ -76,16 +76,18 @@ def draw():
     clear_canvas()
     image1.clip_composite_draw(0, 0, 900, 507, 0, '', 600, 300, 1200, 600)
     # vs.clip_composite_draw(0, 0, 2500, 2500, 0, '', 600, 300, 200, 200)
-    single_image.clip_composite_draw(0, 0, single_image.w, single_image.h, 0, '', 300, 300,
-                                     single_image.w, single_image.h)
-    multi_image.clip_composite_draw(0, 0, multi_image.w, multi_image.h, 0, '', 900, 300,
-                                     multi_image.w, multi_image.h)
+    single_image.clip_composite_draw(int(naruto_frame)*single_image.w//3, 0, single_image.w//3, single_image.h,
+                                     0, '', 400, 300,
+                                     single_image.w//3*2, single_image.h*2)
+    multi_image.clip_composite_draw(int(naruto_frame)*multi_image.w//3, 0, multi_image.w//3, multi_image.h,
+                                    0, '', 800, 300,
+                                     multi_image.w//3*2, multi_image.h*2)
     if mode_choose == '1p':
-        hand.clip_composite_draw(0, 0, hand.w, hand.h, 0, '', 300, 300,
-                                        hand.w, hand.h)
+        hand.clip_composite_draw(0, 0, hand.w, hand.h, 0, '', 420, 430+naruto_frame*3,
+                                        hand.w*2.5, hand.h*2.5)
     elif mode_choose == '2p':
-        hand.clip_composite_draw(0, 0, hand.w, hand.h, 0, '', 900, 300,
-                                 hand.w, hand.h)
+        hand.clip_composite_draw(0, 0, hand.w, hand.h, 0, '', 820, 430+naruto_frame*3,
+                                 hand.w*2.5, hand.h*2.5)
     # dir_image.clip_composite_draw(0, 0, dir_image.w, dir_image.h, 0, '', 300 + 160, 370, dir_image.w, dir_image.h)
     # dir_image.clip_composite_draw(0, 0, dir_image.w, dir_image.h, 0, 'h', 300 - 160, 370, dir_image.w, dir_image.h)
     # character_back.clip_composite_draw(0, 0, 64, 76, 0, '', 900, 300, 340, 430)
@@ -119,7 +121,7 @@ def draw():
 
 def update():
     global naruto_frame, sasuke_frame, itachi_frame, space_frame, space_up, dup_wait_time, dup_on
-    # naruto_frame = (naruto_frame + 6 * game_framework.frame_time) % 6
+    naruto_frame = (naruto_frame + 3 * game_framework.frame_time) % 3
     # sasuke_frame = (sasuke_frame + 6 * game_framework.frame_time) % 6
     # itachi_frame = (itachi_frame + 4 * game_framework.frame_time) % 4
     space_frame = space_frame + 10 * game_framework.frame_time
