@@ -125,6 +125,7 @@ class Idle:
 
     @staticmethod
     def enter(p2, e):
+        p2.state = 'idle'
         pass
 
     @staticmethod
@@ -187,10 +188,13 @@ class Run:
 
     @staticmethod
     def enter(p2, e):
+        p2.state = 'run'
         if p2.right and not p2.left:
             p2.dir = 1
         elif p2.left and not p2.right:
             p2.dir = -1
+
+
     @staticmethod
     def exit(p2, e):
         p2.frame = 0
@@ -200,8 +204,17 @@ class Run:
 
     @staticmethod
     def do(p2):
+        if p2.y > ground_y:
+            p2.state_machine.handle_event(('JUMP_STATE', None))
         p2.frame = (p2.frame + 6 * 2 * game_framework.frame_time) % 6
         p2.x += p2.dir * RUN_SPEED_PPS * game_framework.frame_time
+
+        if play_mode.p1.x < p2.x:
+            p2.dir = -1
+        elif play_mode.p1.x >= p2.x:
+            p2.dir = 1
+
+
     @staticmethod
     def draw(p2):
         if p2.dir == -1:
@@ -213,6 +226,7 @@ class Run:
 class Jump:
     @staticmethod
     def enter(p2, e):
+        p2.state = 'jump'
         if right_down(e):
             p2.right = True
         if left_down(e):
@@ -802,7 +816,7 @@ class NEJI:
         self.state_machine.update()
         if self.chakra <= 100:
             self.chakra += 8 * game_framework.frame_time
-        # self.bt.run()
+        self.bt.run()
 
 
     def handle_event(self, event):
@@ -857,12 +871,26 @@ class NEJI:
         else:
             return BehaviorTree.RUNNING
 
+    def state_change(self):
+        x = random.randint(0,1000)
+        if x <= 1:
+            if self.state == 'idle':
+                self.state_machine.cur_state = Run
+                self.state = 'run'
+            elif self.state == 'run':
+                self.state_machine.cur_state = Idle
+                self.state = 'idle'
+            return BehaviorTree.SUCCESS
+        else:
+            return BehaviorTree.RUNNING
+
     def build_behavior_tree(self):
         a1 = Action('Stay', self.stay)
         a2 = Action('Move to', self.move_to_p1)
+        a3 = Action('Move to', self.state_change)
 
-        root = SEQ_move_to_target_location = Sequence('Move to target location', a2,a1)
+        # root = SEQ_move_to_target_location = Sequence('Move to target location', a2,a1)
         # root = SEQ_move_to_target_location = Selector('Move to target location', a1, a2)
+        root = SEQ_state_change = Sequence('state change', a3)
 
         self.bt = BehaviorTree(root)
-        pass

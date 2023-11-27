@@ -145,7 +145,7 @@ class Idle:
             if p3.chakra >= 30:
                 p3.chakra -= 30
                 p3.chakra_lack = False
-                p3.skill()
+                # p3.skill()
             else:
                 p3.chakra_lack = True
 
@@ -493,7 +493,7 @@ class Skill_motion:
         elif p3.skill_num == 'skill2':
             p3.frame = p3.frame + 9 * 1.5 * game_framework.frame_time
             if p3.frame >= 8.9:
-                # p3.skill()
+                p3.skill()
                 p3.frame = 0
                 p3.state_machine.handle_event(('STOP', None))
         elif p3.skill_num == 'shuriken':
