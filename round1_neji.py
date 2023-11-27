@@ -295,12 +295,12 @@ class Jump:
             if int(p2.frame) < 2:
                 p2.jump.clip_composite_draw(int(p2.frame) * 32, 0, 32, 48, 0, 'h', p2.sx, p2.sy, 90, 135)
             else:
-                p2.jump.clip_composite_draw(64 + (int(p2.frame) - 2) * 40, 0, 40, 48, 0, 'h', p2.sx, p2.sy, 90, 135)
+                p2.jump.clip_composite_draw((int(p2.frame) - 2) * 40, 0, 40, 72, 0, 'h', p2.sx+10, p2.sy+40, 112, 202)
         elif p2.dir == 1:
             if int(p2.frame) < 2:
                 p2.jump.clip_composite_draw(int(p2.frame) * 32, 0, 32, 48, 0, '', p2.sx, p2.sy, 90, 135)
             else:
-                p2.jump.clip_composite_draw(64 + (int(p2.frame) - 2) * 40, 0, 40, 48, 0, '', p2.sx, p2.sy, 90, 135)
+                p2.jump.clip_composite_draw((int(p2.frame) - 2) * 40, 0, 40, 72, 0, '', p2.sx-10, p2.sy+40, 112, 202)
 
 class Teleport:
     @staticmethod
@@ -727,7 +727,7 @@ class NEJI:
         self.dir = 1
         self.idle = load_image('resource/neji_idle.png')
         self.run = load_image('resource/neji_run.png')
-        self.jump = load_image('resource/naruto_jump.png')
+        self.jump = load_image('resource/neji_jump.png')
         self.teleport = load_image('resource/naruto_teleport.png')
         self.teleport_motion = load_image('resource/teleport.png')
         self.attack1 = load_image('resource/naruto_attack1.png')
