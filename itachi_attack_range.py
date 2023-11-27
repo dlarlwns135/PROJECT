@@ -2,6 +2,7 @@ from pico2d import *
 
 import game_framework
 import game_world
+import mode_choose_mode
 import play_mode
 import math
 import charactor_choose_mode
@@ -113,10 +114,13 @@ class Skill2:
         self.damage = 20
         self.sx, self.sy = 0, 0
         self.reach = False
-        if charactor_choose_mode.p1_choose_result() == 3:
+        if mode_choose_mode.mode_choose_result() == '2p':
+            if charactor_choose_mode.p1_choose_result() == 3:
+                self.p_num = 1
+            elif charactor_choose_mode.p2_choose_result() == 3:
+                self.p_num = 2
+        elif mode_choose_mode.mode_choose_result() == '1p':
             self.p_num = 1
-        elif charactor_choose_mode.p2_choose_result() == 3:
-            self.p_num = 2
     def get_enenmy(self):
         if self.p_num == 1:
             if self.x < play_mode.p2.x:
@@ -167,13 +171,15 @@ class Skill2:
                 self.dot_frame = 0
                 self.dot_count += 1
                 if self.p_num == 1:
-                    play_mode.p2.hp -= self.damage
-                    play_mode.p2.frame = 0
-                    play_mode.p2.hit_state = 'easy'
+                    if not play_mode.p2.invincible:
+                        play_mode.p2.hp -= self.damage
+                        play_mode.p2.frame = 0
+                        play_mode.p2.hit_state = 'easy'
                 elif self.p_num == 2:
-                    play_mode.p1.hp -= self.damage
-                    play_mode.p1.frame = 0
-                    play_mode.p1.hit_state = 'easy'
+                    if not play_mode.p1.invincible:
+                        play_mode.p1.hp -= self.damage
+                        play_mode.p1.frame = 0
+                        play_mode.p1.hit_state = 'easy'
             if self.dot_count == 5:
                 game_world.remove_object(self)
         pass

@@ -614,6 +614,7 @@ class Win:
     @staticmethod
     def enter(p2, e):
         p2.frame = 0
+        p2.invincible = True
         pass
 
     @staticmethod
@@ -636,6 +637,7 @@ class Lose:
     @staticmethod
     def enter(p2, e):
         p2.frame = 0
+        p2.invincible = True
         pass
 
     @staticmethod

@@ -10,6 +10,7 @@ import game_framework
 import game_world
 import charactor_choose_mode
 import single_character_choice_mode
+import round1, round2
 def handle_events():
     global running
 
@@ -19,8 +20,12 @@ def handle_events():
             running = False
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             exit(1)
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_SPACE and (p1.win or p2.win):
-            exit(1)
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_SPACE:
+            if mode_choose_mode.mode_choose_result() == '1p' and p1.win:
+                if round_num == 1:
+                    round_num += 1
+                    game_framework.change_mode(round2)
+            # exit(1)
         # elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
         #     game_framework.
         else:

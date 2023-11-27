@@ -10,7 +10,7 @@ def init():
     global p1_x, p1_y, p2_x, p2_y, p1_choose, p2_choose, p1_image, p2_image, character_back
     global vs, press_space
     global naruto_frame, sasuke_frame, itachi_frame, space_frame, space_up
-    global duplicate, dup_on, dup_wait_time
+    global duplicate, dup_on, dup_wait_time, dir_image
     image1 = load_image('resource/title_main.png')
     naruto = load_image('resource/naruto_idle.png')
     sasuke = load_image('resource/sasuke_idle.png')
@@ -21,6 +21,7 @@ def init():
     # vs = load_image('resource/vs.png')
     press_space = load_image('resource/press_space.png')
     # duplicate = load_image('resource/duplicate.png')
+    dir_image = load_image('resource/dir_image.png')
     p1_x = 600
     p1_y = 360
     # p2_x = 300
@@ -33,8 +34,8 @@ def init():
     dup_on = False
     dup_wait_time = 0
 def finish():
-    global image1, naruto, sasuke, itachi, character_back, press_space
-    del image1, naruto, sasuke, itachi, character_back, press_space
+    global image1, naruto, sasuke, itachi, character_back, press_space, dir_image
+    del image1, naruto, sasuke, itachi, character_back, press_space, dir_image
 def handle_events():
     events = get_events()
     global p1_choose, p2_choose, character_count, dup_on, dup_wait_time
@@ -46,7 +47,8 @@ def handle_events():
         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_SPACE):
             # if p1_choose != p2_choose:
             play_mode.round_num = 1
-            game_framework.change_mode(play_mode)
+            # game_framework.change_mode(play_mode)
+            game_framework.change_mode(round1)
             # else:
             #     dup_on = True
             #     dup_wait_time = get_time()
@@ -77,6 +79,8 @@ def draw():
     # character_back.clip_composite_draw(0, 0, 64, 76, 0, '', 900, 300, 340, 430)
     # p1_image.clip_composite_draw(0, 0, 64, 32, 0, '', 900, 500, 120, 60)
     # p2_image.clip_composite_draw(0, 0, 64, 32, 0, '', 300, 500, 120, 60)
+    dir_image.clip_composite_draw(0, 0, dir_image.w, dir_image.h, 0, '', 600 + 160, 370, dir_image.w, dir_image.h)
+    dir_image.clip_composite_draw(0, 0, dir_image.w, dir_image.h, 0, 'h', 600 - 160, 370, dir_image.w, dir_image.h)
     if p1_choose == 1:
         naruto.clip_composite_draw(int(naruto_frame)*32, 0, 32, 48, 0, 'h', p1_x, p1_y, 100, 150)
     elif p1_choose == 2:
