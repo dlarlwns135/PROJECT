@@ -479,6 +479,8 @@ class Jump_Attack:
 class Skill_motion:
     @staticmethod
     def enter(p2, e):
+        p2.state = 'skill_motion'
+        p2.skill()
         if right_down(e):
             p2.right = True
         elif left_down(e):
@@ -871,9 +873,14 @@ class NEJI:
         else:
             return BehaviorTree.RUNNING
 
-    def state_change(self):
-        x = random.randint(0,1000)
+    def random(self):
+        x = random.randint(0, 1000)
         if x <= 1:
+            return BehaviorTree.SUCCESS
+        else:
+            return BehaviorTree.FAIL
+    def state_change(self, r = 100):
+        if self.distance_less_than(play_mode.p1.x, play_mode.p1.y, self.x, self.y, r):
             if self.state == 'idle':
                 self.state_machine.cur_state = Run
                 self.state = 'run'
@@ -883,14 +890,29 @@ class NEJI:
             return BehaviorTree.SUCCESS
         else:
             return BehaviorTree.RUNNING
+    def shuriken(self):
+        if self.state == 'idle':
+            self.skill_num = 'shuriken'
+            self.state_machine.cur_state = Skill_motion
+            self.state = 'skill_motion'
+            self.skill()
+            return BehaviorTree.SUCCESS
+        else:
+            return BehaviorTree.RUNNING
 
     def build_behavior_tree(self):
         a1 = Action('Stay', self.stay)
         a2 = Action('Move to', self.move_to_p1)
-        a3 = Action('Move to', self.state_change)
+        a3 = Action('state_change', self.state_change)
+        a4 = Action('shuriken', self.shuriken)
+
+        c1 = Condition('랜덤', self.random)
 
         # root = SEQ_move_to_target_location = Sequence('Move to target location', a2,a1)
         # root = SEQ_move_to_target_location = Selector('Move to target location', a1, a2)
-        root = SEQ_state_change = Sequence('state change', a3)
+        # root = SEQ_state_change = Sequence('state change', a4, a3)
+        # root = SEQ_state_change = Selector('state change', a4, a3)
+        root = SEQ_state_change = Sequence('state change', c1, a3)
+        root = SEQ_shuriken = Sequence('shuriken', c1, a4)
 
         self.bt = BehaviorTree(root)
