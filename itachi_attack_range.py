@@ -182,6 +182,8 @@ class Skill2:
                         play_mode.p1.hit_state = 'easy'
             if self.dot_count == 5:
                 game_world.remove_object(self)
+            if play_mode.p1.win or play_mode.p2.win:
+                game_world.remove_object(self)
         pass
 
     def get_bb(self):

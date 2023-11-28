@@ -6,13 +6,14 @@ from sasuke import SASUKE
 from naruto import NARUTO
 from itachi import ITACHI
 from round1_neji import NEJI
+from round2_kabuto import KABUTO
 import game_framework
 import game_world
 import charactor_choose_mode
 import single_character_choice_mode
 import round1, round2
 def handle_events():
-    global running
+    global running, round_num
 
     events = get_events()
     for event in events:
@@ -23,7 +24,7 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_SPACE:
             if mode_choose_mode.mode_choose_result() == '1p' and p1.win:
                 if round_num == 1:
-                    round_num += 1
+                    round_num = 2
                     game_framework.change_mode(round2)
             # exit(1)
         # elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
@@ -75,6 +76,9 @@ def init():
         if round_num == 1:
             p2 = NEJI(2)
             game_world.add_object(p2, 1)
+        elif round_num == 2:
+            p2 = KABUTO(2)
+            game_world.add_object(p2, 1)
 
     elif mode_choose_mode.mode_choose_result() == '2p':
         if charactor_choose_mode.p1_choose_result() == 1:
@@ -118,6 +122,9 @@ def init():
     game_world.add_collision_pair('p2:p1_skill2', p2, None)
 
 def finish():
+    game_world.remove_object(p1)
+    game_world.remove_object(p2)
+    game_world.remove_object(map)
     pass
 def update():
     global chakra_frame, fight_frame
