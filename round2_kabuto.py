@@ -385,11 +385,11 @@ class Attack:
 
     @staticmethod
     def do(p2):
-        p2.frame = p2.frame + 5 * 3 * game_framework.frame_time
+        p2.frame = p2.frame + 5 * 0.3 * game_framework.frame_time
         if p2.attack_num == 1:
             if p2.frame >= 4:
                 p2.state_machine.handle_event(('STOP', None))
-                p2.attack_num = 2
+                p2.attack_num = 1
                 p2.frame = 0
                 p2.wait_time = get_time()
         if p2.attack_num == 2:
@@ -414,9 +414,9 @@ class Attack:
     def draw(p2):
         if p2.attack_num == 1:
             if p2.dir == -1:
-                p2.attack1.clip_composite_draw(int(p2.frame) * 44, 0, 44, 48, 0, 'h', p2.sx - 10, p2.sy - 15, 124, 135)
+                p2.attack1.clip_composite_draw(int(p2.frame) * 55, 0, 55, 40, 0, 'h', p2.sx - 20, p2.sy - 15, 155, 113)
             elif p2.dir == 1:
-                p2.attack1.clip_composite_draw(int(p2.frame) * 44, 0, 44, 48, 0, '', p2.sx + 10, p2.sy - 15, 124, 135)
+                p2.attack1.clip_composite_draw(int(p2.frame) * 55, 0, 55, 40, 0, '', p2.sx + 20, p2.sy - 15, 155, 113)
         elif p2.attack_num == 2:
             if p2.dir == -1:
                 p2.attack2.clip_composite_draw(int(p2.frame) * 54, 0, 54, 48, 0, 'h', p2.sx-15, p2.sy - 15, 152, 135)
@@ -764,7 +764,7 @@ class KABUTO:
         self.jump = load_image('resource/kabuto_jump.png')
         self.teleport = load_image('resource/naruto_teleport.png')
         self.teleport_motion = load_image('resource/teleport.png')
-        self.attack1 = load_image('resource/neji_attack1.png')
+        self.attack1 = load_image('resource/kabuto_attack1.png')
         self.attack2 = load_image('resource/neji_attack2.png')
         self.attack3 = load_image('resource/neji_attack3.png')
         self.attack4 = load_image('resource/neji_attack4.png')

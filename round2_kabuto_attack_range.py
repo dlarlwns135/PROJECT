@@ -177,7 +177,7 @@ class Attack_range:
         self.range_set(0, 0, 0, 0, 0)
         self.attack_num = attack_num
         if self.attack_num == 1:
-            self.range_set(50, 20, 40, 10, 10)
+            self.range_set(60, 20, 50, 0, 10)
         elif self.attack_num == 2:
             self.range_set(50, 30, 30, 15, 10)
         elif self.attack_num == 3:
@@ -198,7 +198,7 @@ class Attack_range:
         self.damage = damage
 
     def update(self):
-        self.frame = self.frame + 5 * 3 * game_framework.frame_time
+        self.frame = self.frame + 5 * 0.3 * game_framework.frame_time
         if self.attack_num == 1:
             if self.frame >= 4:
                 self.frame = 0
