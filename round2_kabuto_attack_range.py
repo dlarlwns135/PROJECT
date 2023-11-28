@@ -179,11 +179,11 @@ class Attack_range:
         if self.attack_num == 1:
             self.range_set(60, 20, 50, 0, 10)
         elif self.attack_num == 2:
-            self.range_set(50, 30, 30, 15, 10)
+            self.range_set(70, 50, 30, -15, 10)
         elif self.attack_num == 3:
-            self.range_set(70, 30, 40, 0, 15)
+            self.range_set(50, 50, 20, 20, 15)
         elif self.attack_num == 4:
-            self.range_set(70, 50, 40, 0, 20)
+            self.range_set(40, 70, 20, 0, 20)
         elif self.attack_num == 'run':
             self.range_set(40, 50, 30, -20, 30)
         elif self.attack_num == 'jump':
@@ -198,21 +198,21 @@ class Attack_range:
         self.damage = damage
 
     def update(self):
-        self.frame = self.frame + 5 * 0.3 * game_framework.frame_time
+        self.frame = self.frame + 5 * 3 * game_framework.frame_time
         if self.attack_num == 1:
             if self.frame >= 4:
                 self.frame = 0
                 game_world.remove_object(self)
         if self.attack_num == 2:
-            if self.frame >= 6:
+            if self.frame >= 5:
                 self.frame = 0
                 game_world.remove_object(self)
         if self.attack_num == 3:
-            if self.frame >= 9:
+            if self.frame >= 5:
                 self.frame = 0
                 game_world.remove_object(self)
         if self.attack_num == 4:
-            if self.frame >= 7:
+            if self.frame >= 4:
                 self.frame = 0
                 game_world.remove_object(self)
         if self.attack_num == 'run':

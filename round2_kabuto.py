@@ -385,27 +385,27 @@ class Attack:
 
     @staticmethod
     def do(p2):
-        p2.frame = p2.frame + 5 * 0.3 * game_framework.frame_time
+        p2.frame = p2.frame + 5 * 3 * game_framework.frame_time
         if p2.attack_num == 1:
             if p2.frame >= 4:
                 p2.state_machine.handle_event(('STOP', None))
-                p2.attack_num = 1
+                p2.attack_num = 2
                 p2.frame = 0
                 p2.wait_time = get_time()
         if p2.attack_num == 2:
-            if p2.frame >= 6:
+            if p2.frame >= 5:
                 p2.state_machine.handle_event(('STOP', None))
                 p2.attack_num = 3
                 p2.frame = 0
                 p2.wait_time = get_time()
         if p2.attack_num == 3:
-            if p2.frame >= 9:
+            if p2.frame >= 5:
                 p2.state_machine.handle_event(('STOP', None))
                 p2.attack_num = 4
                 p2.frame = 0
                 p2.wait_time = get_time()
         if p2.attack_num == 4:
-            if p2.frame >= 7:
+            if p2.frame >= 4:
                 p2.state_machine.handle_event(('STOP', None))
                 p2.attack_num = 1
                 p2.frame = 0
@@ -419,19 +419,19 @@ class Attack:
                 p2.attack1.clip_composite_draw(int(p2.frame) * 55, 0, 55, 40, 0, '', p2.sx + 20, p2.sy - 15, 155, 113)
         elif p2.attack_num == 2:
             if p2.dir == -1:
-                p2.attack2.clip_composite_draw(int(p2.frame) * 54, 0, 54, 48, 0, 'h', p2.sx-15, p2.sy - 15, 152, 135)
+                p2.attack2.clip_composite_draw(int(p2.frame) * 58, 0, 58, 42, 0, 'h', p2.sx-15, p2.sy - 25, 163, 118)
             elif p2.dir == 1:
-                p2.attack2.clip_composite_draw(int(p2.frame) * 54, 0, 54, 48, 0, '', p2.sx+15, p2.sy - 15, 152, 135)
+                p2.attack2.clip_composite_draw(int(p2.frame) * 58, 0, 58, 42, 0, '', p2.sx+15, p2.sy - 25, 163, 118)
         elif p2.attack_num == 3:
             if p2.dir == -1:
-                    p2.attack3.clip_composite_draw(int(p2.frame) * 63, 0, 63, 48, 0, 'h', p2.sx - 25, p2.sy-15, 177, 135)
+                    p2.attack3.clip_composite_draw(int(p2.frame) * 38, 0, 38, 48, 0, 'h', p2.sx-10, p2.sy-5, 107, 135)
             elif p2.dir == 1:
-                    p2.attack3.clip_composite_draw(int(p2.frame) * 63, 0, 63, 48, 0, '', p2.sx + 25, p2.sy-15, 177, 135)
+                    p2.attack3.clip_composite_draw(int(p2.frame) * 38, 0, 38, 48, 0, '', p2.sx+10, p2.sy-5, 107, 135)
         elif p2.attack_num == 4:
             if p2.dir == -1:
-                    p2.attack4.clip_composite_draw(int(p2.frame) * 59, 0, 59, 48, 0, 'h', p2.sx-35, p2.sy-10, 166, 135)
+                    p2.attack4.clip_composite_draw(int(p2.frame) * 40, 0, 40, 53, 0, 'h', p2.sx, p2.sy-10, 113, 149)
             elif p2.dir == 1:
-                    p2.attack4.clip_composite_draw(int(p2.frame) * 59, 0, 59, 48, 0, '', p2.sx+35, p2.sy-10, 166, 135)
+                    p2.attack4.clip_composite_draw(int(p2.frame) * 40, 0, 40, 53, 0, '', p2.sx, p2.sy-10, 113, 149)
 
 class Run_Attack:
     @staticmethod
@@ -765,9 +765,9 @@ class KABUTO:
         self.teleport = load_image('resource/naruto_teleport.png')
         self.teleport_motion = load_image('resource/teleport.png')
         self.attack1 = load_image('resource/kabuto_attack1.png')
-        self.attack2 = load_image('resource/neji_attack2.png')
-        self.attack3 = load_image('resource/neji_attack3.png')
-        self.attack4 = load_image('resource/neji_attack4.png')
+        self.attack2 = load_image('resource/kabuto_attack2.png')
+        self.attack3 = load_image('resource/kabuto_attack3.png')
+        self.attack4 = load_image('resource/kabuto_attack4.png')
         self.shuriken_stand = load_image('resource/kabuto_shuriken_stand.png')
         self.shuriken_jump = load_image('resource/naruto_shuriken_jump.png')
         self.skill1 = load_image('resource/neji_skill1_1.png')
