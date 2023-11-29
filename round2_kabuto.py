@@ -324,27 +324,36 @@ class Teleport:
     @staticmethod
     def exit(p2, e):
         if p2.frame >= 3:
-            if p2.up_tele:
-                if p2.right and not p2.left:
-                    p2.x += tele_dis
-                elif p2.left and not p2.right:
-                    p2.x -= tele_dis
-                p2.y += tele_dis
-                p2.up_tele = False
-            elif p2.down_tele:
-                if p2.right and not p2.left:
-                    p2.x += tele_dis
-                elif p2.left and not p2.right:
-                    p2.x -= tele_dis
-                p2.y -= tele_dis
-                if p2.y <= ground_y:
-                    p2.y = ground_y
-                p2.down_tele = False
-            else:
-                if p2.right and not p2.left:
-                    p2.x += tele_dis
-                elif p2.left and not p2.right:
-                    p2.x -= tele_dis
+            if play_mode.p1.x < play_mode.map.w // 2:
+                p2.x = play_mode.map.w - 50
+            elif play_mode.p1.x >= play_mode.map.w // 2:
+                p2.x = 0 + 50
+            #p2.state_machine.handle_event(('RUN_STATE', None))
+            p2.state = 'skill_motion'
+            p2.skill_num = 'skill1'
+            p2.frame = 0
+            p2.state_machine.cur_state = Skill_motion
+            # if p2.up_tele:
+            #     if p2.right and not p2.left:
+            #         p2.x += tele_dis
+            #     elif p2.left and not p2.right:
+            #         p2.x -= tele_dis
+            #     p2.y += tele_dis
+            #     p2.up_tele = False
+            # elif p2.down_tele:
+            #     if p2.right and not p2.left:
+            #         p2.x += tele_dis
+            #     elif p2.left and not p2.right:
+            #         p2.x -= tele_dis
+            #     p2.y -= tele_dis
+            #     if p2.y <= ground_y:
+            #         p2.y = ground_y
+            #     p2.down_tele = False
+            # else:
+            #     if p2.right and not p2.left:
+            #         p2.x += tele_dis
+            #     elif p2.left and not p2.right:
+            #         p2.x -= tele_dis
 
     @staticmethod
     def do(p2):
@@ -959,12 +968,15 @@ class KABUTO:
 
     def skill_p1(self):
         if self.state == 'idle' or self.state == 'run':
-            # self.frame = 0
+            self.frame = 0
+            self.state = 'teleport'
+            self.state_machine.cur_state = Teleport
+            self.chakra -= 90
             # self.state = 'skill_motion'
             # self.state_machine.cur_state = Skill_motion
             # self.skill_num = 'skill1'
             # self.skill()
-            # self.chakra -= 90
+
             # self.invincible = True
             return BehaviorTree.SUCCESS
         else:

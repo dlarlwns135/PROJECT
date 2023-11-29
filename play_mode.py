@@ -20,7 +20,7 @@ def handle_events():
         if event.type == SDL_QUIT:
             running = False
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
-            exit(1)
+            game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_SPACE:
             if mode_choose_mode.mode_choose_result() == '1p' and p1.win:
                 if round_num == 1:
