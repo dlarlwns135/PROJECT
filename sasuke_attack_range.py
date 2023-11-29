@@ -35,6 +35,8 @@ class Shuriken:
         if self.x < 0 or self.x > play_mode.map.w:
             print("표창 사라짐")
             game_world.remove_object(self)
+        if play_mode.p1.win or play_mode.p2.win:
+            game_world.remove_object(self)
 
     def get_bb(self):
         return self.sx - 22, self.sy - 18, self.sx + 22, self.sy + 18
@@ -80,6 +82,8 @@ class Skill1:
         self.x += self.dir * RUN_SPEED_PPS * 1.2 * game_framework.frame_time
         if self.x < 0 - 200 or self.x > play_mode.map.w + 200:
             print("화둔 없어짐")
+            game_world.remove_object(self)
+        if play_mode.p1.win or play_mode.p2.win:
             game_world.remove_object(self)
 
     def get_bb(self):
@@ -140,6 +144,8 @@ class Skill2:
         if self.frame >= 7:
             self.x += self.dir * RUN_SPEED_PPS * 2 * game_framework.frame_time
         if self.frame >= 17:
+            game_world.remove_object(self)
+        if play_mode.p1.win or play_mode.p2.win:
             game_world.remove_object(self)
         pass
 

@@ -6,7 +6,7 @@ def init():
     global idle, round, round_num, frame, backimage, press_space, space_frame, space_up
     idle = load_image('resource/kabuto_idle.png')
     round = load_image('resource/round.png')
-    round_num = load_image('resource/1.png')
+    round_num = load_image('resource/2.png')
     backimage = load_image('resource/Bridge.png')
     press_space = load_image('resource/press_space.png')
     frame = 0

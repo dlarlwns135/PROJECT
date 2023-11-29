@@ -93,6 +93,8 @@ class Skill1:
             self.dir = 1
         if self.frame >= 58:
             game_world.remove_object(self)
+        if play_mode.p1.win or play_mode.p2.win:
+            game_world.remove_object(self)
 
     def get_bb(self):
         return (self.sx - self.attack_range_x + self.dir * self.attack_x_dis,

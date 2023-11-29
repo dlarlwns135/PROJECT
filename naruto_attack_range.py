@@ -32,6 +32,8 @@ class Shuriken:
         self.x += self.dir * RUN_SPEED_PPS * 1.5 * game_framework.frame_time
         if self.x < 0 or self.x > play_mode.map.w:
             game_world.remove_object(self)
+        if play_mode.p1.win or play_mode.p2.win:
+            game_world.remove_object(self)
 
     def get_bb(self):
         return self.sx - 22, self.sy - 18, self.sx + 22, self.sy + 18
@@ -122,6 +124,8 @@ class Skill2:
             if self.frame >= 15:
                 self.frame = 12
         if self.x < 0 or self.x > play_mode.map.w:
+            game_world.remove_object(self)
+        if play_mode.p1.win or play_mode.p2.win:
             game_world.remove_object(self)
         pass
 

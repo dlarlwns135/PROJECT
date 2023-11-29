@@ -122,11 +122,13 @@ def init():
     game_world.add_collision_pair('p2:p1_skill2', p2, None)
 
 def finish():
-    for _ in world:
-        game_world.remove_object(_)
-    # game_world.remove_object(p1)
-    # game_world.remove_object(p2)
-    # game_world.remove_object(map)
+    game_world.remove_object(p1)
+    game_world.remove_object(p2)
+    game_world.remove_object(map)
+    # for _ in game_world.objects:
+    #     print(_)
+    #     game_world.remove_object(_)
+
     pass
 def update():
     global chakra_frame, fight_frame
