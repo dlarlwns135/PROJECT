@@ -5,12 +5,22 @@ class Map:
     def __init__(self):
         # self.uchihamap = load_image('resource/uchihamap.png')
         self.madahashimap = load_image('resource/madahashimap.png')
+        self.bridgemap = load_image('resource/Bridge.png')
         self.cw = get_canvas_width()
         self.ch = get_canvas_height()
         # self.w = self.uchihamap.w
         # self.h = self.uchihamap.h
-        self.w = self.madahashimap.w
-        self.h = self.madahashimap.h
+        if mode_choose_mode.mode_choose_result() == '1p':
+            if play_mode.round_num == 1:
+                self.w = self.madahashimap.w
+                self.h = self.madahashimap.h
+            elif play_mode.round_num == 2:
+                self.w = self.bridgemap.w
+                self.h = self.bridgemap.h
+        elif mode_choose_mode.mode_choose_result() == '2p':
+            self.w = self.madahashimap.w
+            self.h = self.madahashimap.h
+
         # self.ruler_image = load_image('ruler.png')
 
     def update(self):
@@ -59,7 +69,14 @@ class Map:
         #                                    0, '', self.cw//2, self.ch//2, self.cw, self.ch
         #                                    )
         # self.uchihamap.clip_draw_to_origin(self.window_left, self.window_bottom, self.cw, self.ch, 0, 0)
-        self.madahashimap.clip_draw_to_origin(self.window_left, self.window_bottom, self.cw, self.ch, 0, 0)
+        if mode_choose_mode.mode_choose_result() == '1p':
+            if play_mode.round_num == 1:
+                self.madahashimap.clip_draw_to_origin(self.window_left, self.window_bottom, self.cw, self.ch, 0, 0)
+            elif play_mode.round_num == 2:
+                self.bridgemap.clip_draw_to_origin(self.window_left, self.window_bottom, self.cw, self.ch, 0, 0)
+        elif mode_choose_mode.mode_choose_result() == '2p':
+            self.madahashimap.clip_draw_to_origin(self.window_left, self.window_bottom, self.cw, self.ch, 0, 0)
+
         # self.uchihamap.clip_draw_to_origin(self.window_left, self.window_bottom,
         #                                    int(abs(play_mode.p1.x - play_mode.p2.x)) + 300,
         #                                    int(abs(play_mode.p1.y - play_mode.p2.y)) + 400, 0, 0)

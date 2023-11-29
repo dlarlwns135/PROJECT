@@ -43,7 +43,7 @@ def quit():
 
 
 def run(start_mode):
-    global running, stack
+    global running, stack, frame_rate
     running = True
     stack = [start_mode]
     start_mode.init()

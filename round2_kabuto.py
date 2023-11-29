@@ -891,14 +891,14 @@ class KABUTO:
         return distance2 < (r * PIXEL_PER_METER) ** 2
 
     def random1(self):
-        x = random.randint(0, 3000)
+        x = random.randint(0, int(game_framework.frame_rate*12))
         if x <= 1:
             return BehaviorTree.SUCCESS
         else:
             return BehaviorTree.FAIL
 
     def random2(self):
-        x = random.randint(0, 1000)
+        x = random.randint(0, int(game_framework.frame_rate*4))
         if x <= 1:
             return BehaviorTree.SUCCESS
         else:
