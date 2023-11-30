@@ -58,7 +58,7 @@ class Skill1:
         self.count = 0
         self.damage = 40
         self.sx, self.sy = 0, 0
-        self.range_set(0, 0, 0, 0, 0)
+        self.range_set(80, 70, 0, 0, 40)
 
 
     def range_set(self, range_x, range_y, dis_x, dis_y, damage):
@@ -69,6 +69,7 @@ class Skill1:
         self.damage = damage
 
     def draw(self):
+        self.x, self.y = play_mode.p2.x, play_mode.p2.y
         self.sx, self.sy = self.x - play_mode.map.window_left, self.y - play_mode.map.window_bottom
         # if self.dir == 1:
         #     self.skill1_effect.clip_composite_draw(int(self.frame) * 193, 0, 193, 136, 0, '',
@@ -79,22 +80,26 @@ class Skill1:
         draw_rectangle(*self.get_bb())
 
     def update(self):
-        if int(self.frame) == 3:
-            self.range_set(70, 60, 40, -40, 40)
-
-        if self.frame < 3:
-            self.frame = (self.frame + 59 * 0.03 * game_framework.frame_time) % 59
-        else:
-            self.frame = (self.frame + 59 * 0.2 * game_framework.frame_time) % 59
-            self.x += self.dir * RUN_SPEED_PPS * 0.4 * game_framework.frame_time
-        if play_mode.p1.x < self.x:
-            self.dir = -1
-        elif play_mode.p1.x >= self.x:
-            self.dir = 1
-        if self.frame >= 58:
+        if self.dir == 1 and self.x >= play_mode.map.w - 50 or self.dir == -1 and self.x <= 0 + 50:
+            self.frame = 0
             game_world.remove_object(self)
-        if play_mode.p1.win or play_mode.p2.win:
-            game_world.remove_object(self)
+        pass
+        # if int(self.frame) == 3:
+        #     self.range_set(70, 60, 40, -40, 40)
+        #
+        # if self.frame < 3:
+        #     self.frame = (self.frame + 59 * 0.03 * game_framework.frame_time) % 59
+        # else:
+        #     self.frame = (self.frame + 59 * 0.2 * game_framework.frame_time) % 59
+        #     self.x += self.dir * RUN_SPEED_PPS * 0.4 * game_framework.frame_time
+        # if play_mode.p1.x < self.x:
+        #     self.dir = -1
+        # elif play_mode.p1.x >= self.x:
+        #     self.dir = 1
+        # if self.frame >= 58:
+        #     game_world.remove_object(self)
+        # if play_mode.p1.win or play_mode.p2.win:
+        #     game_world.remove_object(self)
 
     def get_bb(self):
         return (self.sx - self.attack_range_x + self.dir * self.attack_x_dis,
@@ -117,7 +122,7 @@ class Skill1:
                 print(other.hp)
                 other.hit_state = 'hard'
                 other.invincible = True
-            # game_world.remove_object(self)
+                game_world.remove_object(self)
 
 class Skill2:
     skill2_effect = None
@@ -133,30 +138,27 @@ class Skill2:
 
     def draw(self):
         self.sx, self.sy = self.x - play_mode.map.window_left, self.y - play_mode.map.window_bottom
-        if self.frame >= 7:
-            if self.dir == 1:
-                self.skill2_effect.clip_composite_draw((int(self.frame)-7) * 159, 0, 159, 88, 0, '',
-                                                       self.sx, self.sy , 447, 247)
-            elif self.dir == -1:
-                self.skill2_effect.clip_composite_draw((int(self.frame)-7) * 159, 0, 159, 88, 0, 'h',
-                                                       self.sx, self.sy, 447, 247)
+        # if self.frame >= 7:
+        #     if self.dir == 1:
+        #         self.skill2_effect.clip_composite_draw((int(self.frame)-7) * 159, 0, 159, 88, 0, '',
+        #                                                self.sx, self.sy , 447, 247)
+        #     elif self.dir == -1:
+        #         self.skill2_effect.clip_composite_draw((int(self.frame)-7) * 159, 0, 159, 88, 0, 'h',
+        #                                                self.sx, self.sy, 447, 247)
         draw_rectangle(*self.get_bb())
 
     def update(self):
-        self.frame = (self.frame + 16 * 1 * game_framework.frame_time) % 16
-        if self.frame >= 7:
-            self.x += self.dir * RUN_SPEED_PPS * 1 * game_framework.frame_time
-            if self.frame >= 15:
-                self.frame = 12
-        if self.x < 0 or self.x > play_mode.map.w:
+        self.frame = (self.frame + 14 * 1 * game_framework.frame_time) % 14
+        if self.frame >= 13:
             game_world.remove_object(self)
         pass
 
     def get_bb(self):
-        if self.dir == 1:
-            return self.sx - 80, self.sy - 130, self.sx + 220, self.sy + 110
-        elif self.dir == -1:
-            return self.sx - 220, self.sy - 130, self.sx + 80, self.sy + 110
+        return self.sx - 130, self.sy - 130, self.sx + 130, self.sy + 130
+        # if self.dir == 1:
+        #     return self.sx - 80, self.sy - 130, self.sx + 220, self.sy + 110
+        # elif self.dir == -1:
+        #     return self.sx - 220, self.sy - 130, self.sx + 80, self.sy + 110
 
     def handle_collision(self, group, other):
         if not other.invincible:
