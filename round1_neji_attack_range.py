@@ -230,8 +230,8 @@ class Attack_range:
                 game_world.remove_object(self)
 
     def draw(self):
-        draw_rectangle(*self.get_bb())
         self.sx, self.sy = self.x - play_mode.map.window_left, self.y - play_mode.map.window_bottom
+        draw_rectangle(*self.get_bb())
         pass
 
     def get_bb(self):

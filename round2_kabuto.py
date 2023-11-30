@@ -323,16 +323,11 @@ class Teleport:
 
     @staticmethod
     def exit(p2, e):
-        if p2.frame >= 3:
-            if play_mode.p1.x < play_mode.map.w // 2:
-                p2.x = play_mode.map.w - 50
-            elif play_mode.p1.x >= play_mode.map.w // 2:
-                p2.x = 0 + 50
+        pass
+        # if p2.frame >= 3:
+
             #p2.state_machine.handle_event(('RUN_STATE', None))
-            p2.state = 'skill_motion'
-            p2.skill_num = 'skill1'
-            p2.frame = 0
-            p2.state_machine.cur_state = Skill_motion
+
             # if p2.up_tele:
             #     if p2.right and not p2.left:
             #         p2.x += tele_dis
@@ -359,7 +354,15 @@ class Teleport:
     def do(p2):
         p2.frame = p2.frame + 4 * 4 * game_framework.frame_time
         if p2.frame >= 3:
-            p2.state_machine.handle_event(('TELEPORT', None))
+            p2.state = 'skill_motion'
+            p2.skill_num = 'skill1'
+            p2.frame = 0
+            if play_mode.p1.x < play_mode.map.w // 2:
+                p2.x = play_mode.map.w - 50
+            elif play_mode.p1.x >= play_mode.map.w // 2:
+                p2.x = 0 + 50
+            p2.state_machine.cur_state = Skill_motion
+            # p2.state_machine.handle_event(('TELEPORT', None))
 
     @staticmethod
     def draw(p2):

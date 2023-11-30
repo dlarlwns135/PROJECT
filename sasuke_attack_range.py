@@ -222,12 +222,12 @@ class Attack_range:
         pass
 
     def draw(self):
-
+        self.sx, self.sy = self.x - play_mode.map.window_left, self.y - play_mode.map.window_bottom
         draw_rectangle(*self.get_bb())
         pass
 
     def get_bb(self):
-        self.sx, self.sy = self.x - play_mode.map.window_left, self.y - play_mode.map.window_bottom
+
         return (self.sx - self.attack_range_x + self.dir * self.attack_x_dis,
                 self.sy - self.attack_range_y + self.attack_y_dis,
                 self.sx + self.attack_range_x + self.dir * self.attack_x_dis,
