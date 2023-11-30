@@ -42,7 +42,7 @@ def init():
     global map
     global health_bar, health_hp, naruto_mug, sasuke_mug, itachi_mug, chakra_image, chakra_frame
     global ko, fight, fight_frame
-    global round_num, neji_mug
+    global round_num, neji_mug, kabuto_mug
 
     health_bar = load_image('resource/health_bar.png')
     health_hp = load_image('resource/health_hp.png')
@@ -50,6 +50,7 @@ def init():
     sasuke_mug = load_image('resource/sasuke_mugshot.png')
     itachi_mug = load_image('resource/itachi_mugshot.png')
     neji_mug = load_image('resource/neji_mugshot.png')
+    kabuto_mug = load_image('resource/kabuto_mugshot.png')
     chakra_image = load_image('resource/chakra.png')
     chakra_frame = 0
     ko = load_image('resource/ko.png')
@@ -173,6 +174,8 @@ def draw():
 
         if round_num == 1:
             neji_mug.clip_composite_draw(0, 0, neji_mug.w, neji_mug.h, 0, '', 50, 550, 80, 80)
+        elif round_num == 2:
+            kabuto_mug.clip_composite_draw(0, 0, kabuto_mug.w, kabuto_mug.h, 0, '', 50, 550, 80, 80)
         pass
     elif mode_choose_mode.mode_choose_result() == '2p':
         if charactor_choose_mode.p1_choose_result() == 1:
