@@ -163,6 +163,7 @@ class Idle:
     @staticmethod
     def do(p1):
         if p1.win:
+            p1.win_s.play()
             p1.state_machine.cur_state = Win
         if p1.hp <= 0:
             p1.state_machine.cur_state = Lose
@@ -749,6 +750,8 @@ class SASUKE:
         self.skill1_s_e.set_volume(10)
         self.skill2_s_e = load_wav('sound/sasuke_skill2_effect.wav')
         self.skill2_s_e.set_volume(10)
+        self.win_s = load_wav('sound/sasuke_win.wav')
+        self.win_s.set_volume(10)
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.jump_move = False

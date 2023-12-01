@@ -164,6 +164,7 @@ class Idle:
     @staticmethod
     def do(p2):
         if p2.win:
+            # p2.win_s.play()
             p2.state_machine.cur_state = Win
         if p2.hp <= 0:
             p2.state_machine.cur_state = Lose
@@ -798,6 +799,8 @@ class NEJI:
         self.skill1_s.set_volume(10)
         self.skill1_s_e = load_wav('sound/neji_skill1_effect.wav')
         self.skill1_s_e.set_volume(10)
+        self.win_s = load_wav('sound/neji_win.wav')
+        self.win_s.set_volume(10)
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.jump_move = False
@@ -868,6 +871,7 @@ class NEJI:
     def update(self):
         if play_mode.p1.hp <= 0 or self.hp <= 0:
             if play_mode.p1.hp <= 0 and not self.win:
+                self.win_s.play()
                 self.frame = 0
                 self.state = 'win'
                 self.state_machine.cur_state = Win

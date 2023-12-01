@@ -814,6 +814,8 @@ class KABUTO:
         self.skill2_s.set_volume(5)
         self.skill1_s_e = load_wav('sound/sasuke_skill2_effect.wav')
         self.skill1_s_e.set_volume(10)
+        self.win_s = load_wav('sound/kabuto_win.wav')
+        self.win_s.set_volume(10)
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.jump_move = False
@@ -883,6 +885,7 @@ class KABUTO:
     def update(self):
         if play_mode.p1.hp <= 0 or self.hp <= 0:
             if play_mode.p1.hp <= 0 and not self.win:
+                self.win_s.play()
                 self.frame = 0
                 self.state = 'win'
                 self.state_machine.cur_state = Win

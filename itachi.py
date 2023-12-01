@@ -162,6 +162,7 @@ class Idle:
     @staticmethod
     def do(p3):
         if p3.win:
+            p3.win_s.play()
             p3.state_machine.cur_state = Win
         if p3.hp <= 0:
             p3.state_machine.cur_state = Lose
@@ -745,6 +746,8 @@ class ITACHI:
         self.skill2_s.set_volume(10)
         self.skill1_s_e = load_wav('sound/itachi_skill1_effect.wav')
         self.skill1_s_e.set_volume(10)
+        self.win_s = load_wav('sound/itachi_win.wav')
+        self.win_s.set_volume(10)
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.jump_move = False

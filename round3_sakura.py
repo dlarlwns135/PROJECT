@@ -536,6 +536,8 @@ class Skill_motion:
             if p2.frame >= 15:
                 p2.frame = 0
                 p2.state_machine.handle_event(('STOP', None))
+            if int(p2.frame) == 6 and p2.frame - int(p2.frame) < 0.1:
+                p2.skill1_s_e.play()
             # if p2.dir == 1 and p2.x >= play_mode.map.w - 50 or p2.dir == -1 and p2.x <= 0 + 50:
             #     p2.frame = 0
             #     p2.state_machine.handle_event(('STOP', None))
@@ -558,6 +560,8 @@ class Skill_motion:
             if p2.frame >= 20:
                 p2.frame = 0
                 p2.state_machine.handle_event(('STOP', None))
+            if int(p2.frame) == 14 and p2.frame - int(p2.frame) < 0.1:
+                p2.skill1_s_e.play()
         elif p2.skill_num == 'shuriken':
             if p2.jump_state:
                 p2.frame = (p2.frame + 5 * 7 * game_framework.frame_time) % 5
@@ -813,6 +817,22 @@ class SAKURA:
         self.easy_hit = load_image('resource/sakura_easy_hit.png')
         self.hard_hit = load_image('resource/sakura_hard_hit.png')
         self.win_image = load_image('resource/sakura_win.png')
+        self.attack_s_1 = load_wav('sound/sakura_attack1.wav')
+        self.attack_s_1.set_volume(10)
+        self.attack_s_2 = load_wav('sound/sakura_attack2.wav')
+        self.attack_s_2.set_volume(10)
+        self.easy_hit_s = load_wav('sound/sakura_easy_hit.wav')
+        self.easy_hit_s.set_volume(5)
+        self.hard_hit_s = load_wav('sound/sakura_hard_hit.wav')
+        self.hard_hit_s.set_volume(10)
+        self.skill1_s = load_wav('sound/sakura_skill1.wav')
+        self.skill1_s.set_volume(10)
+        self.skill2_s = load_wav('sound/sakura_skill2.wav')
+        self.skill2_s.set_volume(5)
+        self.skill1_s_e = load_wav('sound/sakura_skill_effect.wav')
+        self.skill1_s_e.set_volume(10)
+        self.win_s = load_wav('sound/sakura_win.wav')
+        self.win_s.set_volume(10)
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.jump_move = False
@@ -838,6 +858,7 @@ class SAKURA:
 
     def skill(self):
         if self.skill_num == 'shuriken':
+            self.attack_s_1.play()
             shuriken = Shuriken(self.x, self.y + 10, self.dir)
             game_world.add_object(shuriken, 2)
             if player_num == 1:
@@ -845,6 +866,7 @@ class SAKURA:
             elif player_num == 2:
                 game_world.add_collision_pair('p1:p2_shuriken', None, shuriken)
         elif self.skill_num == 'skill1':
+            self.skill1_s.play()
             skill1 = Skill1(self.x, self.y + 50, self.dir)
             game_world.add_object(skill1, 2)
             if player_num == 1:
@@ -852,6 +874,7 @@ class SAKURA:
             elif player_num == 2:
                 game_world.add_collision_pair('p1:p2_skill1', None, skill1)
         elif self.skill_num == 'skill2':
+            self.skill2_s.play()
             skill2 = Skill2(self.x, self.y + 50, self.dir)
             game_world.add_object(skill2, 2)
             if player_num == 1:
@@ -860,6 +883,10 @@ class SAKURA:
                 game_world.add_collision_pair('p1:p2_skill2', None, skill2)
 
     def attack(self):
+        if self.attack_num == 2:
+            self.attack_s_1.play()
+        if self.attack_num == 4:
+            self.attack_s_2.play()
         attack_range = Attack_range(self.x, self.y, self.dir, self.attack_num)
         game_world.add_object(attack_range, 2)
         if player_num == 1:
@@ -875,6 +902,7 @@ class SAKURA:
     def update(self):
         if play_mode.p1.hp <= 0 or self.hp <= 0:
             if play_mode.p1.hp <= 0 and not self.win:
+                self.win_s.play()
                 self.frame = 0
                 self.state = 'win'
                 self.state_machine.cur_state = Win
@@ -883,8 +911,11 @@ class SAKURA:
                 self.state = 'lose'
                 self.state_machine.cur_state = Lose
         if self.hit_state == 'hard':
+            if not self.state_machine.cur_state == Hard_hit:
+                self.hard_hit_s.play()
             self.state_machine.cur_state = Hard_hit
         if self.hit_state == 'easy':
+            self.easy_hit_s.play()
             self.state_machine.cur_state = Easy_hit
 
         self.state_machine.update()

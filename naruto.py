@@ -160,6 +160,7 @@ class Idle:
     @staticmethod
     def do(p2):
         if p2.win:
+            p2.win_s.play()
             p2.state_machine.cur_state = Win
         if p2.hp <= 0:
             p2.state_machine.cur_state = Lose
@@ -617,6 +618,8 @@ class Win:
     def enter(p2, e):
         p2.frame = 0
         p2.invincible = True
+        p2.win_s.play()
+        print("이김")
         pass
 
     @staticmethod
@@ -747,6 +750,8 @@ class NARUTO:
         self.skill_s.set_volume(10)
         self.skill_s_e = load_wav('sound/naruto_skill_effect.wav')
         self.skill_s_e.set_volume(10)
+        self.win_s = load_wav('sound/naruto_win.wav')
+        self.win_s.set_volume(10)
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.jump_move = False
