@@ -83,13 +83,13 @@ def init():
     title_mode.bgm.stop()
 
     p_bgm = load_music('sound/playsound.mp3')
-    p_bgm.set_volume(18)
+    p_bgm.set_volume(12)
     p_bgm.repeat_play()
 
     if mode_choose_mode.mode_choose_result() == '1p' and round_num == 3:
         p_bgm.stop()
         p_bgm = load_music('sound/round3.mp3')
-        p_bgm.set_volume(18)
+        p_bgm.set_volume(12)
         p_bgm.repeat_play()
 
 
@@ -162,9 +162,18 @@ def init():
     game_world.add_collision_pair('p2:p1_skill2', p2, None)
 
 def finish():
-    game_world.remove_object(p1)
-    game_world.remove_object(p2)
-    game_world.remove_object(map)
+    # for obj in game_world.objects[:]:
+    #     game_world.remove_object(obj)
+    # game_world.remove_object(p1)
+    # game_world.remove_object(p2)
+    # game_world.remove_object(map)
+    for obj in game_world.objects[:]:
+        try:
+            # Try to remove the object from game_world
+            game_world.remove_object(obj)
+        except ValueError as e:
+            # Handle the ValueError (object not found) by printing a message
+            print(f"Ignored ValueError: {e}")
     # for _ in game_world.objects:
     #     print(_)
     #     game_world.remove_object(_)

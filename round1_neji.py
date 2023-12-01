@@ -522,6 +522,13 @@ class Skill_motion:
                 p2.frame = 0
                 p2.invincible = False
                 p2.state_machine.handle_event(('STOP', None))
+            if p2.frame > 3:
+                if int(p2.frame) % 20 == 0:
+                    p2.attack_s_1.set_volume(5)
+                    p2.attack_s_1.play()
+                elif int(p2.frame) % 20 == 10:
+                    p2.attack_s_2.set_volume(5)
+                    p2.attack_s_2.play()
         elif p2.skill_num == 'skill2':
             p2.frame = (p2.frame + 11 * 1.0 * game_framework.frame_time) % 11
             if p2.frame >= 10:
@@ -779,6 +786,18 @@ class NEJI:
         self.easy_hit = load_image('resource/neji_easy_hit.png')
         self.hard_hit = load_image('resource/neji_hard_hit.png')
         self.win_image = load_image('resource/neji_win.png')
+        self.attack_s_1 = load_wav('sound/neji_attack1.wav')
+        self.attack_s_1.set_volume(5)
+        self.attack_s_2 = load_wav('sound/neji_attack2.wav')
+        self.attack_s_2.set_volume(10)
+        self.easy_hit_s = load_wav('sound/neji_easy_hit.wav')
+        self.easy_hit_s.set_volume(2)
+        self.hard_hit_s = load_wav('sound/neji_hard_hit.wav')
+        self.hard_hit_s.set_volume(10)
+        self.skill1_s = load_wav('sound/neji_skill1.wav')
+        self.skill1_s.set_volume(10)
+        self.skill1_s_e = load_wav('sound/neji_skill1_effect.wav')
+        self.skill1_s_e.set_volume(10)
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.jump_move = False
@@ -804,6 +823,7 @@ class NEJI:
 
     def skill(self):
         if self.skill_num == 'shuriken':
+            self.attack_s_1.play()
             shuriken = Shuriken(self.x, self.y + 10, self.dir)
             game_world.add_object(shuriken, 2)
             if player_num == 1:
@@ -811,6 +831,8 @@ class NEJI:
             elif player_num == 2:
                 game_world.add_collision_pair('p1:p2_shuriken', None, shuriken)
         elif self.skill_num == 'skill1':
+            self.skill1_s_e.play()
+            self.skill1_s.play()
             skill1 = Skill1(self.x, self.y + 50, self.dir)
             game_world.add_object(skill1, 2)
             if player_num == 1:
@@ -827,6 +849,10 @@ class NEJI:
                 game_world.add_collision_pair('p1:p2_skill2', None, skill2)
 
     def attack(self):
+        if self.attack_num == 2:
+            self.attack_s_1.play()
+        if self.attack_num == 4:
+            self.attack_s_2.play()
         attack_range = Attack_range(self.x, self.y, self.dir, self.attack_num)
         game_world.add_object(attack_range, 2)
         if player_num == 1:
@@ -850,8 +876,11 @@ class NEJI:
                 self.state = 'lose'
                 self.state_machine.cur_state = Lose
         if self.hit_state == 'hard':
+            if not self.state_machine.cur_state == Hard_hit:
+                self.hard_hit_s.play()
             self.state_machine.cur_state = Hard_hit
         if self.hit_state == 'easy':
+            self.easy_hit_s.play()
             self.state_machine.cur_state = Easy_hit
 
 

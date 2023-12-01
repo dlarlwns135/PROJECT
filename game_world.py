@@ -48,8 +48,8 @@ def remove_object(o):
         if o in layer:
             layer.remove(o)
             remove_collision_object(o)
-            del o
-            return
+            # del o
+            return True
     raise ValueError('Cannot delete non existing object')
 
 def handle_collisions():

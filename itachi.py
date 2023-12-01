@@ -296,6 +296,8 @@ class Teleport:
             p3.right = False
         elif left_up(e):
             p3.left = False
+        else:
+            p3.attack_s_1.play()
 
     @staticmethod
     def exit(p3, e):

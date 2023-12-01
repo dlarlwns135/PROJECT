@@ -298,6 +298,8 @@ class Teleport:
             p2.right = False
         elif left_up(e):
             p2.left = False
+        else:
+            p2.attack_s_1.play()
 
     @staticmethod
     def exit(p2, e):
@@ -738,7 +740,7 @@ class NARUTO:
         self.attack_s_2 = load_wav('sound/naruto_attack2.wav')
         self.attack_s_2.set_volume(10)
         self.easy_hit_s = load_wav('sound/naruto_easy_hit.wav')
-        self.easy_hit_s.set_volume(5)
+        self.easy_hit_s.set_volume(2)
         self.hard_hit_s = load_wav('sound/naruto_har_hit.wav')
         self.hard_hit_s.set_volume(10)
         self.skill_s = load_wav('sound/naruto_skill.wav')
