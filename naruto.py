@@ -15,6 +15,8 @@ RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 ground_y = 120
 tele_dis = 220
 player_num = 0
+delay_shu = False
+t_time = 0
 
 def up_down(e):
     if player_num == 1:
@@ -80,10 +82,14 @@ def attack_down(e):
         return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_c
 
 def shuriken_down(e):
-    if player_num == 1:
-        return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SLASH
-    elif player_num == 2:
-        return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_b
+    global delay_shu
+    if get_time() - t_time >= 1:
+        delay_shu = False
+    if not delay_shu:
+        if player_num == 1:
+            return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SLASH
+        elif player_num == 2:
+            return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_b
 
 def skill1_down(e):
     if player_num == 1:
@@ -129,8 +135,10 @@ class Idle:
         p2.frame = 0
 
         if shuriken_down(e):
+            global delay_shu
             p2.skill_num = 'shuriken'
             p2.skill()
+            delay_shu = True
         if skill1_down(e):
             p2.skill_num = 'skill1'
             if p2.chakra >= 30:
@@ -193,8 +201,10 @@ class Run:
     def exit(p2, e):
         p2.frame = 0
         if shuriken_down(e):
+            global delay_shu
             p2.skill_num = 'shuriken'
             p2.skill()
+            delay_shu = True
 
     @staticmethod
     def do(p2):
@@ -244,9 +254,11 @@ class Jump:
         if up_down(e):
             p2.frame = 0
         if shuriken_down(e):
+            global delay_shu
             p2.skill_num = 'shuriken'
-            p2.frame = 0
             p2.skill()
+            delay_shu = True
+            p2.frame = 0
         if teleport_down(e):
             p2.frame = 0
 
@@ -510,6 +522,8 @@ class Skill_motion:
                 if p2.frame >= 4:
                     p2.frame = 0
                     p2.state_machine.handle_event(('STOP', None))
+            global t_time
+            t_time = get_time()
 
     @staticmethod
     def draw(p2):
@@ -762,6 +776,7 @@ class NARUTO:
         self.down_tele = False
         self.attack_num = 1
         self.wait_time = 0
+        self.wait_time2 = 0
         self.skill_num = 'shuriken'
         global player_num
         player_num = p_num
@@ -826,7 +841,7 @@ class NARUTO:
             self.state_machine.cur_state = Easy_hit
         self.state_machine.update()
         if self.chakra <= 100:
-            self.chakra += 8 * game_framework.frame_time
+            self.chakra += 4 * game_framework.frame_time
         self.x = clamp(50.0, self.x, self.bg.w - 50.0)
         self.y = clamp(50.0, self.y, self.bg.h - 50.0)
 
@@ -852,66 +867,3 @@ class NARUTO:
 
     def handle_collision(self, group, other):
         pass
-        # if not self.invincible:
-        #     if player_num == 1:
-        #         if group == 'p1:p2_attack':
-        #             self.dir = -other.dir
-        #             print(other.damage)
-        #             self.hp -= other.damage
-        #             print("p2한테 맞음")
-        #             self.frame = 0
-        #             self.state_machine.cur_state = Easy_hit
-        #         if group == 'p1:p2_shuriken':
-        #             self.dir = -other.dir
-        #             print(other.damage)
-        #             self.hp -= other.damage
-        #             print("p2한테 표창 맞음")
-        #             self.frame = 0
-        #             self.state_machine.cur_state = Easy_hit
-        #         if group == 'p1:p2_skill1':
-        #             self.invincible = True
-        #             self.dir = -other.dir
-        #             print(other.damage)
-        #             self.hp -= other.damage
-        #             print("p2한테 skill1 맞음")
-        #             self.frame = 0
-        #             self.state_machine.cur_state = Hard_hit
-        #         if group == 'p1:p2_skill2':
-        #             self.invincible = True
-        #             self.dir = -other.dir
-        #             print(other.damage)
-        #             self.hp -= other.damage
-        #             print("p2한테 skill2 맞음")
-        #             self.frame = 0
-        #             self.state_machine.cur_state = Hard_hit
-        #     elif player_num == 2:
-        #         if group == 'p2:p1_attack':
-        #             self.dir = -other.dir
-        #             print(other.damage)
-        #             self.hp -= other.damage
-        #             print("p1한테 맞음")
-        #             self.frame = 0
-        #             self.state_machine.cur_state = Easy_hit
-        #         if group == 'p2:p1_shuriken':
-        #             self.dir = -other.dir
-        #             print(other.damage)
-        #             self.hp -= other.damage
-        #             print("p1한테 표창 맞음")
-        #             self.frame = 0
-        #             self.state_machine.cur_state = Easy_hit
-        #         if group == 'p2:p1_skill1':
-        #             self.invincible = True
-        #             self.dir = -other.dir
-        #             print(other.damage)
-        #             self.hp -= other.damage
-        #             print("p1한테 skill1 맞음")
-        #             self.frame = 0
-        #             self.state_machine.cur_state = Hard_hit
-        #         if group == 'p2:p1_skill2':
-        #             self.invincible = True
-        #             self.dir = -other.dir
-        #             print(other.damage)
-        #             self.hp -= other.damage
-        #             print("p1한테 special 맞음")
-        #             self.frame = 0
-        #             self.state_machine.cur_state = Hard_hit

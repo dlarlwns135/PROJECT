@@ -15,6 +15,8 @@ RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 ground_y = 120
 tele_dis = 220
 player_num = 0
+delay_shu = False
+t_time = 0
 
 def up_down(e):
     if player_num == 1:
@@ -80,10 +82,14 @@ def attack_down(e):
         return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_c
 
 def shuriken_down(e):
-    if player_num == 1:
-        return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SLASH
-    elif player_num == 2:
-        return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_b
+    global delay_shu
+    if get_time() - t_time >= 1:
+        delay_shu = False
+    if not delay_shu:
+        if player_num == 1:
+            return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SLASH
+        elif player_num == 2:
+            return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_b
 
 def skill1_down(e):
     if player_num == 1:
@@ -129,8 +135,10 @@ class Idle:
         p3.frame = 0
 
         if shuriken_down(e):
+            global delay_shu
             p3.skill_num = 'shuriken'
             p3.skill()
+            delay_shu = True
         if skill1_down(e):
             p3.skill1_s.play()
             p3.skill_num = 'skill1'
@@ -197,8 +205,10 @@ class Run:
     def exit(p3, e):
         p3.frame = 0
         if shuriken_down(e):
+            global delay_shu
             p3.skill_num = 'shuriken'
             p3.skill()
+            delay_shu = True
 
     @staticmethod
     def do(p3):
@@ -249,9 +259,11 @@ class Jump:
         if up_down(e):
             p3.frame = 0
         if shuriken_down(e):
+            global delay_shu
             p3.skill_num = 'shuriken'
-            p3.frame = 0
             p3.skill()
+            delay_shu = True
+            p3.frame = 0
         if teleport_down(e):
             p3.frame = 0
     @staticmethod
@@ -478,6 +490,8 @@ class Skill_motion:
         if p3.chakra_lack:
             p3.invincible = False
             p3.state_machine.cur_state = Idle
+        global t_time
+        t_time = get_time()
 
 
 
@@ -763,7 +777,7 @@ class ITACHI:
         player_num = p_num
         self.invincible = False
         self.hp = 400
-        self.chakra = 100
+        self.chakra = 0
         self.chakra_lack = False
         self.win = False
         self.hit_state = 0
@@ -823,7 +837,7 @@ class ITACHI:
             self.state_machine.cur_state = Easy_hit
         self.state_machine.update()
         if self.chakra <= 100:
-            self.chakra += 8 * game_framework.frame_time
+            self.chakra += 4 * game_framework.frame_time
         self.x = clamp(50.0, self.x, self.bg.w - 50.0)
         self.y = clamp(50.0, self.y, self.bg.h - 50.0)
 

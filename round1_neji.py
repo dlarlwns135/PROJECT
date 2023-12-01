@@ -524,6 +524,8 @@ class Skill_motion:
                 p2.invincible = False
                 p2.state_machine.handle_event(('STOP', None))
             if p2.frame > 3:
+                if int(p2.frame) == 3 and p2.frame - int(p2.frame) < 0.1:
+                    p2.skill1_s_e2.play()
                 if int(p2.frame) % 20 == 0:
                     p2.attack_s_1.set_volume(5)
                     p2.attack_s_1.play()
@@ -799,6 +801,8 @@ class NEJI:
         self.skill1_s.set_volume(10)
         self.skill1_s_e = load_wav('sound/neji_skill1_effect.wav')
         self.skill1_s_e.set_volume(10)
+        self.skill1_s_e2 = load_wav('sound/neji_skill1_effect2.wav')
+        self.skill1_s_e2.set_volume(10)
         self.win_s = load_wav('sound/neji_win.wav')
         self.win_s.set_volume(10)
         self.state_machine = StateMachine(self)

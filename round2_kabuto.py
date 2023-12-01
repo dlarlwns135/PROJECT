@@ -903,7 +903,7 @@ class KABUTO:
 
         self.state_machine.update()
         if self.chakra <= 100:
-            self.chakra += 8 * game_framework.frame_time
+            self.chakra += 4 * game_framework.frame_time
             pass
         if not self.state_machine.cur_state == Skill_motion:
             if play_mode.p1.x < self.x:
