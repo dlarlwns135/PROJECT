@@ -12,6 +12,7 @@ def init():
     global vs, press_space
     global naruto_frame, sasuke_frame, itachi_frame, space_frame, space_up
     global duplicate, dup_on, dup_wait_time, dir_image
+    global naruto_back, sasuke_back, itachi_back
     image1 = load_image('resource/title_main.png')
     naruto = load_image('resource/naruto_idle.png')
     sasuke = load_image('resource/sasuke_idle.png')
@@ -23,6 +24,9 @@ def init():
     press_space = load_image('resource/press_space.png')
     # duplicate = load_image('resource/duplicate.png')
     dir_image = load_image('resource/dir_image.png')
+    naruto_back = load_image('resource/naruto_back.png')
+    sasuke_back = load_image('resource/sasuke_back.png')
+    itachi_back = load_image('resource/itachi_back.png')
     p1_x = 600
     p1_y = 360
     # p2_x = 300
@@ -78,19 +82,25 @@ def draw():
     clear_canvas()
     image1.clip_composite_draw(0, 0, 900, 507, 0, '', 600, 300, 1200, 600)
     # vs.clip_composite_draw(0, 0, 2500, 2500, 0, '', 600, 300, 200, 200)
-    character_back.clip_composite_draw(0, 0, 64, 76, 0, '', 600, 300, 340, 430)
+
     # character_back.clip_composite_draw(0, 0, 64, 76, 0, '', 900, 300, 340, 430)
     # p1_image.clip_composite_draw(0, 0, 64, 32, 0, '', 900, 500, 120, 60)
     # p2_image.clip_composite_draw(0, 0, 64, 32, 0, '', 300, 500, 120, 60)
     dir_image.clip_composite_draw(0, 0, dir_image.w, dir_image.h, 0, '', 600 + 160, 370, dir_image.w, dir_image.h)
     dir_image.clip_composite_draw(0, 0, dir_image.w, dir_image.h, 0, 'h', 600 - 160, 370, dir_image.w, dir_image.h)
     if p1_choose == 1:
+        naruto_back.clip_composite_draw(0, 0, naruto_back.w, naruto_back.h, 0, 'h', 600, 330,
+                                        naruto_back.w*3.5, naruto_back.h*3.5)
         naruto.clip_composite_draw(int(naruto_frame)*32, 0, 32, 48, 0, 'h', p1_x, p1_y, 100, 150)
     elif p1_choose == 2:
-        sasuke.clip_composite_draw(int(sasuke_frame)*32, 0, 32, 64, 0, 'h', p1_x, p1_y, 100, 200)
+        sasuke_back.clip_composite_draw(0, 0, sasuke_back.w, sasuke_back.h, 0, 'h', 600, 330,
+                                        sasuke_back.w * 3.5, sasuke_back.h * 3.5)
+        sasuke.clip_composite_draw(int(sasuke_frame)*32, 0, 32, 64, 0, 'h', p1_x+10, p1_y, 100, 200)
     elif p1_choose == 3:
+        itachi_back.clip_composite_draw(0, 0, itachi_back.w, itachi_back.h, 0, 'h', 600, 330,
+                                        itachi_back.w * 3.5, itachi_back.h * 3.5)
         itachi.clip_composite_draw(int(itachi_frame)*32, 0, 32, 64, 0, 'h', p1_x, p1_y+15, 100, 200)
-    p1_image.clip_composite_draw(0, 0, 64, 32, 0, '', 600, 500, 120, 60)
+    p1_image.clip_composite_draw(0, 0, 64, 32, 0, '', 600, 520, 120, 60)
     # if p2_choose == 1:
     #     naruto.clip_composite_draw(int(naruto_frame)*32, 0, 32, 48, 0, '', p2_x, p2_y, 100, 150)
     # elif p2_choose == 2:

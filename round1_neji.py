@@ -800,7 +800,7 @@ class NEJI:
         self.attack_s_2 = load_wav('sound/neji_attack2.wav')
         self.attack_s_2.set_volume(10)
         self.easy_hit_s = load_wav('sound/neji_easy_hit.wav')
-        self.easy_hit_s.set_volume(2)
+        self.easy_hit_s.set_volume(10)
         self.hard_hit_s = load_wav('sound/neji_hard_hit.wav')
         self.hard_hit_s.set_volume(10)
         self.skill1_s = load_wav('sound/neji_skill1.wav')
@@ -893,9 +893,12 @@ class NEJI:
             if not self.state_machine.cur_state == Hard_hit:
                 self.hard_hit_s.play()
                 pass
+            self.invincible = True
+            self.frame = 0
             self.state_machine.cur_state = Hard_hit
             self.hit_state = 0
         if self.hit_state == 'easy':
+            self.frame = 0
             self.easy_hit_s.play()
             self.state_machine.cur_state = Easy_hit
             self.hit_state = 0

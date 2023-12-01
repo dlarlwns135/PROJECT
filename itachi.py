@@ -752,7 +752,7 @@ class ITACHI:
         self.attack_s_2 = load_wav('sound/itachi_attack2.wav')
         self.attack_s_2.set_volume(10)
         self.easy_hit_s = load_wav('sound/itachi_easy_hit.wav')
-        self.easy_hit_s.set_volume(5)
+        self.easy_hit_s.set_volume(10)
         self.hard_hit_s = load_wav('sound/itachi_hard_hit.wav')
         self.hard_hit_s.set_volume(10)
         self.skill1_s = load_wav('sound/itachi_skill1.wav')
