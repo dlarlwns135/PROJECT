@@ -146,10 +146,11 @@ def init():
     p1.set_background(map)
     p2.set_background(map)
 
-    p1.x = 900
+    p1.x = 1200
     p1.dir = -1
-    p2.x = 300
-    p1.y, p2.y = 600, 600
+    p2.x = 400
+    p1.y, p2.y = 150, 150
+    p1.frame, p2.frame = 2, 2
 
     game_world.add_collision_pair('p1:p2_attack', p1, None)
     game_world.add_collision_pair('p1:p2_shuriken', p1, None)
@@ -164,9 +165,9 @@ def init():
 def finish():
     # for obj in game_world.objects[:]:
     #     game_world.remove_object(obj)
-    # game_world.remove_object(p1)
-    # game_world.remove_object(p2)
-    # game_world.remove_object(map)
+    game_world.remove_object(p1)
+    game_world.remove_object(p2)
+    game_world.remove_object(map)
     for obj in game_world.objects[:]:
         try:
             # Try to remove the object from game_world

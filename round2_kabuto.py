@@ -539,6 +539,8 @@ class Skill_motion:
                 if p2.frame >= 10:
                     p2.frame = 6
                 p2.x += p2.dir * RUN_SPEED_PPS * 3.5 * game_framework.frame_time
+            if int(p2.frame) == 6 and p2.frame - int(p2.frame) < 0.1:
+                p2.skill1_s_e.play()
             # if p2.frame < 3:
             #     p2.frame = (p2.frame + 59 * 0.03 * game_framework.frame_time) % 59
             # else:
@@ -798,6 +800,20 @@ class KABUTO:
         self.easy_hit = load_image('resource/kabuto_easy_hit.png')
         self.hard_hit = load_image('resource/kabuto_hard_hit.png')
         self.win_image = load_image('resource/kabuto_win.png')
+        self.attack_s_1 = load_wav('sound/kabuto_attack1.wav')
+        self.attack_s_1.set_volume(10)
+        self.attack_s_2 = load_wav('sound/kabuto_attack2.wav')
+        self.attack_s_2.set_volume(10)
+        self.easy_hit_s = load_wav('sound/kabuto_easy_hit.wav')
+        self.easy_hit_s.set_volume(5)
+        self.hard_hit_s = load_wav('sound/kabuto_hard_hit.wav')
+        self.hard_hit_s.set_volume(10)
+        self.skill1_s = load_wav('sound/kabuto_skill1.wav')
+        self.skill1_s.set_volume(10)
+        self.skill2_s = load_wav('sound/kabuto_skill2.wav')
+        self.skill2_s.set_volume(5)
+        self.skill1_s_e = load_wav('sound/sasuke_skill2_effect.wav')
+        self.skill1_s_e.set_volume(10)
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.jump_move = False
@@ -823,6 +839,7 @@ class KABUTO:
 
     def skill(self):
         if self.skill_num == 'shuriken':
+            self.attack_s_1.play()
             shuriken = Shuriken(self.x, self.y + 10, self.dir)
             game_world.add_object(shuriken, 2)
             if player_num == 1:
@@ -830,6 +847,7 @@ class KABUTO:
             elif player_num == 2:
                 game_world.add_collision_pair('p1:p2_shuriken', None, shuriken)
         elif self.skill_num == 'skill1':
+            self.skill1_s.play()
             skill1 = Skill1(self.x, self.y + 50, self.dir)
             game_world.add_object(skill1, 2)
             if player_num == 1:
@@ -837,6 +855,7 @@ class KABUTO:
             elif player_num == 2:
                 game_world.add_collision_pair('p1:p2_skill1', None, skill1)
         elif self.skill_num == 'skill2':
+            self.skill2_s.play()
             skill2 = Skill2(self.x, self.y + 50, self.dir)
             game_world.add_object(skill2, 2)
             if player_num == 1:
@@ -845,6 +864,10 @@ class KABUTO:
                 game_world.add_collision_pair('p1:p2_skill2', None, skill2)
 
     def attack(self):
+        if self.attack_num == 2:
+            self.attack_s_1.play()
+        if self.attack_num == 4:
+            self.attack_s_2.play()
         attack_range = Attack_range(self.x, self.y, self.dir, self.attack_num)
         game_world.add_object(attack_range, 2)
         if player_num == 1:
@@ -868,8 +891,11 @@ class KABUTO:
                 self.state = 'lose'
                 self.state_machine.cur_state = Lose
         if self.hit_state == 'hard':
+            if not self.state_machine.cur_state == Hard_hit:
+                self.hard_hit_s.play()
             self.state_machine.cur_state = Hard_hit
         if self.hit_state == 'easy':
+            self.easy_hit_s.play()
             self.state_machine.cur_state = Easy_hit
 
         self.state_machine.update()
