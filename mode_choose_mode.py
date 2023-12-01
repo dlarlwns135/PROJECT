@@ -13,7 +13,7 @@ def init():
     global p1_x, p1_y, p2_x, p2_y, p1_choose, p2_choose, p1_image, p2_image, character_back
     global vs, press_space
     global naruto_frame, sasuke_frame, itachi_frame, space_frame, space_up
-    global duplicate, dup_on, dup_wait_time, dir_image, single_image, multi_image, mode_choose, hand
+    global duplicate, dup_on, dup_wait_time, dir_image, single_image, multi_image, mode_choose, hand, mode_back
     image1 = load_image('resource/title_main.png')
     naruto = load_image('resource/naruto_idle.png')
     sasuke = load_image('resource/sasuke_idle.png')
@@ -28,6 +28,7 @@ def init():
     single_image = load_image('resource/single_play_image.png')
     multi_image = load_image('resource/multi_play_image.png')
     hand = load_image('resource/hand_image.png')
+    mode_back = load_image('resource/mode_choice_back.png')
     p1_x = 900
     p1_y = 360
     p2_x = 300
@@ -78,6 +79,7 @@ def running():
 def draw():
     clear_canvas()
     image1.clip_composite_draw(0, 0, 900, 507, 0, '', 600, 300, 1200, 600)
+    mode_back.clip_composite_draw(0, 0, mode_back.w, mode_back.h, 0, '', 600, 300, mode_back.w*3.8, mode_back.h*3.8)
     # vs.clip_composite_draw(0, 0, 2500, 2500, 0, '', 600, 300, 200, 200)
     single_image.clip_composite_draw(int(naruto_frame)*single_image.w//3, 0, single_image.w//3, single_image.h,
                                      0, '', 400, 300,
