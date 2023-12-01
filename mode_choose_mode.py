@@ -114,9 +114,11 @@ def draw():
     #     itachi.clip_composite_draw(int(itachi_frame) * 32, 0, 32, 64, 0, '', p2_x, p2_y+15, 100, 200)
 
     if space_up:
-        press_space.clip_composite_draw(0, 0, 1920, 1080, 0, '', 600, 60 + space_frame, 900, 500)
+        press_space.clip_composite_draw(0, 0, press_space.w, press_space.h, 0, '', 600, 60 + space_frame,
+                                        press_space.w * 0.15, press_space.h * 0.15)
     else:
-        press_space.clip_composite_draw(0, 0, 1920, 1080, 0, '', 600, 70 - space_frame, 900, 500)
+        press_space.clip_composite_draw(0, 0, press_space.w, press_space.h, 0, '', 600, 70 - space_frame,
+                                        press_space.w * 0.15, press_space.h * 0.15)
 
     # if dup_on:
     #     duplicate.clip_composite_draw(0, 0, 5906, 4135, 0, '', 600, 300, 600, 300)

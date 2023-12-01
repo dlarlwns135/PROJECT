@@ -3,7 +3,7 @@ import game_framework
 import play_mode
 
 def init():
-    global idle, round, round_num, frame, backimage, press_space, space_frame, space_up
+    global idle, round, round_num, frame, backimage, press_space, space_frame, space_up, r1_bgm
     idle = load_image('resource/neji_idle.png')
     round = load_image('resource/round.png')
     round_num = load_image('resource/1.png')
@@ -12,6 +12,9 @@ def init():
     frame = 0
     space_frame = 0
     space_up = True
+    r1_bgm = load_music('sound/neji_thema.mp3')
+    r1_bgm.set_volume(32)
+    r1_bgm.repeat_play()
 def finish():
     global idle, round, round_num, backimage, press_space
     del idle, round, round_num, backimage, press_space
@@ -35,9 +38,11 @@ def draw():
     round.clip_composite_draw(0, 0, round.w, round.h, 0, '', 560, 500, round.w, round.h)
     round_num.clip_composite_draw(0, 0, round_num.w, round_num.h, 0, '', 680, 500, round_num.w, round_num.h)
     if space_up:
-        press_space.clip_composite_draw(0, 0, 1920, 1080, 0, '', 600, 60 + space_frame, 900, 500)
+        press_space.clip_composite_draw(0, 0, press_space.w, press_space.h, 0, '', 600, 60 + space_frame,
+                                        press_space.w * 0.15, press_space.h * 0.15)
     else:
-        press_space.clip_composite_draw(0, 0, 1920, 1080, 0, '', 600, 70 - space_frame, 900, 500)
+        press_space.clip_composite_draw(0, 0, press_space.w, press_space.h, 0, '', 600, 70 - space_frame,
+                                        press_space.w * 0.15, press_space.h * 0.15)
     update_canvas()
 
 def update():

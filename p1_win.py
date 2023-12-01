@@ -53,9 +53,11 @@ def draw():
     you_win.clip_composite_draw(0, 0, you_win.w, you_win.h, 0, '', 600, 500, you_win.w*1.2, you_win.h*1.2)
     # round_num.clip_composite_draw(0, 0, round_num.w, round_num.h, 0, '', 680, 500, round_num.w, round_num.h)
     if space_up:
-        press_space.clip_composite_draw(0, 0, 1920, 1080, 0, '', 600, 60 + space_frame, 900, 500)
+        press_space.clip_composite_draw(0, 0, press_space.w, press_space.h, 0, '', 600, 60 + space_frame,
+                                        press_space.w * 0.15, press_space.h * 0.15)
     else:
-        press_space.clip_composite_draw(0, 0, 1920, 1080, 0, '', 600, 70 - space_frame, 900, 500)
+        press_space.clip_composite_draw(0, 0, press_space.w, press_space.h, 0, '', 600, 70 - space_frame,
+                                        press_space.w * 0.15, press_space.h * 0.15)
     update_canvas()
 
 def update():

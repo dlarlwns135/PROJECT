@@ -27,6 +27,7 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_F1:
+            p1.win = True
             game_framework.change_mode(title_mode)
         elif event.type == SDL_KEYDOWN and event.key == SDLK_F2:
             p1.hp = 0
@@ -149,7 +150,7 @@ def init():
     p1.x = 1200
     p1.dir = -1
     p2.x = 400
-    p1.y, p2.y = 150, 150
+    p1.y, p2.y = 400, 400
     p1.frame, p2.frame = 2, 2
 
     game_world.add_collision_pair('p1:p2_attack', p1, None)
@@ -163,22 +164,11 @@ def init():
     game_world.add_collision_pair('p2:p1_skill2', p2, None)
 
 def finish():
-    # for obj in game_world.objects[:]:
-    #     game_world.remove_object(obj)
     game_world.remove_object(p1)
     game_world.remove_object(p2)
     game_world.remove_object(map)
-    for obj in game_world.objects[:]:
-        try:
-            # Try to remove the object from game_world
-            game_world.remove_object(obj)
-        except ValueError as e:
-            # Handle the ValueError (object not found) by printing a message
-            print(f"Ignored ValueError: {e}")
-    # for _ in game_world.objects:
-    #     print(_)
-    #     game_world.remove_object(_)
-
+    game_world.objects[2] = []
+    game_world.collision_pairs = {}
     pass
 def update():
     global chakra_frame, fight_frame

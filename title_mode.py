@@ -51,9 +51,11 @@ def draw():
     image2.clip_composite_draw(0, 0, 300, 144, 0, '', 600, 800 - logo_frame, 500, 230)
     if space_on:
         if space_up:
-            press_space.clip_composite_draw(0, 0, 1920, 1080, 0, '', 600, 60 + space_frame, 900, 500)
+            press_space.clip_composite_draw(0, 0, press_space.w, press_space.h, 0, '', 600, 60 + space_frame,
+                                            press_space.w*0.15, press_space.h*0.15)
         else:
-            press_space.clip_composite_draw(0, 0, 1920, 1080, 0, '', 600, 70 - space_frame, 900, 500)
+            press_space.clip_composite_draw(0, 0, press_space.w, press_space.h, 0, '', 600, 70 - space_frame,
+                                            press_space.w*0.15, press_space.h*0.15)
     update_canvas()
 
 def update():
