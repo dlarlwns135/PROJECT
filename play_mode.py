@@ -3,6 +3,7 @@ from pico2d import *
 import mode_choose_mode
 import p1_lose
 import p1_win
+import result_mode
 import title_mode
 from map import Map
 from sasuke import SASUKE
@@ -44,6 +45,9 @@ def handle_events():
                     game_framework.change_mode(p1_win)
             elif mode_choose_mode.mode_choose_result() == '1p' and p1.hp <= 0:
                 game_framework.change_mode(p1_lose)
+            elif mode_choose_mode.mode_choose_result() == '2p' and (p1.win or p2.win):
+                game_framework.change_mode(result_mode)
+                pass
             # exit(1)
         # elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
         #     game_framework.
