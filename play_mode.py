@@ -1,17 +1,20 @@
 from pico2d import *
 
 import mode_choose_mode
+import p1_lose
+import title_mode
 from map import Map
 from sasuke import SASUKE
 from naruto import NARUTO
 from itachi import ITACHI
 from round1_neji import NEJI
 from round2_kabuto import KABUTO
+from round3_sakura import SAKURA
 import game_framework
 import game_world
 import charactor_choose_mode
 import single_character_choice_mode
-import round1, round2
+import round1, round2, round3
 def handle_events():
     global running, round_num
 
@@ -21,11 +24,22 @@ def handle_events():
             running = False
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.quit()
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_F1:
+            game_framework.change_mode(title_mode)
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_F2:
+            p1.hp = 0
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_F3:
+            p2.hp = 0
         elif event.type == SDL_KEYDOWN and event.key == SDLK_SPACE:
             if mode_choose_mode.mode_choose_result() == '1p' and p1.win:
                 if round_num == 1:
                     round_num = 2
                     game_framework.change_mode(round2)
+                elif round_num == 2:
+                    round_num = 3
+                    game_framework.change_mode(round3)
+            elif mode_choose_mode.mode_choose_result() == '1p' and p1.hp <= 0:
+                game_framework.change_mode(p1_lose)
             # exit(1)
         # elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
         #     game_framework.
@@ -79,6 +93,9 @@ def init():
             game_world.add_object(p2, 1)
         elif round_num == 2:
             p2 = KABUTO(2)
+            game_world.add_object(p2, 1)
+        elif round_num == 3:
+            p2 = SAKURA(2)
             game_world.add_object(p2, 1)
 
     elif mode_choose_mode.mode_choose_result() == '2p':

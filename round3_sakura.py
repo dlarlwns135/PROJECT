@@ -6,7 +6,7 @@ from pico2d import *
 import game_framework
 import game_world
 import play_mode
-from round1_neji_attack_range import Shuriken, Skill1, Skill2, Attack_range
+from round3_sakura_attack_range import Shuriken, Skill1, Skill2, Attack_range
 from behavior_tree import BehaviorTree, Action, Sequence, Condition, Selector
 
 PIXEL_PER_METER = (10.0 / 0.3) # 10 pixel 30 cm
@@ -184,9 +184,9 @@ class Idle:
     @staticmethod
     def draw(p2):
         if p2.dir == -1:
-            p2.idle.clip_composite_draw(int(p2.frame) * 34, 0, 34, 48, 0, 'h', p2.sx, p2.sy - 15, 96, 135)
+            p2.idle.clip_composite_draw(int(p2.frame) * 33, 0, 33, 49, 0, 'h', p2.sx, p2.sy, 93, 138)
         elif p2.dir == 1:
-            p2.idle.clip_composite_draw(int(p2.frame) * 34, 0, 34, 48, 0, '', p2.sx, p2.sy - 15, 96, 135)
+            p2.idle.clip_composite_draw(int(p2.frame) * 33, 0, 33, 49, 0, '', p2.sx, p2.sy, 93, 138)
 
 
 class Run:
@@ -223,9 +223,9 @@ class Run:
     @staticmethod
     def draw(p2):
         if p2.dir == -1:
-            p2.run.clip_composite_draw(int(p2.frame) * 42, 0, 42, 48, 0, 'h', p2.sx, p2.sy-15, 118, 135)
+            p2.run.clip_composite_draw(int(p2.frame) * 53, 0, 53, 43, 0, 'h', p2.sx, p2.sy-30, 149, 121)
         elif p2.dir == 1:
-            p2.run.clip_composite_draw(int(p2.frame) * 42, 0, 42, 48, 0, '', p2.sx, p2.sy-15, 118, 135)
+            p2.run.clip_composite_draw(int(p2.frame) * 53, 0, 53, 43, 0, '', p2.sx, p2.sy-30, 149, 121)
 
 
 class Jump:
@@ -300,12 +300,12 @@ class Jump:
             if int(p2.frame) < 2:
                 p2.jump.clip_composite_draw(int(p2.frame) * 32, 0, 32, 48, 0, 'h', p2.sx, p2.sy, 90, 135)
             else:
-                p2.jump.clip_composite_draw((int(p2.frame) - 2) * 40, 0, 40, 72, 0, 'h', p2.sx+10, p2.sy+40, 112, 202)
+                p2.jump.clip_composite_draw((int(p2.frame) - 2) * 35, 0, 35, 48, 0, 'h', p2.sx+10, p2.sy, 98, 135)
         elif p2.dir == 1:
             if int(p2.frame) < 2:
                 p2.jump.clip_composite_draw(int(p2.frame) * 32, 0, 32, 48, 0, '', p2.sx, p2.sy, 90, 135)
             else:
-                p2.jump.clip_composite_draw((int(p2.frame) - 2) * 40, 0, 40, 72, 0, '', p2.sx-10, p2.sy+40, 112, 202)
+                p2.jump.clip_composite_draw((int(p2.frame) - 2) * 35, 0, 35, 48, 0, '', p2.sx-10, p2.sy, 98, 135)
 
 class Teleport:
     @staticmethod
@@ -323,42 +323,57 @@ class Teleport:
 
     @staticmethod
     def exit(p2, e):
-        if p2.frame >= 3:
-            if p2.up_tele:
-                if p2.right and not p2.left:
-                    p2.x += tele_dis
-                elif p2.left and not p2.right:
-                    p2.x -= tele_dis
-                p2.y += tele_dis
-                p2.up_tele = False
-            elif p2.down_tele:
-                if p2.right and not p2.left:
-                    p2.x += tele_dis
-                elif p2.left and not p2.right:
-                    p2.x -= tele_dis
-                p2.y -= tele_dis
-                if p2.y <= ground_y:
-                    p2.y = ground_y
-                p2.down_tele = False
-            else:
-                if p2.right and not p2.left:
-                    p2.x += tele_dis
-                elif p2.left and not p2.right:
-                    p2.x -= tele_dis
+        pass
+        # if p2.frame >= 3:
+
+            #p2.state_machine.handle_event(('RUN_STATE', None))
+
+            # if p2.up_tele:
+            #     if p2.right and not p2.left:
+            #         p2.x += tele_dis
+            #     elif p2.left and not p2.right:
+            #         p2.x -= tele_dis
+            #     p2.y += tele_dis
+            #     p2.up_tele = False
+            # elif p2.down_tele:
+            #     if p2.right and not p2.left:
+            #         p2.x += tele_dis
+            #     elif p2.left and not p2.right:
+            #         p2.x -= tele_dis
+            #     p2.y -= tele_dis
+            #     if p2.y <= ground_y:
+            #         p2.y = ground_y
+            #     p2.down_tele = False
+            # else:
+            #     if p2.right and not p2.left:
+            #         p2.x += tele_dis
+            #     elif p2.left and not p2.right:
+            #         p2.x -= tele_dis
 
     @staticmethod
     def do(p2):
         p2.frame = p2.frame + 4 * 4 * game_framework.frame_time
         if p2.frame >= 3:
-            p2.state_machine.handle_event(('TELEPORT', None))
+            p2.state = 'skill_motion'
+            p2.skill_num = 'skill1'
+            p2.frame = 0
+            if play_mode.p1.x < play_mode.map.w // 2:
+                p2.x = play_mode.map.w - 50
+                p2.dir = -1
+            elif play_mode.p1.x >= play_mode.map.w // 2:
+                p2.x = 0 + 50
+                p2.dir = 1
+            p2.skill()
+            p2.state_machine.cur_state = Skill_motion
+            # p2.state_machine.handle_event(('TELEPORT', None))
 
     @staticmethod
     def draw(p2):
         if p2.dir == -1:
-            p2.teleport.clip_composite_draw(int(p2.frame) * 32, 0, 32, 56, 0, 'h', p2.sx, p2.sy, 90, 158)
+            p2.teleport.clip_composite_draw(int(p2.frame) * 37, 0, 37, 48, 0, 'h', p2.sx, p2.sy, 104, 135)
             p2.teleport_motion.clip_composite_draw(int(p2.frame) * 72, 0, 72, 75, 0, 'h', p2.sx, p2.sy, 150, 250)
         elif p2.dir == 1:
-            p2.teleport.clip_composite_draw(int(p2.frame) * 32, 0, 32, 56, 0, '', p2.sx, p2.sy, 90, 158)
+            p2.teleport.clip_composite_draw(int(p2.frame) * 37, 0, 37, 48, 0, '', p2.sx, p2.sy, 104, 135)
             p2.teleport_motion.clip_composite_draw(int(p2.frame) * 72, 0, 72, 75, 0, '', p2.sx, p2.sy, 150, 250)
 
 class Attack:
@@ -393,19 +408,19 @@ class Attack:
                 p2.frame = 0
                 p2.wait_time = get_time()
         if p2.attack_num == 2:
-            if p2.frame >= 6:
+            if p2.frame >= 5:
                 p2.state_machine.handle_event(('STOP', None))
                 p2.attack_num = 3
                 p2.frame = 0
                 p2.wait_time = get_time()
         if p2.attack_num == 3:
-            if p2.frame >= 9:
+            if p2.frame >= 5:
                 p2.state_machine.handle_event(('STOP', None))
                 p2.attack_num = 4
                 p2.frame = 0
                 p2.wait_time = get_time()
         if p2.attack_num == 4:
-            if p2.frame >= 7:
+            if p2.frame >= 4:
                 p2.state_machine.handle_event(('STOP', None))
                 p2.attack_num = 1
                 p2.frame = 0
@@ -414,24 +429,24 @@ class Attack:
     def draw(p2):
         if p2.attack_num == 1:
             if p2.dir == -1:
-                p2.attack1.clip_composite_draw(int(p2.frame) * 44, 0, 44, 48, 0, 'h', p2.sx - 10, p2.sy - 15, 124, 135)
+                p2.attack1.clip_composite_draw(int(p2.frame) * 55, 0, 55, 40, 0, 'h', p2.sx - 20, p2.sy - 15, 155, 113)
             elif p2.dir == 1:
-                p2.attack1.clip_composite_draw(int(p2.frame) * 44, 0, 44, 48, 0, '', p2.sx + 10, p2.sy - 15, 124, 135)
+                p2.attack1.clip_composite_draw(int(p2.frame) * 55, 0, 55, 40, 0, '', p2.sx + 20, p2.sy - 15, 155, 113)
         elif p2.attack_num == 2:
             if p2.dir == -1:
-                p2.attack2.clip_composite_draw(int(p2.frame) * 54, 0, 54, 48, 0, 'h', p2.sx-15, p2.sy - 15, 152, 135)
+                p2.attack2.clip_composite_draw(int(p2.frame) * 58, 0, 58, 42, 0, 'h', p2.sx-15, p2.sy - 25, 163, 118)
             elif p2.dir == 1:
-                p2.attack2.clip_composite_draw(int(p2.frame) * 54, 0, 54, 48, 0, '', p2.sx+15, p2.sy - 15, 152, 135)
+                p2.attack2.clip_composite_draw(int(p2.frame) * 58, 0, 58, 42, 0, '', p2.sx+15, p2.sy - 25, 163, 118)
         elif p2.attack_num == 3:
             if p2.dir == -1:
-                    p2.attack3.clip_composite_draw(int(p2.frame) * 63, 0, 63, 48, 0, 'h', p2.sx - 25, p2.sy-15, 177, 135)
+                    p2.attack3.clip_composite_draw(int(p2.frame) * 38, 0, 38, 48, 0, 'h', p2.sx-10, p2.sy-5, 107, 135)
             elif p2.dir == 1:
-                    p2.attack3.clip_composite_draw(int(p2.frame) * 63, 0, 63, 48, 0, '', p2.sx + 25, p2.sy-15, 177, 135)
+                    p2.attack3.clip_composite_draw(int(p2.frame) * 38, 0, 38, 48, 0, '', p2.sx+10, p2.sy-5, 107, 135)
         elif p2.attack_num == 4:
             if p2.dir == -1:
-                    p2.attack4.clip_composite_draw(int(p2.frame) * 59, 0, 59, 48, 0, 'h', p2.sx-35, p2.sy-10, 166, 135)
+                    p2.attack4.clip_composite_draw(int(p2.frame) * 40, 0, 40, 53, 0, 'h', p2.sx, p2.sy-10, 113, 149)
             elif p2.dir == 1:
-                    p2.attack4.clip_composite_draw(int(p2.frame) * 59, 0, 59, 48, 0, '', p2.sx+35, p2.sy-10, 166, 135)
+                    p2.attack4.clip_composite_draw(int(p2.frame) * 40, 0, 40, 53, 0, '', p2.sx, p2.sy-10, 113, 149)
 
 class Run_Attack:
     @staticmethod
@@ -488,6 +503,7 @@ class Skill_motion:
     def enter(p2, e):
         p2.state = 'skill_motion'
         p2.skill()
+        print('돌진')
         if right_down(e):
             p2.right = True
         elif left_down(e):
@@ -513,24 +529,32 @@ class Skill_motion:
     @staticmethod
     def do(p2):
         if p2.skill_num == 'skill1':
-            if p2.frame < 3:
-                p2.frame = (p2.frame + 59 * 0.03 * game_framework.frame_time) % 59
-            else:
-                p2.frame = (p2.frame + 59 * 0.2 * game_framework.frame_time) % 59
-                p2.x += p2.dir * RUN_SPEED_PPS * 0.4 * game_framework.frame_time
-            if p2.frame >= 58:
+            if p2.dir == 1 and p2.x >= play_mode.map.w - 50 or p2.dir == -1 and p2.x <= 0 + 50:
                 p2.frame = 0
-                p2.invincible = False
                 p2.state_machine.handle_event(('STOP', None))
+            if p2.frame < 6:
+                p2.frame = p2.frame + 10 * 0.7 * game_framework.frame_time
+            else:
+                p2.frame = p2.frame + 10 * 1 * game_framework.frame_time
+                p2.x += p2.dir * RUN_SPEED_PPS * 3.5 * game_framework.frame_time
+            # if p2.frame < 3:
+            #     p2.frame = (p2.frame + 59 * 0.03 * game_framework.frame_time) % 59
+            # else:
+            #     p2.frame = (p2.frame + 59 * 0.2 * game_framework.frame_time) % 59
+            #     p2.x += p2.dir * RUN_SPEED_PPS * 0.4 * game_framework.frame_time
+            # if p2.frame >= 58:
+            #     p2.frame = 0
+            #     p2.invincible = False
+            #     p2.state_machine.handle_event(('STOP', None))
         elif p2.skill_num == 'skill2':
-            p2.frame = (p2.frame + 11 * 1.0 * game_framework.frame_time) % 11
-            if p2.frame >= 10:
+            p2.frame = (p2.frame + 14 * 1.0 * game_framework.frame_time) % 14
+            if p2.frame >= 13:
                 p2.frame = 0
                 p2.state_machine.handle_event(('STOP', None))
         elif p2.skill_num == 'shuriken':
             if p2.jump_state:
-                p2.frame = (p2.frame + 3 * 7 * game_framework.frame_time) % 3
-                if p2.frame >= 2:
+                p2.frame = (p2.frame + 5 * 7 * game_framework.frame_time) % 5
+                if p2.frame >= 4:
                     p2.frame = 0
                     p2.state_machine.handle_event(('STOP', None))
             else:
@@ -542,25 +566,18 @@ class Skill_motion:
     @staticmethod
     def draw(p2):
         if p2.skill_num == 'skill1':
-            if p2.frame < 52:
-                if p2.frame < 3:
-                    p2.skill1_effect.clip_composite_draw(0, 0, p2.skill1_effect.w, p2.skill1_effect.h,
-                                                         0, '', p2.sx, p2.sy-60,
-                                                         p2.skill1_effect.w*2, p2.skill1_effect.h*1.5)
-                if p2.dir == -1:
-                    p2.skill1.clip_composite_draw(int(p2.frame) * 95, 0, 95, 54, 0, 'h', p2.sx-60, p2.sy-10, 267, 152)
-                elif p2.dir == 1:
-                    p2.skill1.clip_composite_draw(int(p2.frame) * 95, 0, 95, 54, 0, '', p2.sx+60, p2.sy-10, 267, 152)
-            else:
-                if p2.dir == -1:
-                    p2.skill1_2.clip_composite_draw(int(p2.frame-52) * 49, 0, 49, 41, 0, 'h', p2.sx, p2.sy-15, 138, 115)
-                elif p2.dir == 1:
-                    p2.skill1_2.clip_composite_draw(int(p2.frame-52) * 49, 0, 49, 41, 0, '', p2.sx, p2.sy-15, 138, 115)
+            temp = int(p2.frame)
+            if p2.frame >= 9:
+                temp = 9
+            if p2.dir == -1:
+                p2.skill1.clip_composite_draw(temp * 100, 0, 100, 49, 0, 'h', p2.sx+40, p2.sy-15, 281, 138)
+            elif p2.dir == 1:
+                p2.skill1.clip_composite_draw(temp * 100, 0, 100, 49, 0, '', p2.sx-40, p2.sy-15, 281, 138)
         elif p2.skill_num == 'skill2':
             if p2.dir == -1:
-                p2.skill2.clip_composite_draw(int(p2.frame) * 83, 0, 83, 50, 0, 'h', p2.sx-20, p2.sy-15, 233, 140)
+                p2.skill2.clip_composite_draw(int(p2.frame) * 85, 0, 85, 96, 0, 'h', p2.sx, p2.sy+60, 239, 270)
             elif p2.dir == 1:
-                p2.skill2.clip_composite_draw(int(p2.frame) * 83, 0, 83, 50, 0, '', p2.sx+20, p2.sy-15, 233, 140)
+                p2.skill2.clip_composite_draw(int(p2.frame) * 85, 0, 85, 96, 0, '', p2.sx, p2.sy+60, 239, 270)
         elif p2.skill_num == 'shuriken':
             if p2.jump_state:
                 if p2.dir == -1:
@@ -569,9 +586,9 @@ class Skill_motion:
                     p2.shuriken_jump.clip_composite_draw(int(p2.frame) * 40, 0, 40, 64, 0, '', p2.sx, p2.sy-30, 112, 180)
             else:
                 if p2.dir == -1:
-                    p2.shuriken_stand.clip_composite_draw(int(p2.frame) * 58, 0, 58, 40, 0, 'h', p2.sx-10, p2.sy-30, 163, 112)
+                    p2.shuriken_stand.clip_composite_draw(int(p2.frame) * 46, 0, 46, 43, 0, 'h', p2.sx-10, p2.sy-15, 129, 121)
                 elif p2.dir == 1:
-                    p2.shuriken_stand.clip_composite_draw(int(p2.frame) * 58, 0, 58, 40, 0, '', p2.sx+10, p2.sy-30, 163, 112)
+                    p2.shuriken_stand.clip_composite_draw(int(p2.frame) * 46, 0, 46, 43, 0, '', p2.sx+10, p2.sy-15, 129, 121)
 
 class Easy_hit:
     @staticmethod
@@ -642,14 +659,14 @@ class Hard_hit:
     def draw(p2):
         if p2.frame > 3:
             if p2.dir == -1:
-                p2.hard_hit.clip_composite_draw(3 * 48, 0, 48, 36, 0, 'h', p2.sx, p2.sy - 15, 135, 101)
+                p2.hard_hit.clip_composite_draw(3 * 50, 0, 50, 32, 0, 'h', p2.sx, p2.sy - 30, 141, 90)
             elif p2.dir == 1:
-                p2.hard_hit.clip_composite_draw(3 * 48, 0, 48, 36, 0, '', p2.sx, p2.sy - 15, 135, 101)
+                p2.hard_hit.clip_composite_draw(3 * 50, 0, 50, 32, 0, '', p2.sx, p2.sy - 30, 141, 90)
         else:
             if p2.dir == -1:
-                p2.hard_hit.clip_composite_draw(int(p2.frame) * 48, 0, 48, 36, 0, 'h', p2.sx, p2.sy-15, 135, 101)
+                p2.hard_hit.clip_composite_draw(int(p2.frame) * 50, 0, 50, 32, 0, 'h', p2.sx, p2.sy-30, 141, 90)
             elif p2.dir == 1:
-                p2.hard_hit.clip_composite_draw(int(p2.frame) * 48, 0, 48, 36, 0, '', p2.sx, p2.sy-15, 135, 101)
+                p2.hard_hit.clip_composite_draw(int(p2.frame) * 50, 0, 50, 32, 0, '', p2.sx, p2.sy-30, 141, 90)
 
 class Win:
     @staticmethod
@@ -664,7 +681,7 @@ class Win:
 
     @staticmethod
     def do(p2):
-        p2.frame = (p2.frame + 10 * 0.5 * game_framework.frame_time) % 10
+        p2.frame = (p2.frame + 9 * 0.5 * game_framework.frame_time) % 9
         if p2.y > ground_y:
             p2.y -= RUN_SPEED_PPS * game_framework.frame_time * 0.6
             if p2.y < ground_y:
@@ -673,9 +690,9 @@ class Win:
     @staticmethod
     def draw(p2):
         if p2.dir == -1:
-            p2.win_image.clip_composite_draw(int(p2.frame) * 42, 0, 42, 56, 0, 'h', p2.sx, p2.sy, 118, 157)
+            p2.win_image.clip_composite_draw(int(p2.frame) * 27, 0, 27, 48, 0, 'h', p2.sx, p2.sy, 76, 135)
         elif p2.dir == 1:
-            p2.win_image.clip_composite_draw(int(p2.frame) * 42, 0, 42, 56, 0, '', p2.sx, p2.sy, 118, 157)
+            p2.win_image.clip_composite_draw(int(p2.frame) * 27, 0, 27, 48, 0, '', p2.sx, p2.sy, 76, 135)
 
 class Lose:
     @staticmethod
@@ -701,9 +718,9 @@ class Lose:
     @staticmethod
     def draw(p2):
         if p2.dir == -1:
-            p2.hard_hit.clip_composite_draw(int(p2.frame) * 48, 0, 48, 40, 0, 'h', p2.sx, p2.sy - 15, 135, 112)
+            p2.hard_hit.clip_composite_draw(int(p2.frame) * 50, 0, 50, 32, 0, 'h', p2.sx, p2.sy - 30, 141, 90)
         elif p2.dir == 1:
-            p2.hard_hit.clip_composite_draw(int(p2.frame) * 48, 0, 48, 40, 0, '', p2.sx, p2.sy - 15, 135, 112)
+            p2.hard_hit.clip_composite_draw(int(p2.frame) * 50, 0, 50, 32, 0, '', p2.sx, p2.sy - 30, 141, 90)
 
 class StateMachine:
     def __init__(self, p2):
@@ -752,33 +769,33 @@ class StateMachine:
 
 
 
-class NEJI:
+class SAKURA:
     global skill_num
     def __init__(self, p_num):
         self.up = None
         self.x, self.y = 400, ground_y
         self.frame = 0
         self.dir = 1
-        self.idle = load_image('resource/neji_idle.png')
-        self.run = load_image('resource/neji_run.png')
-        self.jump = load_image('resource/neji_jump.png')
-        self.teleport = load_image('resource/naruto_teleport.png')
+        self.idle = load_image('resource/kabuto_idle.png')
+        self.run = load_image('resource/kabuto_run.png')
+        self.jump = load_image('resource/kabuto_jump.png')
+        self.teleport = load_image('resource/kabuto_teleport.png')
         self.teleport_motion = load_image('resource/teleport.png')
-        self.attack1 = load_image('resource/neji_attack1.png')
-        self.attack2 = load_image('resource/neji_attack2.png')
-        self.attack3 = load_image('resource/neji_attack3.png')
-        self.attack4 = load_image('resource/neji_attack4.png')
-        self.shuriken_stand = load_image('resource/neji_shuriken_stand.png')
+        self.attack1 = load_image('resource/kabuto_attack1.png')
+        self.attack2 = load_image('resource/kabuto_attack2.png')
+        self.attack3 = load_image('resource/kabuto_attack3.png')
+        self.attack4 = load_image('resource/kabuto_attack4.png')
+        self.shuriken_stand = load_image('resource/kabuto_shuriken_stand.png')
         self.shuriken_jump = load_image('resource/naruto_shuriken_jump.png')
-        self.skill1 = load_image('resource/neji_skill1_1.png')
+        self.skill1 = load_image('resource/kabuto_skill1.png')
         self.skill1_2 = load_image('resource/neji_skill1_2.png')
         self.skill1_effect = load_image('resource/neji_skill1_effect.png')
-        self.skill2 = load_image('resource/naruto_skill2.png')
+        self.skill2 = load_image('resource/kabuto_skill2.png')
         self.run_attack = load_image('resource/naruto_run_attack.png')
         self.jump_attack = load_image('resource/naruto_jump_attack.png')
         self.easy_hit = load_image('resource/neji_easy_hit.png')
-        self.hard_hit = load_image('resource/neji_hard_hit.png')
-        self.win_image = load_image('resource/neji_win.png')
+        self.hard_hit = load_image('resource/kabuto_hard_hit.png')
+        self.win_image = load_image('resource/kabuto_win.png')
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.jump_move = False
@@ -815,7 +832,6 @@ class NEJI:
             game_world.add_object(skill1, 2)
             if player_num == 1:
                 game_world.add_collision_pair('p2:p1_skill1', None, skill1)
-                print("오브젝트 연결")
             elif player_num == 2:
                 game_world.add_collision_pair('p1:p2_skill1', None, skill1)
         elif self.skill_num == 'skill2':
@@ -848,16 +864,15 @@ class NEJI:
         self.state_machine.update()
         if self.chakra <= 100:
             self.chakra += 8 * game_framework.frame_time
-        if play_mode.p1.x < self.x:
-            self.dir = -1
-        elif play_mode.p1.x >= self.x:
-            self.dir = 1
+        if not self.state_machine.cur_state == Skill_motion:
+            if play_mode.p1.x < self.x:
+                self.dir = -1
+            elif play_mode.p1.x >= self.x:
+                self.dir = 1
         if not self.win and self.hp > 0:
             self.bt.run()
-
         self.x = clamp(50.0, self.x, self.bg.w - 50.0)
         self.y = clamp(50.0, self.y, self.bg.h - 50.0)
-
 
 
     def handle_event(self, event):
@@ -944,9 +959,8 @@ class NEJI:
             return BehaviorTree.FAIL
 
     def end_check(self):
-        if play_mode.p1.hp <= 0 or self.hp <= 0:
-            if play_mode.p1.hp <= 0:
-                self.state = 'win'
+        if self.win or self.hp <= 0:
+            if self.win:
                 self.state_machine.cur_state = Win
             elif self.hp <= 0:
                 self.state_machine.cur_state = Lose
@@ -955,7 +969,7 @@ class NEJI:
             return BehaviorTree.FAIL
 
     def chakra_check(self):
-        if self.chakra >= 90:
+        if self.chakra >= 30:
             return BehaviorTree.SUCCESS
         else:
             return BehaviorTree.FAIL
@@ -963,12 +977,32 @@ class NEJI:
     def skill_p1(self):
         if self.state == 'idle' or self.state == 'run':
             self.frame = 0
+            self.state = 'teleport'
+            self.state_machine.cur_state = Teleport
+            self.chakra -= 30
+            self.invincible = True
+            # self.state = 'skill_motion'
+            # self.state_machine.cur_state = Skill_motion
+            # self.skill_num = 'skill1'
+            # self.skill()
+            return BehaviorTree.SUCCESS
+        else:
+            return BehaviorTree.FAIL
+
+    def chakra_check2(self):
+        if self.chakra >= 30:
+            return BehaviorTree.SUCCESS
+        else:
+            return BehaviorTree.FAIL
+    def skill_p2(self):
+        if self.state == 'idle' or self.state == 'run':
+            self.frame = 0
+            self.chakra -= 30
+            self.invincible = True
             self.state = 'skill_motion'
             self.state_machine.cur_state = Skill_motion
-            self.skill_num = 'skill1'
+            self.skill_num = 'skill2'
             self.skill()
-            self.chakra -= 90
-            self.invincible = True
             return BehaviorTree.SUCCESS
         else:
             return BehaviorTree.FAIL
@@ -979,12 +1013,14 @@ class NEJI:
         a2 = Action('shuriken', self.shuriken)
         a3 = Action('attack_p1', self.attack_p1)
         a4 = Action('skill_p1', self.skill_p1)
+        a5 = Action('skill_p2', self.skill_p2)
 
         c1 = Condition('랜덤1', self.random1)
         c2 = Condition('랜덤2', self.random2)
         c3 = Condition('is_p1_nearby', self.is_p1_nearby, 6)
         c4 = Condition('end_check', self.end_check)
         c5 = Condition('chakra_check', self.chakra_check)
+        c6 = Condition('chakra_check2', self.chakra_check2)
 
         # root = SEQ_move_to_target_location = Sequence('Move to target location', a2,a1)
         # root = SEQ_move_to_target_location = Selector('Move to target location', a1, a2)
@@ -994,9 +1030,11 @@ class NEJI:
         root = SEQ_shuriken = Sequence('shuriken', c1, a2)
         root = SEQ_attack = Sequence('attack', c3, a3)
         SEQ_end = Sequence('end', c4)
-        SEQ_skill = Sequence('skill', c5, c3, a4)
+        SEQ_skill = Sequence('skill', c5, a4)
+        SEQ_skill2 = Sequence('skill2', c6, c3, a5)
 
-        root = SEL_AT_or_SC_or_ShKen = Selector('AT or SC or ShKen', SEQ_end, SEQ_skill, SEQ_attack,
+        root = SEL_AT_or_SC_or_ShKen = Selector('AT or SC or ShKen', SEQ_end, SEQ_skill2,
+                                                SEQ_skill, SEQ_attack,
                                                 SEQ_shuriken, SEQ_state_change)
 
         self.bt = BehaviorTree(root)

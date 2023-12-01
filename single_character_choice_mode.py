@@ -2,6 +2,7 @@ from pico2d import *
 import game_framework
 import play_mode
 import round1
+import title_mode
 
 character_count = 3
 
@@ -68,6 +69,8 @@ def handle_events():
             p1_choose = (p1_choose + 1) % character_count
             if p1_choose == 0:
                 p1_choose = character_count
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_F1:
+            game_framework.change_mode(title_mode)
 
 def running():
     pass

@@ -4,6 +4,7 @@ import charactor_choose_mode
 import game_framework
 import play_mode
 import single_character_choice_mode
+import title_mode
 
 character_count = 3
 
@@ -69,6 +70,8 @@ def handle_events():
             mode_choose = '1p'
         elif event.type == SDL_KEYDOWN and event.key == SDLK_RIGHT:
             mode_choose = '2p'
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_F1:
+            game_framework.change_mode(title_mode)
 
 def running():
     pass
