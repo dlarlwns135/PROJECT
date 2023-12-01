@@ -2,6 +2,7 @@ from pico2d import *
 
 import mode_choose_mode
 import p1_lose
+import p1_win
 import title_mode
 from map import Map
 from sasuke import SASUKE
@@ -38,6 +39,9 @@ def handle_events():
                 elif round_num == 2:
                     round_num = 3
                     game_framework.change_mode(round3)
+                elif round_num == 3:
+                    round_num = 1
+                    game_framework.change_mode(p1_win)
             elif mode_choose_mode.mode_choose_result() == '1p' and p1.hp <= 0:
                 game_framework.change_mode(p1_lose)
             # exit(1)
