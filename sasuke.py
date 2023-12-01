@@ -140,12 +140,12 @@ class Idle:
             p1.skill()
             delay_shu = True
         if skill1_down(e):
-            p1.skill1_s.play()
             p1.skill_num = 'skill1'
             # p1.skill()
             if p1.chakra >= 30:
                 p1.chakra -= 30
                 p1.chakra_lack = False
+                p1.skill1_s.play()
                 # p1.skill()
             else:
                 p1.chakra_lack = True
@@ -834,9 +834,11 @@ class SASUKE:
             if not self.state_machine.cur_state == Hard_hit:
                 self.hard_hit_s.play()
             self.state_machine.cur_state = Hard_hit
+            self.hit_state = 0
         if self.hit_state == 'easy':
             self.easy_hit_s.play()
             self.state_machine.cur_state = Easy_hit
+            self.hit_state = 0
         self.state_machine.update()
         if self.chakra <= 100:
             self.chakra += 4 * game_framework.frame_time

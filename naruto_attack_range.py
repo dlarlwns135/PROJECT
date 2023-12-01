@@ -143,7 +143,7 @@ class Skill2:
             return self.sx - 220, self.sy - 130, self.sx + 80, self.sy + 110
 
     def handle_collision(self, group, other):
-        if not other.invincible:
+        if not other.hit_state == 'hard' and not other.invincible:
             if group == 'p1:p2_skill2' or group == 'p2:p1_skill2':
                 print("나선환 맞음")
                 other.hp -= self.damage

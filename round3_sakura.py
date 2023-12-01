@@ -921,9 +921,11 @@ class SAKURA:
             if not self.state_machine.cur_state == Hard_hit:
                 self.hard_hit_s.play()
             self.state_machine.cur_state = Hard_hit
+            self.hit_state = 0
         if self.hit_state == 'easy':
             self.easy_hit_s.play()
             self.state_machine.cur_state = Easy_hit
+            self.hit_state = 0
 
         self.state_machine.update()
         if self.chakra <= 100:

@@ -140,10 +140,10 @@ class Idle:
             p3.skill()
             delay_shu = True
         if skill1_down(e):
-            p3.skill1_s.play()
             p3.skill_num = 'skill1'
             # p3.skill()
             if p3.chakra >= 30:
+                p3.skill1_s.play()
                 p3.chakra -= 30
                 p3.chakra_lack = False
                 # p3.skill()
@@ -833,9 +833,11 @@ class ITACHI:
             if not self.state_machine.cur_state == Hard_hit:
                 self.hard_hit_s.play()
             self.state_machine.cur_state = Hard_hit
+            self.hit_state = 0
         if self.hit_state == 'easy':
             self.easy_hit_s.play()
             self.state_machine.cur_state = Easy_hit
+            self.hit_state = 0
         self.state_machine.update()
         if self.chakra <= 100:
             self.chakra += 4 * game_framework.frame_time

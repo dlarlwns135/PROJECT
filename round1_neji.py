@@ -599,6 +599,7 @@ class Easy_hit:
 
     @staticmethod
     def exit(p2, e):
+        p2.hit_state = 0
         pass
 
     @staticmethod
@@ -633,6 +634,7 @@ class Hard_hit:
 
     @staticmethod
     def exit(p2, e):
+        p2.hit_state = 0
         pass
 
     @staticmethod
@@ -892,9 +894,11 @@ class NEJI:
                 self.hard_hit_s.play()
                 pass
             self.state_machine.cur_state = Hard_hit
+            self.hit_state = 0
         if self.hit_state == 'easy':
             self.easy_hit_s.play()
             self.state_machine.cur_state = Easy_hit
+            self.hit_state = 0
 
 
         self.state_machine.update()
