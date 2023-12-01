@@ -6,7 +6,7 @@ import title_mode
 
 
 def init():
-    global dead1, dead2, dead3, you_lose, round_num, frame, backimage, press_space, space_frame, space_up
+    global dead1, dead2, dead3, you_lose, round_num, frame, backimage, press_space, space_frame, space_up, l_bgm
     dead1 = load_image('resource/naruto_hard_hit.png')
     dead2 = load_image('resource/sasuke_hard_hit.png')
     dead3 = load_image('resource/itachi_hard_hit.png')
@@ -17,6 +17,10 @@ def init():
     frame = 0
     space_frame = 0
     space_up = True
+    play_mode.p_bgm.stop()
+    l_bgm = load_music('sound/losesound.mp3')
+    l_bgm.set_volume(18)
+    l_bgm.repeat_play()
 def finish():
     global dead1, dead2, dead3, you_lose, round_num, backimage, press_space
     del dead1, dead2, dead3, you_lose, round_num, backimage, press_space

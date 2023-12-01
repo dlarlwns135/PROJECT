@@ -8,12 +8,16 @@ import mode_choose_mode
 
 def init():
     global image1, image2, naruto, sasuke, title_frame, sasuke_x, naruto_x
-    global mode_num, logo_frame, press_space, space_on, space_frame, space_up
+    global mode_num, logo_frame, press_space, space_on, space_frame, space_up, bgm
     image1 = load_image('resource/title_main.png')
     image2 = load_image('resource/naruto_logo.png')
     naruto = load_image('resource/title_naruto.png')
     sasuke = load_image('resource/title_sasuke.png')
     press_space = load_image('resource/press_space.png')
+    bgm = load_music('sound/mainsound.mp3')
+    bgm.set_volume(32)
+    bgm.repeat_play()
+
     title_frame = 0
     naruto_x, sasuke_x = 1250, 0
     mode_num = 1

@@ -19,15 +19,16 @@ class Shuriken:
         self.frame = 0
         self.dir = dir
         self.count = 0
-        self.damage = 200
+        self.damage = 10
         self.sx, self.sy = 0, 0
 
     def draw(self):
-        self.sx, self.sy = self.x - play_mode.map.window_left, self.y - play_mode.map.window_bottom
+
         self.shuriken.clip_composite_draw(int(self.frame) * 44, 0, 44, 35, 0, '', self.sx, self.sy, 44, 35)
         draw_rectangle(*self.get_bb())
 
     def update(self):
+        self.sx, self.sy = self.x - play_mode.map.window_left, self.y - play_mode.map.window_bottom
         self.frame = (self.frame + 4 * 4 * game_framework.frame_time) % 4
         self.x += self.dir * RUN_SPEED_PPS * 1.5 * game_framework.frame_time
         if self.x < 0 or self.x > play_mode.map.w:
@@ -71,7 +72,7 @@ class Skill1:
         self.damage = damage
 
     def draw(self):
-        self.sx, self.sy = self.x - play_mode.map.window_left, self.y - play_mode.map.window_bottom
+
         # if self.dir == 1:
         #     self.skill1_effect.clip_composite_draw(int(self.frame) * 193, 0, 193, 136, 0, '',
         #                                            self.sx, self.sy+20, 543, 382)
@@ -81,6 +82,7 @@ class Skill1:
         draw_rectangle(*self.get_bb())
 
     def update(self):
+        self.sx, self.sy = self.x - play_mode.map.window_left, self.y - play_mode.map.window_bottom
         if int(self.frame) == 3:
             self.range_set(70, 60, 40, -40, 40)
 
@@ -134,7 +136,7 @@ class Skill2:
         self.sx, self.sy = 0, 0
 
     def draw(self):
-        self.sx, self.sy = self.x - play_mode.map.window_left, self.y - play_mode.map.window_bottom
+
         if self.frame >= 7:
             if self.dir == 1:
                 self.skill2_effect.clip_composite_draw((int(self.frame)-7) * 159, 0, 159, 88, 0, '',
@@ -145,6 +147,7 @@ class Skill2:
         draw_rectangle(*self.get_bb())
 
     def update(self):
+        self.sx, self.sy = self.x - play_mode.map.window_left, self.y - play_mode.map.window_bottom
         self.frame = (self.frame + 16 * 1 * game_framework.frame_time) % 16
         if self.frame >= 7:
             self.x += self.dir * RUN_SPEED_PPS * 1 * game_framework.frame_time
@@ -202,6 +205,7 @@ class Attack_range:
         self.damage = damage
 
     def update(self):
+        self.sx, self.sy = self.x - play_mode.map.window_left, self.y - play_mode.map.window_bottom
         self.frame = self.frame + 5 * 3 * game_framework.frame_time
         if self.attack_num == 1:
             if self.frame >= 4:
@@ -230,7 +234,7 @@ class Attack_range:
                 game_world.remove_object(self)
 
     def draw(self):
-        self.sx, self.sy = self.x - play_mode.map.window_left, self.y - play_mode.map.window_bottom
+
         draw_rectangle(*self.get_bb())
         pass
 

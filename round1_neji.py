@@ -841,11 +841,12 @@ class NEJI:
 
     def update(self):
         if play_mode.p1.hp <= 0 or self.hp <= 0:
-            self.frame = 0
-            if play_mode.p1.hp <= 0:
+            if play_mode.p1.hp <= 0 and not self.win:
+                self.frame = 0
                 self.state = 'win'
                 self.state_machine.cur_state = Win
-            elif self.hp <= 0:
+            elif self.hp <= 0 and not self.state == 'lose':
+                self.frame = 0
                 self.state = 'lose'
                 self.state_machine.cur_state = Lose
         if self.hit_state == 'hard':

@@ -733,6 +733,18 @@ class NARUTO:
         self.easy_hit = load_image('resource/naruto_easy_hit.png')
         self.hard_hit = load_image('resource/naruto_hard_hit.png')
         self.win_image = load_image('resource/naruto_win.png')
+        self.attack_s_1 = load_wav('sound/naruto_attack1.wav')
+        self.attack_s_1.set_volume(10)
+        self.attack_s_2 = load_wav('sound/naruto_attack2.wav')
+        self.attack_s_2.set_volume(10)
+        self.easy_hit_s = load_wav('sound/naruto_easy_hit.wav')
+        self.easy_hit_s.set_volume(5)
+        self.hard_hit_s = load_wav('sound/naruto_har_hit.wav')
+        self.hard_hit_s.set_volume(10)
+        self.skill_s = load_wav('sound/naruto_skill.wav')
+        self.skill_s.set_volume(10)
+        self.skill_s_e = load_wav('sound/naruto_skill_effect.wav')
+        self.skill_s_e.set_volume(10)
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.jump_move = False
@@ -756,6 +768,7 @@ class NARUTO:
 
     def skill(self):
         if self.skill_num == 'shuriken':
+            self.attack_s_1.play()
             shuriken = Shuriken(self.x, self.y + 10, self.dir)
             game_world.add_object(shuriken, 2)
             if player_num == 1:
@@ -763,6 +776,7 @@ class NARUTO:
             elif player_num == 2:
                 game_world.add_collision_pair('p1:p2_shuriken', None, shuriken)
         elif self.skill_num == 'skill1':
+            self.attack_s_2.play()
             skill1 = Skill1(self.x, self.y + 50, self.dir)
             game_world.add_object(skill1, 2)
             if player_num == 1:
@@ -771,6 +785,8 @@ class NARUTO:
             elif player_num == 2:
                 game_world.add_collision_pair('p1:p2_skill1', None, skill1)
         elif self.skill_num == 'skill2':
+            self.skill_s.play()
+            self.skill_s_e.play()
             skill2 = Skill2(self.x, self.y + 50, self.dir)
             game_world.add_object(skill2, 2)
             if player_num == 1:
@@ -781,6 +797,8 @@ class NARUTO:
     def attack(self):
         attack_range = Attack_range(self.x, self.y, self.dir, self.attack_num)
         game_world.add_object(attack_range, 2)
+        if self.attack_num == 2 or self.attack_num == 'run' or self.attack_num == 'jump':
+            self.attack_s_1.play()
         if player_num == 1:
             game_world.add_collision_pair('p2:p1_attack', None, attack_range)
         elif player_num == 2:
@@ -793,8 +811,11 @@ class NARUTO:
 
     def update(self):
         if self.hit_state == 'hard':
+            if not self.state_machine.cur_state == Hard_hit:
+                self.hard_hit_s.play()
             self.state_machine.cur_state = Hard_hit
         if self.hit_state == 'easy':
+            self.easy_hit_s.play()
             self.state_machine.cur_state = Easy_hit
         self.state_machine.update()
         if self.chakra <= 100:

@@ -64,7 +64,7 @@ def init():
     global map
     global health_bar, health_hp, naruto_mug, sasuke_mug, itachi_mug, chakra_image, chakra_frame
     global ko, fight, fight_frame
-    global round_num, neji_mug, kabuto_mug
+    global round_num, neji_mug, kabuto_mug, sakura_mug, p_bgm
 
     health_bar = load_image('resource/health_bar.png')
     health_hp = load_image('resource/health_hp.png')
@@ -73,11 +73,25 @@ def init():
     itachi_mug = load_image('resource/itachi_mugshot.png')
     neji_mug = load_image('resource/neji_mugshot.png')
     kabuto_mug = load_image('resource/kabuto_mugshot.png')
+    sakura_mug = load_image('resource/sakura_mugshot.png')
     chakra_image = load_image('resource/chakra.png')
     chakra_frame = 0
     ko = load_image('resource/ko.png')
     fight = load_image('resource/fight.png')
     fight_frame = 0
+
+    title_mode.bgm.stop()
+
+    p_bgm = load_music('sound/playsound.mp3')
+    p_bgm.set_volume(18)
+    p_bgm.repeat_play()
+
+    if mode_choose_mode.mode_choose_result() == '1p' and round_num == 3:
+        p_bgm.stop()
+        p_bgm = load_music('sound/round3.mp3')
+        p_bgm.set_volume(18)
+        p_bgm.repeat_play()
+
 
     running = True
     world = []
@@ -135,7 +149,7 @@ def init():
     p1.x = 900
     p1.dir = -1
     p2.x = 300
-    p1.y, p2.y = 300, 600
+    p1.y, p2.y = 600, 600
 
     game_world.add_collision_pair('p1:p2_attack', p1, None)
     game_world.add_collision_pair('p1:p2_shuriken', p1, None)
@@ -201,6 +215,8 @@ def draw():
             neji_mug.clip_composite_draw(0, 0, neji_mug.w, neji_mug.h, 0, '', 50, 550, 80, 80)
         elif round_num == 2:
             kabuto_mug.clip_composite_draw(0, 0, kabuto_mug.w, kabuto_mug.h, 0, '', 50, 550, 80, 80)
+        elif round_num == 3:
+            sakura_mug.clip_composite_draw(0, 0, sakura_mug.w, sakura_mug.h, 0, '', 50, 550, 80, 80)
         pass
     elif mode_choose_mode.mode_choose_result() == '2p':
         if charactor_choose_mode.p1_choose_result() == 1:

@@ -9,7 +9,7 @@ import title_mode
 
 def init():
     global win1, win2, win3, you_win, p1_win, p2_win, round_num, frame, backimage, press_space, space_frame, space_up
-    global result_p, result_ch_num
+    global result_p, result_ch_num, r_bgm
     win1 = load_image('resource/naruto_win.png')
     win2 = load_image('resource/sasuke_win.png')
     win3 = load_image('resource/itachi_win.png')
@@ -30,6 +30,10 @@ def init():
     elif play_mode.p2.win:
         result_p = 2
         result_ch_num = charactor_choose_mode.p2_choose_result()
+    play_mode.p_bgm.stop()
+    r_bgm = load_music('sound/winsound.mp3')
+    r_bgm.set_volume(18)
+    r_bgm.repeat_play()
 def finish():
     global win1, win2, win3, you_win, round_num, backimage, press_space, p1_win, p2_win
     del win1, win2, win3, you_win, round_num, backimage, press_space, p1_win, p2_win

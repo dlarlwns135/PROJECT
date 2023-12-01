@@ -536,6 +536,8 @@ class Skill_motion:
                 p2.frame = p2.frame + 10 * 0.7 * game_framework.frame_time
             else:
                 p2.frame = p2.frame + 10 * 1 * game_framework.frame_time
+                if p2.frame >= 10:
+                    p2.frame = 6
                 p2.x += p2.dir * RUN_SPEED_PPS * 3.5 * game_framework.frame_time
             # if p2.frame < 3:
             #     p2.frame = (p2.frame + 59 * 0.03 * game_framework.frame_time) % 59
@@ -857,11 +859,12 @@ class KABUTO:
 
     def update(self):
         if play_mode.p1.hp <= 0 or self.hp <= 0:
-            self.frame = 0
-            if play_mode.p1.hp <= 0:
+            if play_mode.p1.hp <= 0 and not self.win:
+                self.frame = 0
                 self.state = 'win'
                 self.state_machine.cur_state = Win
-            elif self.hp <= 0:
+            elif self.hp <= 0 and not self.state == 'lose':
+                self.frame = 0
                 self.state = 'lose'
                 self.state_machine.cur_state = Lose
         if self.hit_state == 'hard':

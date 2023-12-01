@@ -6,7 +6,7 @@ import title_mode
 
 
 def init():
-    global win1, win2, win3, you_win, round_num, frame, backimage, press_space, space_frame, space_up
+    global win1, win2, win3, you_win, round_num, frame, backimage, press_space, space_frame, space_up, w_bgm
     win1 = load_image('resource/naruto_win.png')
     win2 = load_image('resource/sasuke_win.png')
     win3 = load_image('resource/itachi_win.png')
@@ -17,6 +17,10 @@ def init():
     frame = 0
     space_frame = 0
     space_up = True
+    play_mode.p_bgm.stop()
+    w_bgm = load_music('sound/winsound.mp3')
+    w_bgm.set_volume(18)
+    w_bgm.repeat_play()
 def finish():
     global win1, win2, win3, you_win, round_num, backimage, press_space
     del win1, win2, win3, you_win, round_num, backimage, press_space

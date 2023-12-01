@@ -132,6 +132,7 @@ class Idle:
             p1.skill_num = 'shuriken'
             p1.skill()
         if skill1_down(e):
+            p1.skill1_s.play()
             p1.skill_num = 'skill1'
             # p1.skill()
             if p1.chakra >= 30:
@@ -141,6 +142,7 @@ class Idle:
             else:
                 p1.chakra_lack = True
         if skill2_down(e):
+            p1.skill2_s_e.play()
             p1.skill_num = 'skill2'
             if p1.chakra >= 30:
                 p1.chakra -= 30
@@ -492,6 +494,8 @@ class Skill_motion:
                 p1.state_machine.handle_event(('STOP', None))
         elif p1.skill_num == 'skill2':
             p1.frame = (p1.frame + 19 * 1.0 * game_framework.frame_time) % 19
+            if int(p1.frame) == 8:
+                p1.skill2_s.play()
             if p1.frame >= 8:
                 p1.x += p1.dir * RUN_SPEED_PPS * 2 * game_framework.frame_time
             if p1.frame >= 18:
@@ -727,6 +731,22 @@ class SASUKE:
         self.easy_hit = load_image('resource/sasuke_easy_hit.png')
         self.hard_hit = load_image('resource/sasuke_hard_hit.png')
         self.win_image = load_image('resource/sasuke_win.png')
+        self.attack_s_1 = load_wav('sound/sasuke_attack1.wav')
+        self.attack_s_1.set_volume(10)
+        self.attack_s_2 = load_wav('sound/sasuke_attack2.wav')
+        self.attack_s_2.set_volume(10)
+        self.easy_hit_s = load_wav('sound/sasuke_easy_hit.wav')
+        self.easy_hit_s.set_volume(5)
+        self.hard_hit_s = load_wav('sound/sasuke_hard_hit.wav')
+        self.hard_hit_s.set_volume(10)
+        self.skill1_s = load_wav('sound/sasuke_skill1.wav')
+        self.skill1_s.set_volume(10)
+        self.skill2_s = load_wav('sound/sasuke_skill2.wav')
+        self.skill2_s.set_volume(5)
+        self.skill1_s_e = load_wav('sound/itachi_skill1_effect.wav')
+        self.skill1_s_e.set_volume(10)
+        self.skill2_s_e = load_wav('sound/sasuke_skill2_effect.wav')
+        self.skill2_s_e.set_volume(10)
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.jump_move = False
@@ -751,6 +771,7 @@ class SASUKE:
 
     def skill(self):
         if self.skill_num == 'shuriken':
+            self.attack_s_1.play()
             shuriken = Shuriken(self.x, self.y + 10, self.dir)
             game_world.add_object(shuriken, 2)
             if player_num == 1:
@@ -758,6 +779,7 @@ class SASUKE:
             elif player_num == 2:
                 game_world.add_collision_pair('p1:p2_shuriken', None, shuriken)
         elif self.skill_num == 'skill1':
+            self.skill1_s_e.play()
             skill1 = Skill1(self.x, self.y, self.dir)
             game_world.add_object(skill1, 2)
             if player_num == 1:
@@ -775,6 +797,10 @@ class SASUKE:
     def attack(self):
         attack_range = Attack_range(self.x, self.y, self.dir, self.attack_num)
         game_world.add_object(attack_range, 2)
+        if self.attack_num == 2 or self.attack_num == 'jump':
+            self.attack_s_1.play()
+        if self.attack_num == 4 or self.attack_num == 'run':
+            self.attack_s_2.play()
         if player_num == 1:
             game_world.add_collision_pair('p2:p1_attack', None, attack_range)
         elif player_num == 2:
@@ -786,8 +812,11 @@ class SASUKE:
         # self.y = self.bg.h / 2
     def update(self):
         if self.hit_state == 'hard':
+            if not self.state_machine.cur_state == Hard_hit:
+                self.hard_hit_s.play()
             self.state_machine.cur_state = Hard_hit
         if self.hit_state == 'easy':
+            self.easy_hit_s.play()
             self.state_machine.cur_state = Easy_hit
         self.state_machine.update()
         if self.chakra <= 100:

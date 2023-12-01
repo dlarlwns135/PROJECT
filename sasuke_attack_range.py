@@ -21,7 +21,7 @@ class Shuriken:
         self.frame = 0
         self.dir = dir
         self.count = 0
-        self.damage = 200
+        self.damage = 10
         self.sx, self.sy = 0, 0
 
     def draw(self):
@@ -116,7 +116,7 @@ class Skill2:
         self.sx, self.sy = 0, 0
 
     def draw(self):
-        self.sx, self.sy = self.x - play_mode.map.window_left, self.y - play_mode.map.window_bottom
+
         if self.frame <= 7:
             self.skill2_effect2.clip_composite_draw(int(self.frame) * 104, 0, 104, 77, 0, '',
                                                     self.sx, self.sy + 41, 325, 241)
@@ -139,6 +139,7 @@ class Skill2:
         draw_rectangle(*self.get_bb())
 
     def update(self):
+        self.sx, self.sy = self.x - play_mode.map.window_left, self.y - play_mode.map.window_bottom
         self.count += 1
         self.frame = (self.frame + 18 * 1 * game_framework.frame_time) % 18
         if self.frame >= 7:
