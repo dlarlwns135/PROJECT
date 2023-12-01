@@ -27,7 +27,7 @@ class Shuriken:
     def draw(self):
 
         self.shuriken.clip_composite_draw(int(self.frame) * 44, 0, 44, 35, 0, '', self.sx, self.sy, 44, 35)
-        draw_rectangle(*self.get_bb())
+        # draw_rectangle(*self.get_bb())
 
     def update(self):
         self.sx, self.sy = self.x - play_mode.map.window_left, self.y - play_mode.map.window_bottom
@@ -40,6 +40,7 @@ class Shuriken:
             game_world.remove_object(self)
 
     def get_bb(self):
+        self.sx, self.sy = self.x - play_mode.map.window_left, self.y - play_mode.map.window_bottom
         return self.sx - 22, self.sy - 18, self.sx + 22, self.sy + 18
 
     def handle_collision(self, group, other):
@@ -73,7 +74,7 @@ class Skill1:
         elif self.dir == -1:
             self.skill1_effect.clip_composite_draw(int(self.frame) * 97, 0, 97, 80, 0, 'h',
                                                     self.sx, self.sy + 90, 325, 241)
-        draw_rectangle(*self.get_bb())
+        # draw_rectangle(*self.get_bb())
 
     def update(self):
         self.sx, self.sy = self.x - play_mode.map.window_left, self.y - play_mode.map.window_bottom
@@ -89,6 +90,7 @@ class Skill1:
             game_world.remove_object(self)
 
     def get_bb(self):
+        self.sx, self.sy = self.x - play_mode.map.window_left, self.y - play_mode.map.window_bottom
         # return self.x - skill_range_x, self.y - skill_range_y, self.x + skill_range_x, self.y + skill_range_y
         return self.sx - 140, self.sy - 40, self.sx + 140, self.sy + 150
 
@@ -165,7 +167,7 @@ class Skill2:
             elif self.p_num == 2:
                 self.skill2_effect2.clip_composite_draw(int(self.frame) * 133, 0, 133, 150, 0, '',
                                                         play_mode.p1.sx, play_mode.p1.sy, 100, 130)
-        draw_rectangle(*self.get_bb())
+        # draw_rectangle(*self.get_bb())
 
     def update(self):
         self.sx, self.sy = self.x - play_mode.map.window_left, self.y - play_mode.map.window_bottom
@@ -194,6 +196,7 @@ class Skill2:
         pass
 
     def get_bb(self):
+        self.sx, self.sy = self.x - play_mode.map.window_left, self.y - play_mode.map.window_bottom
         # return self.x - skill_range_x, self.y - skill_range_y, self.x + skill_range_x, self.y + skill_range_y
         return self.sx - 110, self.sy - 30, self.sx + 110, self.sy + 90
 
@@ -262,10 +265,12 @@ class Attack_range:
         pass
 
     def draw(self):
-
-        draw_rectangle(*self.get_bb())
+        #
+        # draw_rectangle(*self.get_bb())
+        pass
 
     def get_bb(self):
+        self.sx, self.sy = self.x - play_mode.map.window_left, self.y - play_mode.map.window_bottom
         return (self.sx - self.attack_range_x + self.dir * self.attack_x_dis,
                 self.sy - self.attack_range_y + self.attack_y_dis,
                 self.sx + self.attack_range_x + self.dir * self.attack_x_dis,

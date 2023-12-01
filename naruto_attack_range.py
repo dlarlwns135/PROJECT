@@ -25,7 +25,7 @@ class Shuriken:
     def draw(self):
 
         self.shuriken.clip_composite_draw(int(self.frame) * 44, 0, 44, 35, 0, '', self.sx, self.sy, 44, 35)
-        draw_rectangle(*self.get_bb())
+        # draw_rectangle(*self.get_bb())
 
     def update(self):
         self.sx, self.sy = self.x - play_mode.map.window_left, self.y - play_mode.map.window_bottom
@@ -37,6 +37,7 @@ class Shuriken:
             game_world.remove_object(self)
 
     def get_bb(self):
+        self.sx, self.sy = self.x - play_mode.map.window_left, self.y - play_mode.map.window_bottom
         return self.sx - 22, self.sy - 18, self.sx + 22, self.sy + 18
 
     def handle_collision(self, group, other):
@@ -70,7 +71,7 @@ class Skill1:
         elif self.dir == -1:
             self.skill1_effect.clip_composite_draw(int(self.frame) * 193, 0, 193, 136, 0, 'h',
                                                    self.sx, self.sy+20, 543, 382)
-        draw_rectangle(*self.get_bb())
+        # draw_rectangle(*self.get_bb())
 
     def update(self):
         self.sx, self.sy = self.x - play_mode.map.window_left, self.y - play_mode.map.window_bottom
@@ -79,6 +80,7 @@ class Skill1:
             game_world.remove_object(self)
 
     def get_bb(self):
+        self.sx, self.sy = self.x - play_mode.map.window_left, self.y - play_mode.map.window_bottom
         if self.dir == 1:
             return self.sx - 200, self.sy - 130, self.sx + 270, self.sy + 180
         elif self.dir == -1:
@@ -117,7 +119,7 @@ class Skill2:
             elif self.dir == -1:
                 self.skill2_effect.clip_composite_draw((int(self.frame)-7) * 159, 0, 159, 88, 0, 'h',
                                                        self.sx, self.sy, 447, 247)
-        draw_rectangle(*self.get_bb())
+        # draw_rectangle(*self.get_bb())
 
     def update(self):
         self.sx, self.sy = self.x - play_mode.map.window_left, self.y - play_mode.map.window_bottom
@@ -133,6 +135,7 @@ class Skill2:
         pass
 
     def get_bb(self):
+        self.sx, self.sy = self.x - play_mode.map.window_left, self.y - play_mode.map.window_bottom
         if self.dir == 1:
             return self.sx - 80, self.sy - 130, self.sx + 220, self.sy + 110
         elif self.dir == -1:
@@ -209,11 +212,12 @@ class Attack_range:
                 game_world.remove_object(self)
 
     def draw(self):
-        draw_rectangle(*self.get_bb())
+        # draw_rectangle(*self.get_bb())
 
         pass
 
     def get_bb(self):
+        self.sx, self.sy = self.x - play_mode.map.window_left, self.y - play_mode.map.window_bottom
         return (self.sx - self.attack_range_x + self.dir * self.attack_x_dis,
                 self.sy - self.attack_range_y + self.attack_y_dis,
                 self.sx + self.attack_range_x + self.dir * self.attack_x_dis,
