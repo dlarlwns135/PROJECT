@@ -214,15 +214,15 @@ class Attack_range:
         self.range_set(0, 0, 0, 0, 0)
         self.attack_num = attack_num
         if self.attack_num == 1:
-            self.range_set(50, 50, 30, 20, 10)
+            self.range_set(50, 50, 30, 20, 15)
         elif self.attack_num == 2:
-            self.range_set(80, 30, 50, 10, 10)
+            self.range_set(80, 30, 50, 10, 15)
         elif self.attack_num == 3:
-            self.range_set(80, 50, 50, 20, 15)
+            self.range_set(80, 50, 50, 20, 20)
         elif self.attack_num == 4:
-            self.range_set(60, 80, 50, 60, 20)
+            self.range_set(60, 80, 50, 60, 25)
         elif self.attack_num == 'run':
-            self.range_set(70, 50, 50, 0, 30)
+            self.range_set(70, 50, 50, 0, 25)
         elif self.attack_num == 'jump':
             self.range_set(80, 40, 10, 0, 30)
         self.sx, self.sy = 0, 0
@@ -280,6 +280,9 @@ class Attack_range:
         if not other.invincible:
             if group == 'p1:p2_attack' or group == 'p2:p1_attack':
                 # print("충돌")
+                if mode_choose_mode.mode_choose_result() == '1p':
+                    play_mode.p1.chakra += int(self.damage//2)
+                    print("차크라충전")
                 other.dir = -self.dir
                 other.hp -= self.damage
                 other.frame = 0

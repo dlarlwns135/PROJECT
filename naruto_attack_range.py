@@ -2,6 +2,7 @@ from pico2d import *
 
 import game_framework
 import game_world
+import mode_choose_mode
 import play_mode
 PIXEL_PER_METER = (10.0 / 0.3) # 10 pixel 30 cm
 RUN_SPEED_KMPH = 50.0 # Km / Hour
@@ -162,15 +163,15 @@ class Attack_range:
         self.range_set(0, 0, 0, 0, 0)
         self.attack_num = attack_num
         if self.attack_num == 1:
-            self.range_set(50, 20, 40, 10, 10)
+            self.range_set(50, 20, 40, 10, 15)
         elif self.attack_num == 2:
-            self.range_set(50, 40, 30, 20, 10)
+            self.range_set(50, 40, 30, 20, 15)
         elif self.attack_num == 3:
-            self.range_set(50, 60, 30, 10, 15)
+            self.range_set(50, 60, 30, 10, 20)
         elif self.attack_num == 4:
-            self.range_set(40, 80, 0, 0, 20)
+            self.range_set(40, 80, 0, 0, 25)
         elif self.attack_num == 'run':
-            self.range_set(40, 50, 30, -20, 30)
+            self.range_set(40, 50, 30, -20, 25)
         elif self.attack_num == 'jump':
             self.range_set(50, 60, 30, 20, 30)
         self.sx, self.sy = 0, 0
@@ -227,6 +228,9 @@ class Attack_range:
         if not other.invincible:
             if group == 'p1:p2_attack' or group == 'p2:p1_attack':
                 # print("충돌")
+                if mode_choose_mode.mode_choose_result() == '1p':
+                    play_mode.p1.chakra += int(self.damage//2)
+                    print("차크라충전")
                 other.hp -= self.damage
                 other.dir = -self.dir
                 other.frame = 0

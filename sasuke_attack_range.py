@@ -2,6 +2,7 @@ from pico2d import *
 
 import game_framework
 import game_world
+import mode_choose_mode
 import play_mode
 
 PIXEL_PER_METER = (10.0 / 0.3) # 10 pixel 30 cm
@@ -184,7 +185,7 @@ class Attack_range:
         elif self.attack_num == 4:
             self.range_set(105, 80, 90, 20, 20)
         elif self.attack_num == 'run':
-            self.range_set(100, 30, 60, -20, 30)
+            self.range_set(100, 30, 60, -20, 25)
         elif self.attack_num == 'jump':
             self.range_set(90, 50, 10, -10, 30)
         self.sx, self.sy = 0, 0
@@ -241,6 +242,9 @@ class Attack_range:
         if not other.invincible:
             if group == 'p1:p2_attack' or group == 'p2:p1_attack':
                 # print("충돌")
+                if mode_choose_mode.mode_choose_result() == '1p':
+                    play_mode.p1.chakra += int(self.damage//2)
+                    print("차크라충전")
                 other.hp -= self.damage
                 other.dir = -self.dir
                 other.frame = 0

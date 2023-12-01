@@ -594,6 +594,8 @@ class Easy_hit:
             p2.right = False
         elif left_up(e):
             p2.left = False
+        p2.frame = 0
+        p2.state = 'easy_hit'
 
     @staticmethod
     def exit(p2, e):
@@ -626,6 +628,8 @@ class Hard_hit:
             p2.right = False
         elif left_up(e):
             p2.left = False
+        p2.frame = 0
+        p2.state = 'hard_hit'
 
     @staticmethod
     def exit(p2, e):
@@ -886,6 +890,7 @@ class NEJI:
         if self.hit_state == 'hard':
             if not self.state_machine.cur_state == Hard_hit:
                 self.hard_hit_s.play()
+                pass
             self.state_machine.cur_state = Hard_hit
         if self.hit_state == 'easy':
             self.easy_hit_s.play()
@@ -981,7 +986,7 @@ class NEJI:
             return BehaviorTree.FAIL
 
     def attack_p1(self):
-        if self.state == 'idle' or self.state == 'run':
+        if self.state_machine.cur_state == Idle or self.state_machine.cur_state == Run:
             self.frame = 0
             self.state = 'attack'
             self.state_machine.cur_state = Attack
@@ -1009,7 +1014,7 @@ class NEJI:
             return BehaviorTree.FAIL
 
     def skill_p1(self):
-        if self.state == 'idle' or self.state == 'run':
+        if self.state_machine.cur_state == Idle or self.state_machine.cur_state == Run:
             self.frame = 0
             self.state = 'skill_motion'
             self.state_machine.cur_state = Skill_motion

@@ -13,11 +13,11 @@ def init():
     you_lose = load_image('resource/you_lose.png')
     round_num = load_image('resource/3.png')
     backimage = load_image('resource/darkback.png')
-    press_space = load_image('resource/press_space.png')
+    press_space = load_image('resource/press_space2.png')
     frame = 0
     space_frame = 0
     space_up = True
-    play_mode.p_bgm.stop()
+    # play_mode.p_bgm.stop()
     l_bgm = load_music('sound/losesound.mp3')
     l_bgm.set_volume(18)
     l_bgm.repeat_play()
@@ -54,10 +54,10 @@ def draw():
     # round_num.clip_composite_draw(0, 0, round_num.w, round_num.h, 0, '', 680, 500, round_num.w, round_num.h)
     if space_up:
         press_space.clip_composite_draw(0, 0, press_space.w, press_space.h, 0, '', 600, 60 + space_frame,
-                                        press_space.w * 0.15, press_space.h * 0.15)
+                                        press_space.w * 0.7, press_space.h * 0.7)
     else:
         press_space.clip_composite_draw(0, 0, press_space.w, press_space.h, 0, '', 600, 70 - space_frame,
-                                        press_space.w * 0.15, press_space.h * 0.15)
+                                        press_space.w * 0.7, press_space.h * 0.7)
     update_canvas()
 
 def update():

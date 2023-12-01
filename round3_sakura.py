@@ -365,7 +365,7 @@ class Teleport:
                 p2.x = play_mode.p1.x + 70
                 p2.y = play_mode.p1.y
                 p2.dir = -1
-            p2.skill()
+            # p2.skill()
             p2.state_machine.cur_state = Skill_motion
             # p2.state_machine.handle_event(('TELEPORT', None))
 
@@ -536,7 +536,10 @@ class Skill_motion:
             if p2.frame >= 15:
                 p2.frame = 0
                 p2.state_machine.handle_event(('STOP', None))
+            if int(p2.frame) == 2 and p2.frame - int(p2.frame) < 0.1:
+                p2.skill()
             if int(p2.frame) == 6 and p2.frame - int(p2.frame) < 0.1:
+
                 p2.skill1_s_e.play()
             # if p2.dir == 1 and p2.x >= play_mode.map.w - 50 or p2.dir == -1 and p2.x <= 0 + 50:
             #     p2.frame = 0
@@ -621,6 +624,8 @@ class Easy_hit:
             p2.right = False
         elif left_up(e):
             p2.left = False
+        p2.frame = 0
+        p2.state = 'easy_hit'
 
     @staticmethod
     def exit(p2, e):
@@ -653,6 +658,8 @@ class Hard_hit:
             p2.right = False
         elif left_up(e):
             p2.left = False
+        p2.frame = 0
+        p2.state = 'hard_hit'
 
     @staticmethod
     def exit(p2, e):
@@ -1007,7 +1014,7 @@ class SAKURA:
             return BehaviorTree.FAIL
 
     def attack_p1(self):
-        if self.state == 'idle' or self.state == 'run':
+        if self.state_machine.cur_state == Idle or self.state_machine.cur_state == Run:
             self.frame = 0
             self.state = 'attack'
             self.state_machine.cur_state = Attack
@@ -1033,7 +1040,7 @@ class SAKURA:
             return BehaviorTree.FAIL
 
     def skill_p1(self):
-        if self.state == 'idle' or self.state == 'run':
+        if self.state_machine.cur_state == Idle or self.state_machine.cur_state == Run:
             self.frame = 0
             self.state = 'teleport'
             self.state_machine.cur_state = Teleport
@@ -1053,7 +1060,7 @@ class SAKURA:
         else:
             return BehaviorTree.FAIL
     def skill_p2(self):
-        if self.state == 'idle' or self.state == 'run':
+        if self.state_machine.cur_state == Idle or self.state_machine.cur_state == Run:
             self.frame = 0
             self.chakra -= 30
             self.invincible = True

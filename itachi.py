@@ -719,7 +719,7 @@ class StateMachine:
         return False
 
     def draw(self):
-        # self.cur_state.draw(self.p3)
+        self.cur_state.draw(self.p3)
         pass
 
 
@@ -857,7 +857,7 @@ class ITACHI:
     def draw(self):
         self.sx, self.sy = self.x - self.bg.window_left, self.y - self.bg.window_bottom
         self.state_machine.draw()
-        draw_rectangle(*self.get_bb())
+        # draw_rectangle(*self.get_bb())
 
     def get_bb(self):
         return self.sx - 30, self.sy - 70, self.sx + 30, self.sy + 70
