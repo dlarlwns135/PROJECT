@@ -4,7 +4,7 @@ import play_mode
 
 def init():
     global idle, round, round_num, frame, backimage, press_space, space_frame, space_up
-    idle = load_image('resource/kabuto_idle.png')
+    idle = load_image('resource/sakura_idle.png')
     round = load_image('resource/round.png')
     round_num = load_image('resource/3.png')
     backimage = load_image('resource/round3.png')
@@ -31,7 +31,7 @@ def running():
 def draw():
     clear_canvas()
     backimage.clip_composite_draw(0, 0, backimage.w, backimage.h, 0, '', 600, 300, 1200, 600)
-    idle.clip_composite_draw(int(frame) * 33, 0, 33, 49, 0, '', 600, 300, 93*2, 138*2)
+    idle.clip_composite_draw(int(frame) * 34, 0, 34, 49, 0, '', 600, 300, 96*2, 138*2)
     round.clip_composite_draw(0, 0, round.w, round.h, 0, '', 560, 500, round.w, round.h)
     round_num.clip_composite_draw(0, 0, round_num.w, round_num.h, 0, '', 680, 500, round_num.w, round_num.h)
     if space_up:
@@ -42,7 +42,7 @@ def draw():
 
 def update():
     global frame, space_frame, space_up
-    frame = (frame + 8 * 0.7 * game_framework.frame_time) % 8
+    frame = (frame + 6 * 0.7 * game_framework.frame_time) % 6
     space_frame = space_frame + 10 * game_framework.frame_time
     if space_frame >= 9:
         if space_up:

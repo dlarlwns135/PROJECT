@@ -179,7 +179,7 @@ class Idle:
             p2.state_machine.handle_event(('RUN_STATE', None))
         if not p2.right and p2.left:
             p2.state_machine.handle_event(('RUN_STATE', None))
-        p2.frame = (p2.frame + 4 * 1 * game_framework.frame_time) % 4
+        p2.frame = (p2.frame + 8 * 1 * game_framework.frame_time) % 8
 
     @staticmethod
     def draw(p2):
@@ -618,9 +618,9 @@ class Easy_hit:
     @staticmethod
     def draw(p2):
         if p2.dir == -1:
-            p2.easy_hit.clip_composite_draw(int(p2.frame) * 32, 0, 32, 48, 0, 'h', p2.sx, p2.sy-15, 90, 135)
+            p2.easy_hit.clip_composite_draw(int(p2.frame) * 35, 0, 35, 40, 0, 'h', p2.sx+10, p2.sy-15, 98, 113)
         elif p2.dir == 1:
-            p2.easy_hit.clip_composite_draw(int(p2.frame) * 32, 0, 32, 48, 0, '', p2.sx, p2.sy-15, 90, 135)
+            p2.easy_hit.clip_composite_draw(int(p2.frame) * 35, 0, 35, 40, 0, '', p2.sx-10, p2.sy-15, 98, 113)
 
 class Hard_hit:
     @staticmethod
@@ -793,7 +793,7 @@ class KABUTO:
         self.skill2 = load_image('resource/kabuto_skill2.png')
         self.run_attack = load_image('resource/naruto_run_attack.png')
         self.jump_attack = load_image('resource/naruto_jump_attack.png')
-        self.easy_hit = load_image('resource/neji_easy_hit.png')
+        self.easy_hit = load_image('resource/kabuto_easy_hit.png')
         self.hard_hit = load_image('resource/kabuto_hard_hit.png')
         self.win_image = load_image('resource/kabuto_win.png')
         self.state_machine = StateMachine(self)
@@ -856,6 +856,14 @@ class KABUTO:
         # self.y = self.bg.h / 2
 
     def update(self):
+        if play_mode.p1.hp <= 0 or self.hp <= 0:
+            self.frame = 0
+            if play_mode.p1.hp <= 0:
+                self.state = 'win'
+                self.state_machine.cur_state = Win
+            elif self.hp <= 0:
+                self.state = 'lose'
+                self.state_machine.cur_state = Lose
         if self.hit_state == 'hard':
             self.state_machine.cur_state = Hard_hit
         if self.hit_state == 'easy':
@@ -864,6 +872,7 @@ class KABUTO:
         self.state_machine.update()
         if self.chakra <= 100:
             self.chakra += 8 * game_framework.frame_time
+            pass
         if not self.state_machine.cur_state == Skill_motion:
             if play_mode.p1.x < self.x:
                 self.dir = -1

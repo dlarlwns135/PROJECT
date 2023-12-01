@@ -840,10 +840,19 @@ class NEJI:
         # self.y = self.bg.h / 2
 
     def update(self):
+        if play_mode.p1.hp <= 0 or self.hp <= 0:
+            self.frame = 0
+            if play_mode.p1.hp <= 0:
+                self.state = 'win'
+                self.state_machine.cur_state = Win
+            elif self.hp <= 0:
+                self.state = 'lose'
+                self.state_machine.cur_state = Lose
         if self.hit_state == 'hard':
             self.state_machine.cur_state = Hard_hit
         if self.hit_state == 'easy':
             self.state_machine.cur_state = Easy_hit
+
 
         self.state_machine.update()
         if self.chakra <= 100:
@@ -949,6 +958,7 @@ class NEJI:
                 self.state = 'win'
                 self.state_machine.cur_state = Win
             elif self.hp <= 0:
+                self.state = 'lose'
                 self.state_machine.cur_state = Lose
             return BehaviorTree.SUCCESS
         else:
