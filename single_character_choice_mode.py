@@ -16,7 +16,7 @@ def init():
     naruto = load_image('resource/naruto_idle.png')
     sasuke = load_image('resource/sasuke_idle.png')
     itachi = load_image('resource/itachi_idle.png')
-    # p1_image = load_image('resource/p1_image.png')
+    p1_image = load_image('resource/p1_image.png')
     # p2_image = load_image('resource/p2_image.png')
     character_back = load_image('resource/charactor_back.png')
     # vs = load_image('resource/vs.png')
@@ -35,8 +35,8 @@ def init():
     dup_on = False
     dup_wait_time = 0
 def finish():
-    global image1, naruto, sasuke, itachi, character_back, press_space, dir_image
-    del image1, naruto, sasuke, itachi, character_back, press_space, dir_image
+    global image1, naruto, sasuke, itachi, character_back, press_space, dir_image, p1_image
+    del image1, naruto, sasuke, itachi, character_back, press_space, dir_image, p1_image
 def handle_events():
     events = get_events()
     global p1_choose, p2_choose, character_count, dup_on, dup_wait_time
@@ -90,7 +90,7 @@ def draw():
         sasuke.clip_composite_draw(int(sasuke_frame)*32, 0, 32, 64, 0, 'h', p1_x, p1_y, 100, 200)
     elif p1_choose == 3:
         itachi.clip_composite_draw(int(itachi_frame)*32, 0, 32, 64, 0, 'h', p1_x, p1_y+15, 100, 200)
-
+    p1_image.clip_composite_draw(0, 0, 64, 32, 0, '', 600, 500, 120, 60)
     # if p2_choose == 1:
     #     naruto.clip_composite_draw(int(naruto_frame)*32, 0, 32, 48, 0, '', p2_x, p2_y, 100, 150)
     # elif p2_choose == 2:
