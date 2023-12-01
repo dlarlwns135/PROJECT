@@ -3,15 +3,18 @@ import game_framework
 import play_mode
 
 def init():
-    global idle, round, round_num, frame, backimage, press_space, space_frame, space_up
+    global idle, round, round_num, frame, backimage, press_space, space_frame, space_up, r2_bgm
     idle = load_image('resource/kabuto_idle.png')
     round = load_image('resource/round.png')
     round_num = load_image('resource/2.png')
     backimage = load_image('resource/Bridge.png')
-    press_space = load_image('resource/press_space.png')
+    press_space = load_image('resource/press_space2.png')
     frame = 0
     space_frame = 0
     space_up = True
+    r2_bgm = load_music('sound/orochi_thema.mp3')
+    r2_bgm.set_volume(15)
+    r2_bgm.repeat_play()
 def finish():
     global idle, round, round_num, backimage, press_space
     del idle, round, round_num, backimage, press_space
@@ -36,10 +39,10 @@ def draw():
     round_num.clip_composite_draw(0, 0, round_num.w, round_num.h, 0, '', 680, 500, round_num.w, round_num.h)
     if space_up:
         press_space.clip_composite_draw(0, 0, press_space.w, press_space.h, 0, '', 600, 60 + space_frame,
-                                        press_space.w * 0.15, press_space.h * 0.15)
+                                        press_space.w*0.7, press_space.h*0.7)
     else:
         press_space.clip_composite_draw(0, 0, press_space.w, press_space.h, 0, '', 600, 70 - space_frame,
-                                        press_space.w * 0.15, press_space.h * 0.15)
+                                        press_space.w*0.7, press_space.h*0.7)
     update_canvas()
 
 def update():

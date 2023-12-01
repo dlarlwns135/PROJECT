@@ -3,7 +3,7 @@ import game_framework
 import play_mode
 
 def init():
-    global idle, round, round_num, frame, backimage, press_space, space_frame, space_up
+    global idle, round, round_num, frame, backimage, press_space, space_frame, space_up, r3_bgm
     idle = load_image('resource/sakura_idle.png')
     round = load_image('resource/round.png')
     round_num = load_image('resource/3.png')
@@ -12,6 +12,9 @@ def init():
     frame = 0
     space_frame = 0
     space_up = True
+    r3_bgm = load_music('sound/round3.mp3')
+    r3_bgm.set_volume(12)
+    r3_bgm.repeat_play()
 def finish():
     global idle, round, round_num, backimage, press_space
     del idle, round, round_num, backimage, press_space

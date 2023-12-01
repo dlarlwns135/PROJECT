@@ -81,17 +81,18 @@ def init():
     fight = load_image('resource/fight.png')
     fight_frame = 0
 
-    title_mode.bgm.stop()
+    # title_mode.bgm.stop()
 
-    p_bgm = load_music('sound/playsound.mp3')
-    p_bgm.set_volume(12)
-    p_bgm.repeat_play()
-
-    if mode_choose_mode.mode_choose_result() == '1p' and round_num == 3:
-        p_bgm.stop()
-        p_bgm = load_music('sound/round3.mp3')
-        p_bgm.set_volume(12)
+    if mode_choose_mode.mode_choose_result() == '2p':
+        p_bgm = load_music('sound/playsound.mp3')
+        p_bgm.set_volume(18)
         p_bgm.repeat_play()
+
+    # if mode_choose_mode.mode_choose_result() == '1p' and round_num == 3:
+    #     p_bgm.stop()
+    #     p_bgm = load_music('sound/round3.mp3')
+    #     p_bgm.set_volume(12)
+    #     p_bgm.repeat_play()
 
 
     running = True

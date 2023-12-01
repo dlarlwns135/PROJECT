@@ -719,7 +719,8 @@ class StateMachine:
         return False
 
     def draw(self):
-        self.cur_state.draw(self.p3)
+        # self.cur_state.draw(self.p3)
+        pass
 
 
 class ITACHI:

@@ -13,7 +13,7 @@ def init():
     space_frame = 0
     space_up = True
     r1_bgm = load_music('sound/neji_thema.mp3')
-    r1_bgm.set_volume(32)
+    r1_bgm.set_volume(12)
     r1_bgm.repeat_play()
 def finish():
     global idle, round, round_num, backimage, press_space
