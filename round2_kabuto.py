@@ -1066,7 +1066,7 @@ class KABUTO:
 
         c1 = Condition('랜덤1', self.random1)
         c2 = Condition('랜덤2', self.random2)
-        c3 = Condition('is_p1_nearby', self.is_p1_nearby, 6)
+        c3 = Condition('is_p1_nearby', self.is_p1_nearby, 4)
         c4 = Condition('end_check', self.end_check)
         c5 = Condition('chakra_check', self.chakra_check)
         c6 = Condition('chakra_check2', self.chakra_check2)

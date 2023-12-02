@@ -150,9 +150,9 @@ class Idle:
             else:
                 p1.chakra_lack = True
         if skill2_down(e):
-            p1.skill2_s_e.play()
             p1.skill_num = 'skill2'
             if p1.chakra >= 30:
+                p1.skill2_s_e.play()
                 p1.chakra -= 30
                 p1.chakra_lack = False
                 p1.skill()
@@ -639,7 +639,7 @@ class Win:
 
     @staticmethod
     def do(p1):
-        p1.frame = (p1.frame + 12 * 1 * game_framework.frame_time) % 12
+        p1.frame = (p1.frame + 12 * 0.7 * game_framework.frame_time) % 12
         if p1.y > ground_y:
             p1.y -= RUN_SPEED_PPS * game_framework.frame_time * 0.6
             if p1.y < ground_y:
@@ -755,7 +755,7 @@ class SASUKE:
         self.easy_hit_s = load_wav('sound/sasuke_easy_hit.wav')
         self.easy_hit_s.set_volume(5)
         self.hard_hit_s = load_wav('sound/sasuke_hard_hit.wav')
-        self.hard_hit_s.set_volume(10)
+        self.hard_hit_s.set_volume(20)
         self.skill1_s = load_wav('sound/sasuke_skill1.wav')
         self.skill1_s.set_volume(10)
         self.skill2_s = load_wav('sound/sasuke_skill2.wav')
@@ -765,7 +765,7 @@ class SASUKE:
         self.skill2_s_e = load_wav('sound/sasuke_skill2_effect.wav')
         self.skill2_s_e.set_volume(10)
         self.win_s = load_wav('sound/sasuke_win.wav')
-        self.win_s.set_volume(10)
+        self.win_s.set_volume(20)
         self.state_machine = StateMachine(self)
         self.state_machine.start()
         self.jump_move = False

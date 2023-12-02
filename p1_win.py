@@ -17,7 +17,6 @@ def init():
     frame = 0
     space_frame = 0
     space_up = True
-    play_mode.p_bgm.stop()
     w_bgm = load_music('sound/winsound.mp3')
     w_bgm.set_volume(18)
     w_bgm.repeat_play()

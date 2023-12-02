@@ -119,7 +119,7 @@ class Skill2:
         self.dot_count = 0
         self.dir = dir
         self.count = 0
-        self.damage = 20
+        self.damage = 15
         self.sx, self.sy = 0, 0
         self.reach = False
         if mode_choose_mode.mode_choose_result() == '2p':

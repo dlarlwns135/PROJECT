@@ -61,7 +61,7 @@ class Skill1:
         self.frame = 0
         self.dir = dir
         self.count = 0
-        self.damage = 60
+        self.damage = 80
         self.sx, self.sy = 0, 0
 
     def draw(self):
