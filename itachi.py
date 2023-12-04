@@ -17,12 +17,20 @@ tele_dis = 220
 player_num = 0
 delay_shu = False
 t_time = 0
+delay_tel = False
+t_time2 = 0
+delay_jum = False
+t_time3 = 0
 
 def up_down(e):
-    if player_num == 1:
-        return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_UP
-    elif player_num == 2:
-        return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_w
+    global delay_jum
+    if get_time() - t_time3 >= 0.65:
+        delay_jum = False
+    if not delay_jum:
+        if player_num == 1:
+            return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_UP
+        elif player_num == 2:
+            return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_w
 
 def up_up(e):
     if player_num == 1:
@@ -70,10 +78,14 @@ def space_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE
 
 def teleport_down(e):
-    if player_num == 1:
-        return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_PERIOD
-    elif player_num == 2:
-        return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_v
+    global delay_tel
+    if get_time() - t_time2 >= 1:
+        delay_tel = False
+    if not delay_tel:
+        if player_num == 1:
+            return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_PERIOD
+        elif player_num == 2:
+            return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_v
 
 def attack_down(e):
     if player_num == 1:
@@ -236,6 +248,10 @@ class Jump:
             p3.left = False
         if up_down(e):
             p3.up_tele = True
+            global delay_jum
+            delay_jum = True
+            global t_time3
+            t_time3 = get_time()
         if up_up(e):
             p3.up_tele = False
         if down_down(e):
@@ -336,6 +352,10 @@ class Teleport:
                     p3.x += tele_dis
                 elif p3.left and not p3.right:
                     p3.x -= tele_dis
+        global delay_tel
+        delay_tel = True
+        global t_time2
+        t_time2 = get_time()
 
     @staticmethod
     def do(p3):
