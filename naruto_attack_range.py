@@ -15,7 +15,7 @@ class Shuriken:
     shuriken = None
     def __init__(self, x = 400, y = 300, dir = 1):
         if Shuriken.shuriken == None:
-            Shuriken.shuriken = load_image('resource/shuriken1.png')
+            Shuriken.shuriken = load_image('resource/shuriken3.png')
         self.x, self.y = x, y,
         self.frame = 0
         self.dir = dir
@@ -25,8 +25,8 @@ class Shuriken:
 
     def draw(self):
 
-        self.shuriken.clip_composite_draw(int(self.frame) * 44, 0, 44, 35, 0, '', self.sx, self.sy, 44, 35)
-        # draw_rectangle(*self.get_bb())
+        self.shuriken.clip_composite_draw(int(self.frame) * 46, 0, 46, 35, 0, '', self.sx, self.sy, 46*2, 35*2)
+        draw_rectangle(*self.get_bb())
 
     def update(self):
         self.sx, self.sy = self.x - play_mode.map.window_left, self.y - play_mode.map.window_bottom

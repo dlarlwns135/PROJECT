@@ -27,7 +27,7 @@ class Shuriken:
 
     def draw(self):
         self.sx, self.sy = self.x - play_mode.map.window_left, self.y - play_mode.map.window_bottom
-        self.shuriken.clip_composite_draw(int(self.frame) * 44, 0, 44, 35, 0, '', self.sx, self.sy, 44, 35)
+        self.shuriken.clip_composite_draw(int(self.frame) * 44, 0, 44, 35, 0, '', self.sx, self.sy, 44*1.5, 35*1.5)
         # draw_rectangle(*self.get_bb())
 
     def update(self):
@@ -185,9 +185,9 @@ class Attack_range:
         elif self.attack_num == 4:
             self.range_set(105, 80, 90, 20, 20)
         elif self.attack_num == 'run':
-            self.range_set(100, 30, 60, -20, 25)
+            self.range_set(100, 30, 60, -20, 20)
         elif self.attack_num == 'jump':
-            self.range_set(90, 50, 10, -10, 30)
+            self.range_set(90, 50, 10, -10, 25)
         self.sx, self.sy = 0, 0
 
     def range_set(self, range_x, range_y, dis_x, dis_y, damage):

@@ -26,7 +26,7 @@ class Shuriken:
 
     def draw(self):
 
-        self.shuriken.clip_composite_draw(int(self.frame) * 44, 0, 44, 35, 0, '', self.sx, self.sy, 44, 35)
+        self.shuriken.clip_composite_draw(int(self.frame) * 44, 0, 44, 35, 0, '', self.sx, self.sy, 44*1.5, 35*1.5)
         # draw_rectangle(*self.get_bb())
 
     def update(self):
