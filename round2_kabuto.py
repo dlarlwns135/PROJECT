@@ -925,15 +925,16 @@ class KABUTO:
 
 
     def handle_event(self, event):
-        self.state_machine.handle_event(('INPUT', event))
-        if right_up(('INPUT', event)):
-            self.right = False
-        elif left_up(('INPUT', event)):
-            self.left = False
-        elif right_down(('INPUT', event)):
-            self.right = True
-        elif left_down(('INPUT', event)):
-            self.left = True
+        # self.state_machine.handle_event(('INPUT', event))
+        # if right_up(('INPUT', event)):
+        #     self.right = False
+        # elif left_up(('INPUT', event)):
+        #     self.left = False
+        # elif right_down(('INPUT', event)):
+        #     self.right = True
+        # elif left_down(('INPUT', event)):
+        #     self.left = True
+        pass
 
     def draw(self):
         self.sx, self.sy = self.x - self.bg.window_left, self.y - self.bg.window_bottom

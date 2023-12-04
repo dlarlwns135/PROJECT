@@ -13,7 +13,7 @@ def init():
     space_frame = 0
     space_up = True
     r2_bgm = load_music('sound/orochi_thema.mp3')
-    r2_bgm.set_volume(15)
+    r2_bgm.set_volume(6)
     r2_bgm.repeat_play()
 def finish():
     global idle, round, round_num, backimage, press_space

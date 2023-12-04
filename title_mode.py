@@ -15,7 +15,7 @@ def init():
     sasuke = load_image('resource/title_sasuke.png')
     press_space = load_image('resource/press_space.png')
     bgm = load_music('sound/mainsound.mp3')
-    bgm.set_volume(32)
+    bgm.set_volume(12)
     bgm.repeat_play()
 
     title_frame = 0

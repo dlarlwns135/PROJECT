@@ -84,10 +84,8 @@ def draw():
     clear_canvas()
     image1.clip_composite_draw(0, 0, 900, 507, 0, '', 600, 300, 1200, 600)
     vs.clip_composite_draw(0, 0, 2500, 2500, 0, '', 600, 300, 200, 200)
-    # character_back.clip_composite_draw(0, 0, 64, 76, 0, '', 300, 300, 340, 430)
     dir_image.clip_composite_draw(0, 0, dir_image.w, dir_image.h, 0, '', 300 + 160, 370, dir_image.w, dir_image.h)
     dir_image.clip_composite_draw(0, 0, dir_image.w, dir_image.h, 0, 'h', 300 - 160, 370, dir_image.w, dir_image.h)
-    # character_back.clip_composite_draw(0, 0, 64, 76, 0, '', 900, 300, 340, 430)
     dir_image.clip_composite_draw(0, 0, dir_image.w, dir_image.h, 0, '', 900 + 160, 370, dir_image.w, dir_image.h)
     dir_image.clip_composite_draw(0, 0, dir_image.w, dir_image.h, 0, 'h', 900 - 160, 370, dir_image.w, dir_image.h)
     p1_image.clip_composite_draw(0, 0, 64, 32, 0, '', 900, 520, 120, 60)
@@ -154,10 +152,6 @@ def update():
         else:
             space_up = True
         space_frame = 0
-
-    # if p1_choose == p2_choose:
-    #     dup_wait_time = get_time()
-    #     dup_on = True
 
     if get_time() - dup_wait_time > 1:
         dup_on = False

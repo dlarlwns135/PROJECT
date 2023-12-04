@@ -85,7 +85,7 @@ def init():
 
     if mode_choose_mode.mode_choose_result() == '2p':
         p_bgm = load_music('sound/playsound.mp3')
-        p_bgm.set_volume(18)
+        p_bgm.set_volume(8)
         p_bgm.repeat_play()
 
     # if mode_choose_mode.mode_choose_result() == '1p' and round_num == 3:

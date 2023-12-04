@@ -93,27 +93,6 @@ def draw():
     elif mode_choose == '2p':
         hand.clip_composite_draw(0, 0, hand.w, hand.h, 0, '', 820, 430+naruto_frame*3,
                                  hand.w*2.5, hand.h*2.5)
-    # dir_image.clip_composite_draw(0, 0, dir_image.w, dir_image.h, 0, '', 300 + 160, 370, dir_image.w, dir_image.h)
-    # dir_image.clip_composite_draw(0, 0, dir_image.w, dir_image.h, 0, 'h', 300 - 160, 370, dir_image.w, dir_image.h)
-    # character_back.clip_composite_draw(0, 0, 64, 76, 0, '', 900, 300, 340, 430)
-    # dir_image.clip_composite_draw(0, 0, dir_image.w, dir_image.h, 0, '', 900 + 160, 370, dir_image.w, dir_image.h)
-    # dir_image.clip_composite_draw(0, 0, dir_image.w, dir_image.h, 0, 'h', 900 - 160, 370, dir_image.w, dir_image.h)
-    # p1_image.clip_composite_draw(0, 0, 64, 32, 0, '', 900, 500, 120, 60)
-    # p2_image.clip_composite_draw(0, 0, 64, 32, 0, '', 300, 500, 120, 60)
-
-    # if p1_choose == 1:
-    #     naruto.clip_composite_draw(int(naruto_frame)*32, 0, 32, 48, 0, 'h', p1_x, p1_y, 100, 150)
-    # elif p1_choose == 2:
-    #     sasuke.clip_composite_draw(int(sasuke_frame)*32, 0, 32, 64, 0, 'h', p1_x, p1_y, 100, 200)
-    # elif p1_choose == 3:
-    #     itachi.clip_composite_draw(int(itachi_frame)*32, 0, 32, 64, 0, 'h', p1_x, p1_y+15, 100, 200)
-    #
-    # if p2_choose == 1:
-    #     naruto.clip_composite_draw(int(naruto_frame)*32, 0, 32, 48, 0, '', p2_x, p2_y, 100, 150)
-    # elif p2_choose == 2:
-    #     sasuke.clip_composite_draw(int(sasuke_frame)*32, 0, 32, 64, 0, '', p2_x, p2_y, 100, 200)
-    # elif p2_choose == 3:
-    #     itachi.clip_composite_draw(int(itachi_frame) * 32, 0, 32, 64, 0, '', p2_x, p2_y+15, 100, 200)
 
     if space_up:
         press_space.clip_composite_draw(0, 0, press_space.w, press_space.h, 0, '', 600, 60 + space_frame,
@@ -121,16 +100,11 @@ def draw():
     else:
         press_space.clip_composite_draw(0, 0, press_space.w, press_space.h, 0, '', 600, 70 - space_frame,
                                         press_space.w * 0.15, press_space.h * 0.15)
-
-    # if dup_on:
-    #     duplicate.clip_composite_draw(0, 0, 5906, 4135, 0, '', 600, 300, 600, 300)
     update_canvas()
 
 def update():
     global naruto_frame, sasuke_frame, itachi_frame, space_frame, space_up, dup_wait_time, dup_on
     naruto_frame = (naruto_frame + 3 * game_framework.frame_time) % 3
-    # sasuke_frame = (sasuke_frame + 6 * game_framework.frame_time) % 6
-    # itachi_frame = (itachi_frame + 4 * game_framework.frame_time) % 4
     space_frame = space_frame + 10 * game_framework.frame_time
     if space_frame >= 9:
         if space_up:
@@ -139,18 +113,7 @@ def update():
             space_up = True
         space_frame = 0
 
-    # if p1_choose == p2_choose:
-    #     dup_wait_time = get_time()
-    #     dup_on = True
-
-    # if get_time() - dup_wait_time > 1:
-    #     dup_on = False
-
 
 def mode_choose_result():
     global mode_choose
     return mode_choose
-
-# def p2_choose_result():
-#     global p2_choose
-#     return p2_choose
